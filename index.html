@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FRV Engenharia - Montagem Eletromecânica, Manutenção e Energias Renováveis</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -20,17 +23,47 @@
             --ink-warm: #150a06;
             --grey: #8b8681;
             --grey-light: #f6f3f0;
+            --font-display: 'Space Grotesk', 'Segoe UI', sans-serif;
+            --font-body: 'Manrope', 'Segoe UI', sans-serif;
+            --font-mono: 'IBM Plex Mono', 'Consolas', monospace;
         }
 
         html {
             scroll-behavior: smooth;
         }
 
+        @media (prefers-reduced-motion: reduce) {
+            html { scroll-behavior: auto; }
+        }
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: var(--font-body);
             line-height: 1.6;
             color: #2b2f33;
             background: #fff;
+        }
+
+        h1, h2, h3, .logo, .cta-button, .contact-btn {
+            font-family: var(--font-display);
+        }
+
+        .section-eyebrow, .hero .eyebrow, .service-tag,
+        .setor-card .num, .pilar-card .num, .a-specs {
+            font-family: var(--font-mono);
+        }
+
+        /* Scroll-reveal */
+        .reveal {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity 0.7s cubic-bezier(0.16,1,0.3,1), transform 0.7s cubic-bezier(0.16,1,0.3,1);
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .reveal { opacity: 1; transform: none; transition: none; }
         }
 
         .container {
@@ -58,13 +91,21 @@
 
         /* Header */
         header {
-            background: var(--navy);
+            background: rgba(14,31,51,0.88);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
             color: white;
             padding: 1.1rem 0;
             position: sticky;
             top: 0;
             z-index: 100;
             box-shadow: 0 2px 14px rgba(0,0,0,0.25);
+            transition: padding 0.35s ease, background 0.35s ease, box-shadow 0.35s ease;
+        }
+        header.scrolled {
+            padding: 0.65rem 0;
+            background: rgba(14,31,51,0.97);
+            box-shadow: 0 4px 24px rgba(0,0,0,0.35);
         }
 
         header .container {
@@ -117,6 +158,19 @@
             padding: 130px 0 140px;
             text-align: center;
             overflow: hidden;
+        }
+        .hero::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(255,255,255,.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,.05) 1px, transparent 1px);
+            background-size: 42px 42px;
+            -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, #000 0%, transparent 75%);
+            mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, #000 0%, transparent 75%);
+            pointer-events: none;
+            z-index: 0;
         }
         .hero::after {
             content: "";
@@ -586,7 +640,7 @@
         <div class="container">
             <div class="section-eyebrow">Por onde passamos</div>
             <h2 class="section-title">Setores que desenvolveram <strong>nosso conhecimento</strong></h2>
-            <div class="setores-grid">
+            <div class="setores-grid reveal">
                 <div class="setor-card">
                     <span class="num">01</span>
                     <span class="label">Óleo e Gás</span>
@@ -612,7 +666,7 @@
         <div class="container">
             <div class="section-eyebrow">Quem somos</div>
             <h2 class="section-title">Expertise comprovada em <strong>projetos críticos</strong></h2>
-            <div class="about-grid">
+            <div class="about-grid reveal">
                 <div class="about-text">
                     <p>
                         A FRV Engenharia é especialista em soluções eletromecânicas para os setores de
@@ -661,7 +715,7 @@
         <div class="container">
             <div class="section-eyebrow">Nosso objetivo</div>
             <h2 class="section-title">Baseados em nosso plano de negócio, <strong>estes são nossos pilares</strong></h2>
-            <div class="pilares-grid">
+            <div class="pilares-grid reveal">
                 <div class="pilar-card">
                     <span class="num">01</span>
                     <h3>Montagem Eletromecânica</h3>
@@ -685,7 +739,7 @@
     <!-- 01a Montagem Eletromecânica - Pacotes Especiais -->
     <section class="service-block">
         <div class="container">
-            <div class="service-grid">
+            <div class="service-grid reveal">
                 <div class="service-text">
                     <span class="service-tag">01 · Montagem Eletromecânica</span>
                     <h3>Pacotes Especiais</h3>
@@ -715,7 +769,7 @@
     <!-- 01b Instrumentação/Automação -->
     <section class="service-block">
         <div class="container">
-            <div class="service-grid reverse">
+            <div class="service-grid reverse reveal">
                 <div class="service-text">
                     <span class="service-tag">01 · Montagem Eletromecânica</span>
                     <h3>Instrumentação / Automação</h3>
@@ -738,7 +792,7 @@
     <!-- 01c Elétrica -->
     <section class="service-block">
         <div class="container">
-            <div class="service-grid">
+            <div class="service-grid reveal">
                 <div class="service-text">
                     <span class="service-tag">01 · Montagem Eletromecânica</span>
                     <h3>Elétrica</h3>
@@ -762,7 +816,7 @@
     <!-- 01d Equipamentos Rotativos/Estáticos -->
     <section class="service-block">
         <div class="container">
-            <div class="service-grid reverse">
+            <div class="service-grid reverse reveal">
                 <div class="service-text">
                     <span class="service-tag">01 · Montagem Eletromecânica</span>
                     <h3>Equipamentos Rotativos / Estáticos</h3>
@@ -784,7 +838,7 @@
     <!-- Checklist detalhado Inspeção/Montagem/Comissionamento -->
     <section class="service-block">
         <div class="container">
-            <div class="service-grid">
+            <div class="service-grid reveal">
                 <div class="service-text">
                     <span class="service-tag">Ciclo Completo de Obra</span>
                     <h3>Inspeção, Montagem e Comissionamento</h3>
@@ -831,7 +885,7 @@
     <!-- 02 Contratos de Manutenção -->
     <section class="service-block">
         <div class="container">
-            <div class="service-grid reverse">
+            <div class="service-grid reverse reveal">
                 <div class="service-text">
                     <span class="service-tag">02 · Contratos de Manutenção</span>
                     <h3>Manutenção Especializada</h3>
@@ -856,7 +910,7 @@
     <!-- 03 Energias Renováveis -->
     <section class="service-block">
         <div class="container">
-            <div class="service-grid">
+            <div class="service-grid reveal">
                 <div class="service-text">
                     <span class="service-tag">03 · Energias Renováveis</span>
                     <h3>Fotovoltaica, PCH/CGH e Turbogeradores</h3>
@@ -882,7 +936,7 @@
             <div class="section-eyebrow" style="color: var(--ember);">04 · Desenvolvimento de Tecnologias</div>
             <h2 class="section-title">Tecnologia própria a serviço da <strong style="color:var(--ember);">engenharia</strong></h2>
             <p class="section-lead">Soluções desenvolvidas internamente para resolver desafios reais de campo, unindo instrumentação, monitoramento inteligente e inteligência artificial.</p>
-            <div class="innovation-grid">
+            <div class="innovation-grid reveal">
                 <div class="innovation-card">
                     <div class="icon">🧪</div>
                     <h3>Sensor de Amônia</h3>
@@ -916,7 +970,7 @@
         <div class="container">
             <div class="section-eyebrow">Fale com a gente</div>
             <h2 class="section-title">Entre em <strong>Contato</strong></h2>
-            <div class="contact-grid">
+            <div class="contact-grid reveal">
                 <div class="contact-item">
                     <div class="icon-circle">📧</div>
                     <h3>Email</h3>
@@ -959,6 +1013,26 @@
     </div>
 
     <script>
+        const header = document.querySelector('header');
+        window.addEventListener('scroll', function () {
+            header.classList.toggle('scrolled', window.scrollY > 40);
+        });
+
+        const revealEls = document.querySelectorAll('.reveal');
+        if ('IntersectionObserver' in window) {
+            const io = new IntersectionObserver(function (entries) {
+                entries.forEach(function (entry) {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        io.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.15, rootMargin: '0px 0px -60px 0px' });
+            revealEls.forEach(function (el) { io.observe(el); });
+        } else {
+            revealEls.forEach(function (el) { el.classList.add('visible'); });
+        }
+
         const GA_ID = 'G-Z799Z17097';
 
         function loadAnalytics() {
