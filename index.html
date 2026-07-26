@@ -446,6 +446,29 @@
             transition: color 0.3s;
         }
         .contact-item a:hover { color: var(--ember); }
+        .contact-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 1rem;
+            padding: 11px 24px;
+            border-radius: 4px;
+            font-weight: 700;
+            font-size: 0.92rem;
+            text-decoration: none;
+            transition: transform 0.25s, box-shadow 0.25s;
+        }
+        .contact-btn:hover { transform: translateY(-2px); }
+        .contact-btn.whatsapp {
+            background: #25D366;
+            color: #073b1e;
+            box-shadow: 0 6px 20px rgba(37,211,102,0.35);
+        }
+        .contact-btn.email-btn {
+            background: var(--ember);
+            color: #1c0d06;
+            box-shadow: 0 6px 20px rgba(255,90,31,0.3);
+        }
         .icon-circle {
             width: 60px;
             height: 60px;
@@ -898,11 +921,13 @@
                     <div class="icon-circle">📧</div>
                     <h3>Email</h3>
                     <p><a href="mailto:roberto@frv.eng.br">roberto@frv.eng.br</a></p>
+                    <a class="contact-btn email-btn" href="mailto:roberto@frv.eng.br?subject=Contato%20via%20site%20-%20FRV%20Engenharia&body=Ol%C3%A1%2C%20Roberto!%20Vim%20atrav%C3%A9s%20do%20site%20da%20FRV%20Engenharia%20e%20gostaria%20de%20mais%20informa%C3%A7%C3%B5es%20sobre%20os%20servi%C3%A7os.">✉️ Enviar e-mail</a>
                 </div>
                 <div class="contact-item">
                     <div class="icon-circle">📱</div>
                     <h3>Telefone / WhatsApp</h3>
                     <p><a href="tel:+5581993657878">(81) 99365-7878</a></p>
+                    <a class="contact-btn whatsapp" href="https://wa.me/5581993657878?text=Ol%C3%A1!%20Vim%20atrav%C3%A9s%20do%20site%20da%20FRV%20Engenharia%20e%20gostaria%20de%20saber%20mais%20sobre%20os%20servi%C3%A7os%20de%20voc%C3%AAs." target="_blank" rel="noopener">💬 Chamar no WhatsApp</a>
                 </div>
                 <div class="contact-item">
                     <div class="icon-circle">👔</div>
