@@ -1,0 +1,29 @@
+# Cabecalhos de cache.
+#
+# Antes desta configuracao a Netlify servia TUDO com
+# "Cache-Control: public, max-age=0, must-revalidate", entao nenhum arquivo
+# ficava guardado no navegador: a cada visita o browser reperguntava ao
+# servidor se as imagens e o video tinham mudado.
+
+# O HTML continua sem cache longo, senao uma alteracao no site demoraria a
+# aparecer para quem ja visitou.
+[[headers]]
+  for = "/*.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+[[headers]]
+  for = "/"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+# Imagens e logos ficam 30 dias no navegador.
+#
+# ATENCAO: os arquivos nao tem hash no nome. Se voce trocar o conteudo de uma
+# imagem mantendo o mesmo nome, quem ja visitou o site pode continuar vendo a
+# antiga por ate 30 dias. Ao substituir uma imagem, mude tambem o nome do
+# arquivo (ex.: hero-poster-2.webp) e atualize a referencia no index.html.
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=2592000"

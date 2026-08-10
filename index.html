@@ -147,29 +147,17 @@
         /* Hero — "calor industrial" */
         .hero {
             position: relative;
-            background: var(--ink-warm) url('assets/img/hero-poster.jpg') center/cover;
+            background:
+                radial-gradient(ellipse 900px 520px at 85% 105%, rgba(255,90,31,.38), transparent 60%),
+                radial-gradient(ellipse 650px 400px at 95% 85%, rgba(247,148,30,.22), transparent 55%),
+                linear-gradient(135deg, rgba(9,5,3,0.90) 0%, rgba(15,9,5,0.84) 100%),
+                url('assets/img/hero-refinaria.jpg');
+            background-size: cover;
+            background-position: center;
             color: white;
             padding: 130px 0 140px;
             text-align: center;
             overflow: hidden;
-        }
-        .hero-video {
-            position: absolute;
-            inset: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            z-index: 0;
-        }
-        .hero-overlay {
-            position: absolute;
-            inset: 0;
-            z-index: 1;
-            pointer-events: none;
-            background:
-                radial-gradient(ellipse 900px 520px at 85% 105%, rgba(255,90,31,.38), transparent 60%),
-                radial-gradient(ellipse 650px 400px at 95% 85%, rgba(247,148,30,.22), transparent 55%),
-                linear-gradient(135deg, rgba(9,5,3,0.90) 0%, rgba(15,9,5,0.84) 100%);
         }
         .hero::before {
             content: "";
@@ -182,7 +170,7 @@
             -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, #000 0%, transparent 75%);
             mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, #000 0%, transparent 75%);
             pointer-events: none;
-            z-index: 2;
+            z-index: 0;
         }
         .hero::after {
             content: "";
@@ -193,14 +181,8 @@
             height: 2px;
             background: linear-gradient(90deg, transparent, var(--ember), var(--orange), transparent);
             pointer-events: none;
-            z-index: 3;
         }
-        .hero .container { position: relative; z-index: 3; }
-
-        @media (max-width: 640px) {
-            .hero-video { display: none; }
-            .hero { background: linear-gradient(135deg, rgba(9,5,3,0.90) 0%, rgba(15,9,5,0.84) 100%), url('assets/img/hero-poster.jpg') center/cover; }
-        }
+        .hero .container { position: relative; z-index: 1; }
 
         .hero .eyebrow {
             color: var(--ember);
@@ -640,10 +622,6 @@
 
     <!-- Hero -->
     <section class="hero" id="topo">
-        <video class="hero-video" autoplay muted loop playsinline preload="auto" poster="assets/img/hero-poster.jpg">
-            <source src="assets/img/hero-video.mp4" type="video/mp4">
-        </video>
-        <div class="hero-overlay"></div>
         <div class="container">
             <div class="eyebrow">Montagem Eletromecânica &amp; Energias Renováveis</div>
             <h1>FRV <span class="accent">Engenharia</span></h1>
@@ -781,7 +759,7 @@
                     </ul>
                 </div>
                 <div class="service-photos">
-                    <img loading="lazy" src="assets/img/flare.jpeg" alt="Sistema de Flare em unidade industrial - FRV Engenharia" style="object-position: top;">
+                    <img loading="lazy" src="assets/img/flare.webp" alt="Sistema de Flare em unidade industrial - FRV Engenharia" style="object-position: top;">
                     <img loading="lazy" src="assets/img/tanques.jpeg" alt="Parque de tanques e tubulações de processo - FRV Engenharia">
                 </div>
             </div>
@@ -804,8 +782,8 @@
                     </ul>
                 </div>
                 <div class="service-photos">
-                    <img loading="lazy" src="assets/img/instrumentacao.jpeg" alt="Painel de instrumentação MicroDist - FRV Engenharia">
-                    <img loading="lazy" src="assets/img/analisadores.jpeg" alt="Analisadores de processo e segurança - FRV Engenharia">
+                    <img loading="lazy" src="assets/img/instrumentacao.webp" alt="Painel de instrumentação MicroDist - FRV Engenharia">
+                    <img loading="lazy" src="assets/img/analisadores.webp" alt="Analisadores de processo e segurança - FRV Engenharia">
                 </div>
             </div>
         </div>
@@ -851,7 +829,7 @@
                     </ul>
                 </div>
                 <div class="service-photos">
-                    <img loading="lazy" src="assets/img/rotativos-turbina.jpg" alt="Planta de turbina a gás - referência de equipamento rotativo" style="height:460px;">
+                    <img loading="lazy" src="assets/img/rotativos-turbina.webp" alt="Planta de turbina a gás - referência de equipamento rotativo" style="height:460px;">
                 </div>
             </div>
         </div>
@@ -898,7 +876,7 @@
                     </div>
                 </div>
                 <div class="service-photos">
-                    <img loading="lazy" src="assets/img/inspecao-comissionamento.jpg" alt="Válvulas e conexões industriais inspecionadas - FRV Engenharia" style="height:520px;">
+                    <img loading="lazy" src="assets/img/inspecao-comissionamento.webp" alt="Válvulas e conexões industriais inspecionadas - FRV Engenharia" style="height:520px;">
                 </div>
             </div>
         </div>
