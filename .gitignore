@@ -2,3 +2,9 @@
 
 # Imagens originais, guardadas so para eventual reversao; nao vao ao ar.
 assets/img/_originais/
+
+# Documentos internos (spec, planos, maquete). O repositorio e publico.
+docs/
+
+# Pasta montada pela Netlify na publicacao
+dist/
