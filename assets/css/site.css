@@ -174,7 +174,6 @@ figcaption b{color:var(--sky);font-weight:500}
 .mod-b{padding:16px 16px 20px}
 .mod h3{font-family:var(--f-disp);font-weight:700;font-size:17px;line-height:1.2;letter-spacing:-.01em}
 .mod p{font-size:13.5px;color:var(--dim);margin-top:8px;line-height:1.55}
-.inov-figs{margin-top:22px}
 
 /* contato */
 .ct{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin-top:46px;border-top:1px solid var(--line2)}
