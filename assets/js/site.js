@@ -21,59 +21,68 @@
   document.getElementById('cookie-decline').addEventListener('click', function(){ setC('declined'); ck.hidden = true; });
 })();
 
-/* Cabecalho, osciloscopio do topo e unifilar dos pilares. */
+/* Cabecalho, instrumento do topo (diagrama fasorial) e unifilar dos pilares. */
 (function(){
   var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   var hd = document.getElementById('hd');
   window.addEventListener('scroll', function(){ hd.classList.toggle('scrolled', window.scrollY > 40); }, {passive:true});
 
-  /* osciloscopio */
-  var cv = document.getElementById('wave'), ctx = cv.getContext('2d');
-  var W = 0, H = 0, t = 0, running = false, raf = null;
+  /* instrumento do topo: diagrama fasorial com tecla RUN/STOP.
+     Se o sistema pede menos movimento, comeca parado (STOP) e a tecla RUN liga. */
+  var inst = document.getElementById('inst'), cv = document.getElementById('wave'), ctx = cv.getContext('2d');
+  var btn = document.getElementById('run'), rF = document.getElementById('rF');
+  var TAU = Math.PI * 2, COLS = ['#f7941e', '#9fd0f5', '#e9edf3'];
+  var W = 0, H = 0, t = 0.9, run = !reduce, vis = false, raf = null, last = 0, lastTick = 0;
+
   function size(){
     var dpr = Math.min(window.devicePixelRatio || 1, 2);
     W = cv.clientWidth; H = cv.clientHeight;
     cv.width = Math.round(W*dpr); cv.height = Math.round(H*dpr);
     ctx.setTransform(dpr,0,0,dpr,0,0);
   }
-  function draw(){
+  function paint(){
     ctx.clearRect(0,0,W,H);
-    ctx.strokeStyle = 'rgba(126,169,214,0.10)'; ctx.lineWidth = 1;
-    for(var x=0; x<=W; x+=W/12){ ctx.beginPath(); ctx.moveTo(Math.round(x)+.5,0); ctx.lineTo(Math.round(x)+.5,H); ctx.stroke(); }
-    for(var y=0; y<=H; y+=H/4){ ctx.beginPath(); ctx.moveTo(0,Math.round(y)+.5); ctx.lineTo(W,Math.round(y)+.5); ctx.stroke(); }
-    ctx.strokeStyle = 'rgba(126,169,214,0.24)';
-    ctx.beginPath(); ctx.moveTo(0,H/2); ctx.lineTo(W,H/2); ctx.stroke();
-    var amp = H*0.31;
-    ctx.beginPath();
-    for(var i=0;i<=W;i++){
-      var a = (i/W)*Math.PI*4 + t;
-      var v = Math.sin(a) + 0.085*Math.sin(3*a+0.6) + 0.045*Math.sin(5*a+1.2);
-      var yy = H/2 - v*amp;
-      if(i===0) ctx.moveTo(i,yy); else ctx.lineTo(i,yy);
+    ctx.lineWidth = 1; ctx.strokeStyle = 'rgba(126,169,214,0.10)';
+    for(var i=0; i<=10; i++){ var gx = Math.round(i*W/10)+.5; ctx.beginPath(); ctx.moveTo(gx,0); ctx.lineTo(gx,H); ctx.stroke(); }
+    for(var j=0; j<=8; j++){ var gy = Math.round(j*H/8)+.5; ctx.beginPath(); ctx.moveTo(0,gy); ctx.lineTo(W,gy); ctx.stroke(); }
+    var R = H*0.36, cx = H*0.5, cy = H/2, x0 = H + 8, th = t*TAU*0.45;
+    ctx.strokeStyle = 'rgba(126,169,214,0.35)';
+    ctx.beginPath(); ctx.arc(cx, cy, R, 0, TAU); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(cx-R-6, cy); ctx.lineTo(cx+R+6, cy); ctx.moveTo(cx, cy-R-6); ctx.lineTo(cx, cy+R+6); ctx.stroke();
+    for(var p=0; p<3; p++){
+      var ang = th - p*TAU/3, tx = cx + R*Math.cos(ang), ty = cy - R*Math.sin(ang), col = COLS[p];
+      ctx.strokeStyle = col; ctx.lineWidth = 2; ctx.shadowColor = col; ctx.shadowBlur = 8;
+      ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(tx, ty); ctx.stroke(); ctx.shadowBlur = 0;
+      ctx.beginPath(); ctx.arc(tx, ty, 3, 0, TAU); ctx.fillStyle = col; ctx.fill();
+      if(W - x0 < 40) continue;
+      ctx.globalAlpha = 0.35; ctx.setLineDash([3,4]); ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.moveTo(tx, ty); ctx.lineTo(x0, ty); ctx.stroke(); ctx.setLineDash([]); ctx.globalAlpha = 1;
+      ctx.beginPath();
+      for(var x=x0; x<=W; x++){ var y = cy - R*Math.sin(ang - TAU*1.5*(x-x0)/(W-x0)); if(x===x0) ctx.moveTo(x,y); else ctx.lineTo(x,y); }
+      ctx.strokeStyle = col; ctx.lineWidth = 1.9; ctx.shadowColor = col; ctx.shadowBlur = 9; ctx.stroke(); ctx.shadowBlur = 0;
     }
-    ctx.strokeStyle = '#f7941e'; ctx.lineWidth = 2;
-    ctx.shadowColor = 'rgba(247,148,30,0.55)'; ctx.shadowBlur = 10;
-    ctx.stroke(); ctx.shadowBlur = 0;
   }
-  var rV = document.getElementById('rV'), rF = document.getElementById('rF'), rT = document.getElementById('rT'), last = 0;
-  function reads(now){
-    if(now - last < 900) return; last = now;
-    rV.innerHTML = (219.4 + (Math.random()-.5)*1.6).toFixed(1).replace('.',',') + '<u>V</u>';
-    rF.innerHTML = (59.98 + (Math.random()-.5)*.05).toFixed(2).replace('.',',') + '<u>Hz</u>';
-    rT.innerHTML = (3.2 + (Math.random()-.5)*.5).toFixed(1).replace('.',',') + '<u>%</u>';
+  function frame(now){
+    if(!(run && vis)){ raf = null; return; }
+    if(last) t += Math.min((now - last)/1000, 0.05);
+    last = now;
+    if(now - lastTick > 900){ lastTick = now; rF.innerHTML = (60 + (Math.random()-.5)*.04).toFixed(2).replace('.',',') + '<u>Hz</u>'; }
+    paint(); raf = requestAnimationFrame(frame);
   }
-  function loop(now){ if(!running) return; t += 0.028; draw(); reads(now||0); raf = requestAnimationFrame(loop); }
-  size(); draw();
-  window.addEventListener('resize', function(){ size(); draw(); });
-  if(!reduce){
-    if('IntersectionObserver' in window){
-      new IntersectionObserver(function(es){ es.forEach(function(e){
-        if(e.isIntersecting && !running){ running = true; raf = requestAnimationFrame(loop); }
-        else if(!e.isIntersecting && running){ running = false; cancelAnimationFrame(raf); }
-      }); },{threshold:.05}).observe(cv);
-    } else { running = true; raf = requestAnimationFrame(loop); }
+  function kick(){ if(run && vis && !raf){ last = 0; raf = requestAnimationFrame(frame); } }
+  function ui(){
+    btn.textContent = run ? 'STOP' : 'RUN';
+    btn.setAttribute('aria-pressed', String(run));
+    btn.setAttribute('aria-label', run ? 'Parar a animação do instrumento' : 'Ligar a animação do instrumento');
+    inst.classList.toggle('on', run);
   }
+  btn.addEventListener('click', function(){ run = !run; ui(); kick(); });
+  size(); paint(); ui();
+  window.addEventListener('resize', function(){ size(); paint(); });
+  if('IntersectionObserver' in window){
+    new IntersectionObserver(function(es){ vis = es[0].isIntersecting; kick(); },{threshold:.05}).observe(cv);
+  } else { vis = true; kick(); }
 
   /* unifilar dos pilares: desenha ao entrar na tela; sem suporte, fica desenhado */
   var uf = document.getElementById('uf');

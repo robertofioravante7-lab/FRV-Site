@@ -42,13 +42,13 @@
         <a class="btn ghost" href="#inovacao">Tecnologias próprias</a>
       </div>
     </div>
-    <div class="inst">
-      <div class="inst-top"><span class="led"></span>Monitor de qualidade de energia · FRV<span class="demo">Demonstração</span></div>
-      <canvas id="wave" width="720" height="300" aria-label="Forma de onda de tensão com distorção harmônica, sinal de demonstração"></canvas>
+    <div class="inst" id="inst">
+      <div class="inst-top"><span class="led"></span>Monitor de qualidade de energia · FRV<span class="demo">Demonstração</span><button class="run" id="run" type="button" aria-pressed="false">RUN</button></div>
+      <canvas id="wave" width="720" height="380" aria-label="Diagrama fasorial: três fasores defasados de 120 graus girando, cada um desenhando sua senoide. Sinal de demonstração"></canvas>
       <div class="reads">
-        <div><div class="k">Tensão L1</div><div class="v" id="rV">219,4<u>V</u></div></div>
-        <div><div class="k">Frequência</div><div class="v" id="rF">59,98<u>Hz</u></div></div>
-        <div><div class="k">DHT tensão</div><div class="v" id="rT">3,2<u>%</u></div></div>
+        <div><div class="k">Frequência</div><div class="v" id="rF">60,00<u>Hz</u></div></div>
+        <div><div class="k">Sequência</div><div class="v">ABC</div></div>
+        <div><div class="k">Defasagem</div><div class="v">120,0<u>°</u></div></div>
       </div>
     </div>
   </div>

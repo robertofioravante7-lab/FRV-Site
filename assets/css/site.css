@@ -57,10 +57,13 @@ img{max-width:100%;display:block}
 /* instrumento */
 .inst{position:relative;border:1px solid rgba(126,169,214,.22);border-radius:4px;background:linear-gradient(180deg,rgba(11,18,27,.88),rgba(8,13,20,.94));overflow:hidden;box-shadow:0 30px 70px rgba(0,0,0,.45)}
 .inst-top{display:flex;align-items:center;gap:9px;padding:10px 14px;border-bottom:1px solid var(--line);font-family:var(--f-mono);font-size:10.5px;letter-spacing:1.6px;text-transform:uppercase;color:#8fa2b8}
-.led{width:6px;height:6px;border-radius:50%;background:#4ade80;box-shadow:0 0 8px #4ade80;animation:pulse 2.2s ease-in-out infinite}
+.led{width:6px;height:6px;border-radius:50%;background:#3a4656}
+.inst.on .led{background:#4ade80;box-shadow:0 0 8px #4ade80;animation:pulse 2.2s ease-in-out infinite}
+.run{font-family:var(--f-mono);font-size:10px;letter-spacing:1.6px;font-weight:600;cursor:pointer;border:1px solid rgba(74,222,128,.55);color:#4ade80;background:rgba(74,222,128,.08);padding:4px 10px;border-radius:2px;min-width:54px}
+.inst.on .run{border-color:rgba(255,122,61,.6);color:var(--ember);background:rgba(255,122,61,.08)}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.25}}
 .demo{margin-left:auto;background:var(--amber);color:var(--void);padding:3px 7px;border-radius:2px;font-size:9px;font-weight:600;letter-spacing:1.4px}
-.inst canvas{display:block;width:100%;height:150px}
+.inst canvas{display:block;width:100%;height:190px}
 .reads{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--line)}
 .reads div{padding:12px 14px;border-right:1px solid var(--line)}
 .reads div:last-child{border-right:none}
@@ -192,7 +195,7 @@ figcaption b{color:var(--sky);font-weight:500}
 
 @media(prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
-  .led{animation:none}
+  .inst.on .led{animation:none}
   .uf.armed .d{stroke-dashoffset:0;transition:none}
   .btn,.pil a,.mod,figure img{transition:none}
 }
