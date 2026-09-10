@@ -1,1068 +1,407 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FRV Engenharia - Montagem Eletromecânica, Manutenção e Energias Renováveis</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        :root {
-            --navy: #0e1f33;
-            --navy-light: #16324f;
-            --orange: #f7941e;
-            --orange-dark: #e07b00;
-            --ember: #ff5a1f;
-            --ink-warm: #150a06;
-            --grey: #8b8681;
-            --grey-light: #f6f3f0;
-            --font-display: 'Space Grotesk', 'Segoe UI', sans-serif;
-            --font-body: 'Manrope', 'Segoe UI', sans-serif;
-            --font-mono: 'IBM Plex Mono', 'Consolas', monospace;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-            html { scroll-behavior: auto; }
-        }
-
-        body {
-            font-family: var(--font-body);
-            line-height: 1.6;
-            color: #2b2f33;
-            background: #fff;
-        }
-
-        h1, h2, h3, .logo, .cta-button, .contact-btn {
-            font-family: var(--font-display);
-        }
-
-        .section-eyebrow, .hero .eyebrow, .service-tag,
-        .setor-card .num, .pilar-card .num, .a-specs {
-            font-family: var(--font-mono);
-        }
-
-        /* Scroll-reveal */
-        .reveal {
-            opacity: 0;
-            transform: translateY(24px);
-            transition: opacity 0.7s cubic-bezier(0.16,1,0.3,1), transform 0.7s cubic-bezier(0.16,1,0.3,1);
-        }
-        .reveal.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        @media (prefers-reduced-motion: reduce) {
-            .reveal { opacity: 1; transform: none; transition: none; }
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 24px;
-        }
-
-        img {
-            max-width: 100%;
-            display: block;
-        }
-
-        /* Diagonal stripe decoration, matching brand */
-        .stripes {
-            display: inline-flex;
-            gap: 8px;
-        }
-        .stripes span {
-            width: 6px;
-            height: 26px;
-            background: var(--orange);
-            transform: skewX(-20deg);
-        }
-
-        /* Header */
-        header {
-            background: rgba(14,31,51,0.88);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            color: white;
-            padding: 1.1rem 0;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            box-shadow: 0 2px 14px rgba(0,0,0,0.25);
-            transition: padding 0.35s ease, background 0.35s ease, box-shadow 0.35s ease;
-        }
-        header.scrolled {
-            padding: 0.65rem 0;
-            background: rgba(14,31,51,0.97);
-            box-shadow: 0 4px 24px rgba(0,0,0,0.35);
-        }
-
-        header .container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            display: flex;
-            align-items: baseline;
-            gap: 8px;
-            font-size: 1.6rem;
-            font-weight: 800;
-            letter-spacing: 1px;
-            color: white;
-            text-decoration: none;
-        }
-        .logo .v { color: var(--orange); }
-        .logo small {
-            font-size: 0.6rem;
-            font-weight: 400;
-            letter-spacing: 3px;
-            color: var(--grey);
-            align-self: center;
-            text-transform: uppercase;
-        }
-
-        nav a {
-            color: white;
-            text-decoration: none;
-            margin-left: 2rem;
-            font-size: 0.95rem;
-            font-weight: 500;
-            transition: color 0.3s;
-        }
-        nav a:hover { color: var(--ember); }
-
-        /* Hero — "calor industrial" */
-        .hero {
-            position: relative;
-            background:
-                radial-gradient(ellipse 900px 520px at 85% 105%, rgba(255,90,31,.38), transparent 60%),
-                radial-gradient(ellipse 650px 400px at 95% 85%, rgba(247,148,30,.22), transparent 55%),
-                linear-gradient(135deg, rgba(9,5,3,0.90) 0%, rgba(15,9,5,0.84) 100%),
-                url('assets/img/hero-refinaria.jpg');
-            background-size: cover;
-            background-position: center;
-            color: white;
-            padding: 130px 0 140px;
-            text-align: center;
-            overflow: hidden;
-        }
-        .hero::before {
-            content: "";
-            position: absolute;
-            inset: 0;
-            background-image:
-                linear-gradient(rgba(255,255,255,.05) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255,255,255,.05) 1px, transparent 1px);
-            background-size: 42px 42px;
-            -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, #000 0%, transparent 75%);
-            mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, #000 0%, transparent 75%);
-            pointer-events: none;
-            z-index: 0;
-        }
-        .hero::after {
-            content: "";
-            position: absolute;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, var(--ember), var(--orange), transparent);
-            pointer-events: none;
-        }
-        .hero .container { position: relative; z-index: 1; }
-
-        .hero .eyebrow {
-            color: var(--ember);
-            letter-spacing: 4px;
-            font-weight: 700;
-            font-size: 0.85rem;
-            text-transform: uppercase;
-            margin-bottom: 1.2rem;
-        }
-
-        .hero h1 {
-            font-size: 4rem;
-            margin-bottom: 0.7rem;
-            font-weight: 800;
-            letter-spacing: -0.01em;
-            text-transform: uppercase;
-        }
-        .hero h1 .accent {
-            background: linear-gradient(100deg, #ffb35c, var(--ember) 65%);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-
-        .hero .subtitle {
-            font-size: 1.35rem;
-            margin-bottom: 1.8rem;
-            color: #e8c7ae;
-            font-weight: 300;
-        }
-
-        .hero .description {
-            font-size: 1.1rem;
-            max-width: 680px;
-            margin: 0 auto 2.2rem;
-            opacity: 0.85;
-            line-height: 1.8;
-        }
-
-        .cta-button {
-            display: inline-block;
-            background: var(--ember);
-            color: #1c0d06;
-            padding: 15px 42px;
-            text-decoration: none;
-            border-radius: 3px;
-            font-weight: 700;
-            transition: transform 0.3s, box-shadow 0.3s;
-            font-size: 1.02rem;
-            letter-spacing: 0.03em;
-            text-transform: uppercase;
-            border: none;
-            cursor: pointer;
-            box-shadow: 0 0 40px rgba(255,90,31,.35);
-        }
-        .cta-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 0 50px rgba(255,90,31,.5);
-        }
-
-        /* Section headings */
-        .section-eyebrow {
-            color: var(--ember);
-            font-weight: 700;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            font-size: 0.85rem;
-            margin-bottom: 0.5rem;
-        }
-        h2.section-title {
-            font-size: 2.3rem;
-            color: var(--navy);
-            margin-bottom: 1rem;
-        }
-        h2.section-title strong { color: var(--ember); font-weight: 800; }
-
-        .section-lead {
-            max-width: 680px;
-            color: #555;
-            font-size: 1.05rem;
-            margin-bottom: 3rem;
-        }
-
-        /* Setores (Por onde passamos) */
-        .setores {
-            padding: 70px 0;
-            background: var(--grey-light);
-            text-align: center;
-        }
-        .setores-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 1.5rem;
-            margin-top: 2.5rem;
-        }
-        .setor-card {
-            background: white;
-            border-radius: 8px;
-            padding: 2rem 1rem;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.06);
-            border-bottom: 4px solid var(--ember);
-        }
-        .setor-card .num {
-            color: var(--ember);
-            font-weight: 800;
-            font-size: 1.6rem;
-            display: block;
-            margin-bottom: 0.5rem;
-        }
-        .setor-card .label {
-            color: var(--navy);
-            font-weight: 700;
-            font-size: 1rem;
-            letter-spacing: 0.5px;
-        }
-
-        /* About */
-        .about {
-            padding: 80px 0;
-            background: white;
-        }
-        .about-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 3rem;
-            align-items: start;
-        }
-        .about-text p {
-            font-size: 1.08rem;
-            margin-bottom: 1.3rem;
-            line-height: 1.8;
-            color: #444;
-        }
-        .about-text strong { color: var(--navy); }
-
-        .highlight-box {
-            background: var(--grey-light);
-            padding: 1.6rem 1.8rem;
-            border-left: 5px solid var(--ember);
-            margin: 1.4rem 0;
-            border-radius: 0 6px 6px 0;
-        }
-        .highlight-box h3 {
-            color: var(--navy);
-            margin-bottom: 0.5rem;
-            font-size: 1.15rem;
-        }
-        .highlight-box p { margin-bottom: 0 !important; color: #555; }
-
-        /* Objetivos - 4 pillars overview */
-        .pilares {
-            position: relative;
-            padding: 80px 0;
-            background:
-                radial-gradient(ellipse 700px 400px at 100% 0%, rgba(255,90,31,.16), transparent 60%),
-                var(--navy);
-            color: white;
-            overflow: hidden;
-        }
-        .pilares .section-title { color: white; }
-        .pilares-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 1.5rem;
-            margin-top: 2.5rem;
-        }
-        .pilar-card {
-            position: relative;
-            background: rgba(255,255,255,0.06);
-            border-top: 4px solid var(--ember);
-            border-radius: 6px;
-            padding: 1.8rem 1.4rem;
-        }
-        .pilar-card .num {
-            font-size: 2.2rem;
-            font-weight: 800;
-            color: var(--ember);
-            display: block;
-            margin-bottom: 0.6rem;
-        }
-        .pilar-card h3 {
-            font-size: 1.05rem;
-            font-weight: 700;
-            letter-spacing: 0.3px;
-        }
-
-        /* Service detail blocks (with real photos) */
-        .service-block {
-            padding: 70px 0;
-        }
-        .service-block:nth-child(even) { background: var(--grey-light); }
-        .service-grid {
-            display: grid;
-            grid-template-columns: 1.1fr 0.9fr;
-            gap: 3rem;
-            align-items: center;
-        }
-        .service-grid.reverse .service-text { order: 2; }
-        .service-grid.reverse .service-photos { order: 1; }
-
-        .service-tag {
-            display: inline-block;
-            background: var(--ember);
-            color: white;
-            font-weight: 700;
-            font-size: 0.8rem;
-            letter-spacing: 1px;
-            padding: 4px 14px;
-            border-radius: 3px;
-            margin-bottom: 1rem;
-            text-transform: uppercase;
-        }
-        .service-text h3 {
-            font-size: 1.9rem;
-            color: var(--navy);
-            margin-bottom: 0.3rem;
-        }
-        .service-text .service-sub {
-            color: var(--ember);
-            font-weight: 600;
-            font-size: 1.15rem;
-            margin-bottom: 1.2rem;
-        }
-        .service-list {
-            list-style: none;
-            margin-top: 1rem;
-        }
-        .service-list li {
-            padding: 0.5rem 0 0.5rem 1.8rem;
-            position: relative;
-            color: #444;
-            border-bottom: 1px solid rgba(0,0,0,0.06);
-        }
-        .service-list li::before {
-            content: "";
-            position: absolute;
-            left: 0;
-            top: 1rem;
-            width: 8px;
-            height: 8px;
-            background: var(--ember);
-            border-radius: 50%;
-        }
-        .service-list li:last-child { border-bottom: none; }
-
-        .service-photos {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-        .service-photos img {
-            width: 100%;
-            height: 220px;
-            object-fit: cover;
-            border-radius: 8px;
-            box-shadow: 0 10px 28px rgba(28,13,6,0.22);
-        }
-
-        /* Innovation section */
-        .innovation {
-            position: relative;
-            padding: 80px 0;
-            background:
-                radial-gradient(ellipse 800px 450px at 0% 100%, rgba(255,90,31,.14), transparent 60%),
-                linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
-            color: white;
-            overflow: hidden;
-        }
-        .innovation .section-title { color: white; }
-        .innovation .section-lead { color: rgba(255,255,255,0.8); }
-        .innovation-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 2rem;
-            margin-top: 1rem;
-        }
-        .innovation-card {
-            background: rgba(255,255,255,0.07);
-            border-top: 4px solid var(--ember);
-            border-radius: 8px;
-            padding: 2rem;
-        }
-        .innovation-card .icon { font-size: 2.2rem; margin-bottom: 1rem; }
-        .innovation-card h3 { font-size: 1.2rem; margin-bottom: 0.8rem; }
-        .innovation-card p { color: rgba(255,255,255,0.85); font-size: 0.98rem; }
-
-        /* Contact */
-        .contact {
-            padding: 80px 0;
-            background: var(--grey-light);
-        }
-        .contact-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 2rem;
-        }
-        .contact-item {
-            background: white;
-            padding: 2.2rem 1.8rem;
-            border-radius: 8px;
-            text-align: center;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.06);
-            border-top: 4px solid var(--ember);
-        }
-        .contact-item h3 {
-            color: var(--navy);
-            margin-bottom: 0.6rem;
-            font-size: 1.15rem;
-        }
-        .contact-item p { color: #555; font-size: 1.05rem; }
-        .contact-item a {
-            color: var(--navy-light);
-            text-decoration: none;
-            font-weight: 700;
-            transition: color 0.3s;
-        }
-        .contact-item a:hover { color: var(--ember); }
-        .contact-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            margin-top: 1rem;
-            padding: 11px 24px;
-            border-radius: 4px;
-            font-weight: 700;
-            font-size: 0.92rem;
-            text-decoration: none;
-            transition: transform 0.25s, box-shadow 0.25s;
-        }
-        .contact-btn:hover { transform: translateY(-2px); }
-        .contact-btn.whatsapp {
-            background: #25D366;
-            color: #073b1e;
-            box-shadow: 0 6px 20px rgba(37,211,102,0.35);
-        }
-        .contact-btn.email-btn {
-            background: var(--ember);
-            color: #1c0d06;
-            box-shadow: 0 6px 20px rgba(255,90,31,0.3);
-        }
-        .icon-circle {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            background: var(--grey-light);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 1.2rem;
-            font-size: 1.8rem;
-        }
-
-        /* Footer */
-        footer {
-            background: var(--navy);
-            color: rgba(255,255,255,0.8);
-            text-align: center;
-            padding: 2.2rem 0;
-            border-top: 3px solid var(--ember);
-        }
-        footer p { margin: 0.3rem 0; font-size: 0.92rem; }
-        footer strong { color: white; }
-
-        /* Cookie consent banner */
-        #cookie-banner {
-            position: fixed;
-            left: 0; right: 0; bottom: 0;
-            z-index: 1000;
-            background: var(--navy);
-            color: rgba(255,255,255,0.9);
-            padding: 1.1rem 1.5rem;
-            box-shadow: 0 -4px 20px rgba(0,0,0,0.25);
-            border-top: 2px solid var(--ember);
-        }
-        #cookie-banner .container {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 1.5rem;
-            flex-wrap: wrap;
-        }
-        #cookie-banner p { font-size: 0.9rem; margin: 0; max-width: 640px; line-height: 1.5; }
-        #cookie-banner .actions { display: flex; gap: 0.75rem; flex-shrink: 0; }
-        #cookie-banner button {
-            font-family: inherit;
-            font-size: 0.85rem;
-            font-weight: 700;
-            padding: 10px 22px;
-            border-radius: 3px;
-            cursor: pointer;
-            border: none;
-        }
-        #cookie-accept { background: var(--ember); color: #1c0d06; }
-        #cookie-decline { background: transparent; color: rgba(255,255,255,0.7); border: 1px solid rgba(255,255,255,0.25) !important; }
-
-        /* Responsive */
-        @media (max-width: 900px) {
-            .setores-grid, .pilares-grid { grid-template-columns: repeat(2, 1fr); }
-            .service-grid, .service-grid.reverse {
-                grid-template-columns: 1fr;
-            }
-            .service-grid .service-text, .service-grid.reverse .service-text { order: 1; }
-            .service-grid .service-photos, .service-grid.reverse .service-photos { order: 2; }
-            .service-photos { flex-direction: row; }
-            .service-photos img { height: 160px; }
-            .innovation-grid { grid-template-columns: 1fr; }
-        }
-
-        @media (max-width: 640px) {
-            header .container { flex-direction: column; gap: 0.8rem; }
-            nav a { margin: 0 0.8rem; }
-            .hero { padding: 90px 0 100px; }
-            .hero h1 { font-size: 2.2rem; }
-            .hero .subtitle { font-size: 1.1rem; }
-            .hero::before, .hero::after { width: 60px; }
-            .about-grid { grid-template-columns: 1fr; }
-            .setores-grid, .pilares-grid { grid-template-columns: 1fr; }
-            .contact-grid { grid-template-columns: 1fr; }
-            .service-photos { flex-direction: column; }
-            h2.section-title { font-size: 1.8rem; }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FRV Engenharia - Montagem Eletromecânica, Manutenção e Energias Renováveis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=Manrope:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="assets/css/site.css">
+<script src="assets/js/site.js" defer></script>
 </head>
 <body>
-    <!-- Header -->
-    <header>
-        <div class="container">
-            <a href="#topo" class="logo"><img src="assets/img/logo-icon-white.png" alt="FRV" style="height:36px; width:auto; display:block;"> <small>Engenharia</small></a>
-            <nav>
-                <a href="#sobre">Sobre</a>
-                <a href="#areas">Áreas de Atuação</a>
-                <a href="#inovacao">Inovação</a>
-                <a href="#contato">Contato</a>
-            </nav>
-        </div>
-    </header>
 
-    <!-- Hero -->
-    <section class="hero" id="topo">
-        <div class="container">
-            <div class="eyebrow">Montagem Eletromecânica &amp; Energias Renováveis</div>
-            <h1>FRV <span class="accent">Engenharia</span></h1>
-            <p class="subtitle">Do projeto ao comissionamento, com sólida experiência consolidada no setor de Óleo e Gás</p>
-            <p class="description">
-                Montagem eletromecânica, contratos de manutenção, energias renováveis e
-                desenvolvimento de tecnologias próprias para os setores de óleo &amp; gás,
-                petroquímica, papel &amp; celulose e energia elétrica.
-            </p>
-            <a href="#contato" class="cta-button">Fale Conosco</a>
-        </div>
-    </section>
+<header class="hd" id="hd">
+  <div class="c">
+    <a href="#topo" class="logo"><img src="assets/img/logo-icon-white.png" alt="FRV"><small>Engenharia</small></a>
+    <nav>
+      <a href="#sobre">Sobre</a>
+      <a href="#areas">Áreas de atuação</a>
+      <a href="#inovacao">Inovação</a>
+      <a href="#contato">Contato</a>
+    </nav>
+    <a class="btn" href="#contato">Fale conosco</a>
+  </div>
+</header>
 
-    <!-- Setores / Por onde passamos -->
-    <section class="setores">
-        <div class="container">
-            <div class="section-eyebrow">Por onde passamos</div>
-            <h2 class="section-title">Setores que desenvolveram <strong>nosso conhecimento</strong></h2>
-            <div class="setores-grid reveal">
-                <div class="setor-card">
-                    <span class="num">01</span>
-                    <span class="label">Óleo e Gás</span>
-                </div>
-                <div class="setor-card">
-                    <span class="num">02</span>
-                    <span class="label">Petroquímica</span>
-                </div>
-                <div class="setor-card">
-                    <span class="num">03</span>
-                    <span class="label">Papel e Celulose</span>
-                </div>
-                <div class="setor-card">
-                    <span class="num">04</span>
-                    <span class="label">Energia Elétrica</span>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- About -->
-    <section class="about" id="sobre">
-        <div class="container">
-            <div class="section-eyebrow">Quem somos</div>
-            <h2 class="section-title">Expertise comprovada em <strong>projetos críticos</strong></h2>
-            <div class="about-grid reveal">
-                <div class="about-text">
-                    <p>
-                        A FRV Engenharia é especialista em soluções eletromecânicas para os setores de
-                        <strong>petróleo, gás, petroquímica, papel &amp; celulose e energia elétrica</strong>.
-                        Com histórico consolidado de atuação em contratos Petrobras, desenvolvemos
-                        expertise única do projeto ao comissionamento.
-                    </p>
-                    <div class="highlight-box">
-                        <h3>Áreas de Expertise</h3>
-                        <p>
-                            Montagem eletromecânica, instrumentação e automação, sistemas elétricos,
-                            contratos de manutenção, energias renováveis e desenvolvimento de
-                            tecnologias proprietárias.
-                        </p>
-                    </div>
-                    <p>
-                        Nossa equipe é formada por engenheiros certificados com vasta experiência em
-                        campo — projeto, inspeção, montagem, comissionamento, calibração e testes
-                        em instalações industriais de alta complexidade.
-                    </p>
-                </div>
-                <div class="about-text">
-                    <div class="highlight-box">
-                        <h3>Nossa Missão</h3>
-                        <p>
-                            Fornecer soluções eletromecânicas inovadoras e especializadas, garantindo
-                            qualidade, segurança e excelência técnica em cada projeto, superando as
-                            exigências de clientes como Petrobras.
-                        </p>
-                    </div>
-                    <div class="highlight-box">
-                        <h3>Diferenciais</h3>
-                        <p>
-                            Montagem e comissionamento especializado, tecnologias proprietárias com
-                            IA aplicada, equipes certificadas e conformidade com normas nacionais e
-                            internacionais.
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Pilares / Nosso objetivo -->
-    <section class="pilares" id="areas">
-        <div class="container">
-            <div class="section-eyebrow">Nosso objetivo</div>
-            <h2 class="section-title">Baseados em nosso plano de negócio, <strong>estes são nossos pilares</strong></h2>
-            <div class="pilares-grid reveal">
-                <div class="pilar-card">
-                    <span class="num">01</span>
-                    <h3>Montagem Eletromecânica</h3>
-                </div>
-                <div class="pilar-card">
-                    <span class="num">02</span>
-                    <h3>Contratos de Manutenção</h3>
-                </div>
-                <div class="pilar-card">
-                    <span class="num">03</span>
-                    <h3>Energias Renováveis</h3>
-                </div>
-                <div class="pilar-card">
-                    <span class="num">04</span>
-                    <h3>Desenvolvimento de Tecnologias</h3>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- 01a Montagem Eletromecânica - Pacotes Especiais -->
-    <section class="service-block">
-        <div class="container">
-            <div class="service-grid reveal">
-                <div class="service-text">
-                    <span class="service-tag">01 · Montagem Eletromecânica</span>
-                    <h3>Pacotes Especiais</h3>
-                    <p class="service-sub">Projeto, Montagem e Comissionamento</p>
-                    <ul class="service-list">
-                        <li>Flare / Blowdown</li>
-                        <li>Casa de Analisadores e Sistemas de Condicionamento de Amostra</li>
-                        <li>Sistema de telemetria de tanques</li>
-                        <li>Válvulas motorizadas com Atuadores Eletro-hidráulicos</li>
-                        <li>Fornos de processo</li>
-                        <li>Turbina a vapor / Motor diesel</li>
-                        <li>Compressores de processo e Sistemas de Controle de Capacidade</li>
-                        <li>DSM / BN-1900 / BN-3500</li>
-                        <li>HVAC</li>
-                        <li>TI / TCOM / CFTV</li>
-                        <li>RACI</li>
-                    </ul>
-                </div>
-                <div class="service-photos">
-                    <img loading="lazy" src="assets/img/flare.webp" alt="Sistema de Flare em unidade industrial - FRV Engenharia" style="object-position: top;">
-                    <img loading="lazy" src="assets/img/tanques.jpeg" alt="Parque de tanques e tubulações de processo - FRV Engenharia">
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- 01b Instrumentação/Automação -->
-    <section class="service-block">
-        <div class="container">
-            <div class="service-grid reverse reveal">
-                <div class="service-text">
-                    <span class="service-tag">01 · Montagem Eletromecânica</span>
-                    <h3>Instrumentação / Automação</h3>
-                    <ul class="service-list">
-                        <li>Projeto / Inspeção / Montagem e Comissionamento</li>
-                        <li>Calibração de instrumentos e teste de válvula (Controle, Segurança, ON-OFF)</li>
-                        <li>Analisadores de processo e segurança</li>
-                        <li>Certificação de redes de comunicação</li>
-                        <li>Desenvolvimento e configuração de lógicas de controle</li>
-                    </ul>
-                </div>
-                <div class="service-photos">
-                    <img loading="lazy" src="assets/img/instrumentacao.webp" alt="Painel de instrumentação MicroDist - FRV Engenharia">
-                    <img loading="lazy" src="assets/img/analisadores.webp" alt="Analisadores de processo e segurança - FRV Engenharia">
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- 01c Elétrica -->
-    <section class="service-block">
-        <div class="container">
-            <div class="service-grid reveal">
-                <div class="service-text">
-                    <span class="service-tag">01 · Montagem Eletromecânica</span>
-                    <h3>Elétrica</h3>
-                    <ul class="service-list">
-                        <li>Projeto / Inspeção / Montagem e Comissionamento</li>
-                        <li>Teste de cabo BT / MT</li>
-                        <li>Teste de transformador / painel</li>
-                        <li>Teste de motor elétrico</li>
-                        <li>Aterramento / SPDA</li>
-                        <li>Análise de qualidade de energia</li>
-                    </ul>
-                </div>
-                <div class="service-photos">
-                    <img loading="lazy" src="assets/img/eletrica-painel.jpeg" alt="Teste elétrico em painel industrial - FRV Engenharia">
-                    <img loading="lazy" src="assets/img/eletrica-campo.jpeg" alt="Teste de aterramento em campo - FRV Engenharia">
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- 01d Equipamentos Rotativos/Estáticos -->
-    <section class="service-block">
-        <div class="container">
-            <div class="service-grid reverse reveal">
-                <div class="service-text">
-                    <span class="service-tag">01 · Montagem Eletromecânica</span>
-                    <h3>Equipamentos Rotativos / Estáticos</h3>
-                    <ul class="service-list">
-                        <li>Inspeção e comissionamento</li>
-                        <li>Alinhamento / Paralelismo final</li>
-                        <li>Running em vazio / carga</li>
-                        <li>Monitoramento e avaliação de vibração</li>
-                        <li>Teste hidrostático</li>
-                    </ul>
-                </div>
-                <div class="service-photos">
-                    <img loading="lazy" src="assets/img/rotativos-turbina.webp" alt="Planta de turbina a gás - referência de equipamento rotativo" style="height:460px;">
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Checklist detalhado Inspeção/Montagem/Comissionamento -->
-    <section class="service-block">
-        <div class="container">
-            <div class="service-grid reveal">
-                <div class="service-text">
-                    <span class="service-tag">Ciclo Completo de Obra</span>
-                    <h3>Inspeção, Montagem e Comissionamento</h3>
-                    <p class="service-sub" style="font-size:1rem; color:#666; font-weight:400;">Do recebimento de materiais à operação assistida, cobrimos todo o ciclo de vida da instalação.</p>
-                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top:1.2rem;">
-                        <div>
-                            <h4 style="color:var(--navy); font-size:1rem; margin-bottom:0.5rem;">Inspeção</h4>
-                            <ul class="service-list" style="font-size:0.92rem;">
-                                <li>Recebimento e preservação de materiais</li>
-                                <li>Nivelamento e pré-alinhamento de eixo</li>
-                                <li>Grauteamento</li>
-                                <li>Alinhamento final de eixo</li>
-                                <li>Liberação das tubulações</li>
-                                <li>Teste hidrostático e de estanqueidade</li>
-                                <li>Flushing do sistema de lubrificação, controle e selagem</li>
-                                <li>Limpeza mecânica e química</li>
-                                <li>Testes funcionais de equipamentos</li>
-                                <li>Testes de performance de sistemas</li>
-                            </ul>
-                        </div>
-                        <div>
-                            <h4 style="color:var(--navy); font-size:1rem; margin-bottom:0.5rem;">Montagem</h4>
-                            <ul class="service-list" style="font-size:0.92rem;">
-                                <li>Turbina a gás / Turbina a vapor</li>
-                                <li>Gerador</li>
-                                <li>Compressores</li>
-                                <li>Conjunto motobomba</li>
-                                <li>Ventiladores</li>
-                                <li>Tubulações e estruturas metálicas</li>
-                                <li>Filtros e juntas de vedação</li>
-                                <li>Reparos com solda</li>
-                                <li>Aplicação de torque de parafusos com equipamentos especiais</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="service-photos">
-                    <img loading="lazy" src="assets/img/inspecao-comissionamento.webp" alt="Válvulas e conexões industriais inspecionadas - FRV Engenharia" style="height:520px;">
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- 02 Contratos de Manutenção -->
-    <section class="service-block">
-        <div class="container">
-            <div class="service-grid reverse reveal">
-                <div class="service-text">
-                    <span class="service-tag">02 · Contratos de Manutenção</span>
-                    <h3>Manutenção Especializada</h3>
-                    <ul class="service-list">
-                        <li>Calibração / Reparo de instrumentos e válvulas</li>
-                        <li>System One / DSM / BN-3500</li>
-                        <li>UFV</li>
-                        <li>HVAC</li>
-                        <li>Telemetria de Tanques</li>
-                        <li>CLP de Pacotes</li>
-                        <li>Analisadores</li>
-                    </ul>
-                </div>
-                <div class="service-photos">
-                    <img loading="lazy" src="assets/img/manutencao-painel.jpeg" alt="Manutenção de painel de controle DSM - FRV Engenharia">
-                    <img loading="lazy" src="assets/img/fotovoltaica.jpeg" alt="Usina fotovoltaica em manutenção - FRV Engenharia">
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- 03 Energias Renováveis -->
-    <section class="service-block">
-        <div class="container">
-            <div class="service-grid reveal">
-                <div class="service-text">
-                    <span class="service-tag">03 · Energias Renováveis</span>
-                    <h3>Fotovoltaica, PCH/CGH e Turbogeradores</h3>
-                    <ul class="service-list">
-                        <li>Projeto / Inspeção e Comissionamento</li>
-                        <li>Fotovoltaica</li>
-                        <li>PCH / CGH</li>
-                        <li>Turbogeradores</li>
-                        <li>Consultoria Clientes ACL</li>
-                    </ul>
-                </div>
-                <div class="service-photos">
-                    <img loading="lazy" src="assets/img/pch-aerea.jpeg" alt="Vista aérea de Pequena Central Hidrelétrica - FRV Engenharia">
-                    <img loading="lazy" src="assets/img/pch-planta.jpeg" alt="Casa de força de PCH - FRV Engenharia">
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- 04 Desenvolvimento de Tecnologias -->
-    <section class="innovation" id="inovacao">
-        <div class="container">
-            <div class="section-eyebrow" style="color: var(--ember);">04 · Desenvolvimento de Tecnologias</div>
-            <h2 class="section-title">Tecnologia própria a serviço da <strong style="color:var(--ember);">engenharia</strong></h2>
-            <p class="section-lead">Soluções desenvolvidas internamente para resolver desafios reais de campo, unindo instrumentação, monitoramento inteligente e inteligência artificial.</p>
-            <div class="innovation-grid reveal">
-                <div class="innovation-card">
-                    <div class="icon">🧪</div>
-                    <h3>Sensor de Amônia</h3>
-                    <p>Sensor proprietário de alta precisão para monitoramento de amônia em processos industriais críticos.</p>
-                </div>
-                <div class="innovation-card">
-                    <div class="icon">⚡</div>
-                    <h3>Monitor de Qualidade de Energia</h3>
-                    <p>Equipamento próprio para análise contínua de qualidade de energia elétrica em plantas industriais.</p>
-                </div>
-                <div class="innovation-card">
-                    <div class="icon">☀️</div>
-                    <h3>Monitoramento Fotovoltaico</h3>
-                    <p>Sistema de monitoramento e identificação automática de falhas em usinas fotovoltaicas.</p>
-                </div>
-                <div class="innovation-card">
-                    <div class="icon">📚</div>
-                    <h3>Base de Normas com LLM</h3>
-                    <p>Banco de dados vetorizado especialista em normas Nacionais e Internacionais, com LLM para avaliação de relatórios e contratos.</p>
-                </div>
-            </div>
-            <div class="service-photos" style="display:grid; grid-template-columns: 1fr 1fr; margin-top: 2.5rem;">
-                <img loading="lazy" src="assets/img/qualidade-energia.jpeg" alt="Monitor de qualidade de energia desenvolvido pela FRV Engenharia">
-                <img loading="lazy" src="assets/img/painel-controle.jpeg" alt="Painel de controle e monitoramento FRV Engenharia">
-            </div>
-        </div>
-    </section>
-
-    <!-- Contact -->
-    <section class="contact" id="contato">
-        <div class="container">
-            <div class="section-eyebrow">Fale com a gente</div>
-            <h2 class="section-title">Entre em <strong>Contato</strong></h2>
-            <div class="contact-grid reveal">
-                <div class="contact-item">
-                    <div class="icon-circle">📧</div>
-                    <h3>Email</h3>
-                    <p><a href="mailto:roberto@frv.eng.br">roberto@frv.eng.br</a></p>
-                    <a class="contact-btn email-btn" href="mailto:roberto@frv.eng.br?subject=Contato%20via%20site%20-%20FRV%20Engenharia&body=Ol%C3%A1%2C%20Roberto!%20Vim%20atrav%C3%A9s%20do%20site%20da%20FRV%20Engenharia%20e%20gostaria%20de%20mais%20informa%C3%A7%C3%B5es%20sobre%20os%20servi%C3%A7os.">✉️ Enviar e-mail</a>
-                </div>
-                <div class="contact-item">
-                    <div class="icon-circle">📱</div>
-                    <h3>Telefone / WhatsApp</h3>
-                    <p><a href="tel:+5581993657878">(81) 99365-7878</a></p>
-                    <a class="contact-btn whatsapp" href="https://wa.me/5581993657878?text=Ol%C3%A1!%20Vim%20atrav%C3%A9s%20do%20site%20da%20FRV%20Engenharia%20e%20gostaria%20de%20saber%20mais%20sobre%20os%20servi%C3%A7os%20de%20voc%C3%AAs." target="_blank" rel="noopener">💬 Chamar no WhatsApp</a>
-                </div>
-                <div class="contact-item">
-                    <div class="icon-circle">👔</div>
-                    <h3>Responsável Técnico</h3>
-                    <p>Eng. Roberto Fioravante</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer>
-        <div class="container">
-            <img loading="lazy" src="assets/img/logo-frv-white.png" alt="FRV Engenharia" style="height:70px; width:auto; margin: 0 auto 1rem;">
-            <p><strong>FRV Engenharia</strong> &mdash; Montagem Eletromecânica, Manutenção, Energias Renováveis e Tecnologia.</p>
-            <p>&copy; 2026 FRV Engenharia. Todos os direitos reservados.</p>
-        </div>
-    </footer>
-
-    <!-- Cookie consent banner -->
-    <div id="cookie-banner" style="display:none;">
-        <div class="container">
-            <p>Usamos cookies de análise para entender como os visitantes usam este site. Seus dados não são vendidos nem compartilhados. <a href="#" style="color: var(--ember);" onclick="return false;">Saiba mais</a></p>
-            <div class="actions">
-                <button id="cookie-decline">Recusar</button>
-                <button id="cookie-accept">Aceitar</button>
-            </div>
-        </div>
+<section class="hero" id="topo">
+  <div class="hero-photo"></div>
+  <div class="grid-bg"></div>
+  <div class="c">
+    <div>
+      <div class="eyebrow">Montagem eletromecânica &amp; energias renováveis</div>
+      <h1>Do projeto ao<span>comissionamento</span></h1>
+      <p class="sub">Sólida experiência consolidada no setor de óleo e gás.</p>
+      <p class="desc">
+        Montagem eletromecânica, contratos de manutenção, energias renováveis e desenvolvimento de
+        tecnologias próprias para os setores de óleo &amp; gás, petroquímica, papel &amp; celulose e energia elétrica.
+      </p>
+      <div class="ctas">
+        <a class="btn" href="#contato">Fale conosco</a>
+        <a class="btn ghost" href="#inovacao">Tecnologias próprias</a>
+      </div>
     </div>
+    <div class="inst">
+      <div class="inst-top"><span class="led"></span>Monitor de qualidade de energia · FRV<span class="demo">Demonstração</span></div>
+      <canvas id="wave" width="720" height="300" aria-label="Forma de onda de tensão com distorção harmônica, sinal de demonstração"></canvas>
+      <div class="reads">
+        <div><div class="k">Tensão L1</div><div class="v" id="rV">219,4<u>V</u></div></div>
+        <div><div class="k">Frequência</div><div class="v" id="rF">59,98<u>Hz</u></div></div>
+        <div><div class="k">DHT tensão</div><div class="v" id="rT">3,2<u>%</u></div></div>
+      </div>
+    </div>
+  </div>
+  <div class="setores">
+    <div class="c">
+      <div class="lbl">Por onde passamos</div>
+      <div class="setor"><b>01</b><span>Óleo e Gás</span></div>
+      <div class="setor"><b>02</b><span>Petroquímica</span></div>
+      <div class="setor"><b>03</b><span>Papel e Celulose</span></div>
+      <div class="setor"><b>04</b><span>Energia Elétrica</span></div>
+    </div>
+  </div>
+</section>
 
-    <script>
-        const header = document.querySelector('header');
-        window.addEventListener('scroll', function () {
-            header.classList.toggle('scrolled', window.scrollY > 40);
-        });
+<section class="sec plate" id="sobre">
+  <div class="plate-grid"></div>
+  <div class="c">
+    <div class="eyebrow">Quem somos</div>
+    <h2 class="h2">Expertise comprovada em <span>projetos críticos</span></h2>
+    <div class="about">
+      <div class="about-txt">
+        <p>
+          A FRV Engenharia é especialista em soluções eletromecânicas para os setores de
+          <strong>petróleo, gás, petroquímica, papel &amp; celulose e energia elétrica</strong>.
+          Com histórico consolidado de atuação em contratos Petrobras, desenvolvemos expertise
+          única do projeto ao comissionamento.
+        </p>
+        <p>
+          Nossa equipe é formada por engenheiros certificados com vasta experiência em campo —
+          projeto, inspeção, montagem, comissionamento, calibração e testes em instalações
+          industriais de alta complexidade.
+        </p>
+      </div>
+      <div class="kv">
+        <div><h3>Expertise</h3><p>Montagem eletromecânica, instrumentação e automação, sistemas elétricos, contratos de manutenção, energias renováveis e desenvolvimento de tecnologias proprietárias.</p></div>
+        <div><h3>Missão</h3><p>Fornecer soluções eletromecânicas inovadoras e especializadas, garantindo qualidade, segurança e excelência técnica em cada projeto, superando as exigências de clientes como Petrobras.</p></div>
+        <div><h3>Diferenciais</h3><p>Montagem e comissionamento especializado, tecnologias proprietárias com IA aplicada, equipes certificadas e conformidade com normas nacionais e internacionais.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
 
-        const revealEls = document.querySelectorAll('.reveal');
-        if ('IntersectionObserver' in window) {
-            const io = new IntersectionObserver(function (entries) {
-                entries.forEach(function (entry) {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('visible');
-                        io.unobserve(entry.target);
-                    }
-                });
-            }, { threshold: 0.15, rootMargin: '0px 0px -60px 0px' });
-            revealEls.forEach(function (el) { io.observe(el); });
-        } else {
-            revealEls.forEach(function (el) { el.classList.add('visible'); });
-        }
+<section class="sec" id="areas">
+  <div class="grid-bg"></div>
+  <div class="c">
+    <div class="eyebrow">Nosso objetivo</div>
+    <h2 class="h2">Baseados em nosso plano de negócio, <span>estes são nossos pilares</span></h2>
+    <div class="uf" id="uf">
+      <svg viewBox="0 0 1000 250" role="img" aria-label="Diagrama unifilar: a FRV Engenharia alimenta um barramento com quatro saídas, uma para cada pilar do plano de negócio">
+        <text class="t-big" x="500" y="14" text-anchor="middle">FRV ENGENHARIA</text>
+        <path class="ln d" style="--l:34;--dl:0s" d="M500 26 L500 58"/>
+        <rect class="ln bg d" style="--l:96;--dl:.25s" x="488" y="58" width="24" height="24"/>
+        <path class="ln d" style="--l:30;--dl:.45s" d="M491 79 L509 61"/>
+        <text x="522" y="75">52-G</text>
+        <path class="ln d" style="--l:22;--dl:.55s" d="M500 82 L500 102"/>
+        <circle class="ln bg d" style="--l:76;--dl:.7s" cx="500" cy="114" r="12"/>
+        <circle class="ln bg d" style="--l:76;--dl:.85s" cx="500" cy="132" r="12"/>
+        <text x="522" y="128">PLANO DE NEGÓCIO</text>
+        <path class="ln d" style="--l:30;--dl:1s" d="M500 144 L500 172"/>
+        <path class="hot d" style="--l:752;--dl:1.15s" d="M124 172 L876 172"/>
+        <text class="t-hot" x="124" y="163">BARRAMENTO · 4 PILARES</text>
+        <path class="ln d" style="--l:22;--dl:1.7s" d="M125 172 L125 192"/>
+        <rect class="ln bg d" style="--l:64;--dl:1.8s" x="117" y="192" width="16" height="16"/>
+        <path class="ln d" style="--l:42;--dl:1.95s" d="M125 208 L125 250"/>
+        <path class="ln d" style="--l:22;--dl:1.8s" d="M375 172 L375 192"/>
+        <rect class="ln bg d" style="--l:64;--dl:1.9s" x="367" y="192" width="16" height="16"/>
+        <path class="ln d" style="--l:42;--dl:2.05s" d="M375 208 L375 250"/>
+        <path class="ln d" style="--l:22;--dl:1.9s" d="M625 172 L625 192"/>
+        <rect class="ln bg d" style="--l:64;--dl:2s" x="617" y="192" width="16" height="16"/>
+        <path class="ln d" style="--l:42;--dl:2.15s" d="M625 208 L625 250"/>
+        <path class="ln d" style="--l:22;--dl:2s" d="M875 172 L875 192"/>
+        <rect class="ln bg d" style="--l:64;--dl:2.1s" x="867" y="192" width="16" height="16"/>
+        <path class="ln d" style="--l:42;--dl:2.25s" d="M875 208 L875 250"/>
+      </svg>
+      <div class="pil">
+        <a href="#p01"><b>SAÍDA 01</b><h3>Montagem Eletromecânica</h3><p>Pacotes especiais · instrumentação · elétrica · rotativos</p></a>
+        <a href="#p02"><b>SAÍDA 02</b><h3>Contratos de Manutenção</h3><p>Calibração · monitoramento de máquinas · UFV · HVAC</p></a>
+        <a href="#p03"><b>SAÍDA 03</b><h3>Energias Renováveis</h3><p>Fotovoltaica · PCH/CGH · turbogeradores</p></a>
+        <a href="#inovacao"><b>SAÍDA 04</b><h3>Desenvolvimento de Tecnologias</h3><p>Sensores · monitoramento · IA aplicada a normas</p></a>
+      </div>
+    </div>
+  </div>
+</section>
 
-        const GA_ID = 'G-Z799Z17097';
+<section id="p01">
+  <div class="grp"><div class="c"><span class="grp-n">01</span><div><div class="eyebrow">Pilar</div><h2 class="h2">Montagem <span>Eletromecânica</span></h2></div></div></div>
+  <div class="c">
+    <article class="spec">
+      <div>
+        <div class="code">01·A</div>
+        <h3>Pacotes Especiais</h3>
+        <div class="sub">Projeto, montagem e comissionamento</div>
+        <ul class="ul cols">
+          <li>Flare / Blowdown</li>
+          <li>Casa de analisadores e sistemas de condicionamento de amostra</li>
+          <li>Sistema de telemetria de tanques</li>
+          <li>Válvulas motorizadas com atuadores eletro-hidráulicos</li>
+          <li>Fornos de processo</li>
+          <li>Turbina a vapor / Motor diesel</li>
+          <li>Compressores de processo e sistemas de controle de capacidade</li>
+          <li>DSM / BN-1900 / BN-3500</li>
+          <li>HVAC</li>
+          <li>TI / TCOM / CFTV</li>
+          <li>RACI</li>
+        </ul>
+      </div>
+      <div class="figs">
+        <figure><img loading="lazy" src="assets/img/flare.webp" alt="Sistema de flare em unidade industrial" style="object-position:top"><figcaption><b>FIG. 01·A-1</b> — Sistema de flare</figcaption></figure>
+        <figure><img loading="lazy" src="assets/img/tanques.jpeg" alt="Parque de tanques e tubulações de processo"><figcaption><b>FIG. 01·A-2</b> — Parque de tanques</figcaption></figure>
+      </div>
+    </article>
 
-        function loadAnalytics() {
-            const s = document.createElement('script');
-            s.async = true;
-            s.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA_ID;
-            document.head.appendChild(s);
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){ dataLayer.push(arguments); }
-            window.gtag = gtag;
-            gtag('js', new Date());
-            gtag('config', GA_ID);
-        }
+    <article class="spec rev">
+      <div>
+        <div class="code">01·B</div>
+        <h3>Instrumentação / Automação</h3>
+        <ul class="ul">
+          <li>Projeto / Inspeção / Montagem e comissionamento</li>
+          <li>Calibração de instrumentos e teste de válvula (controle, segurança, ON-OFF)</li>
+          <li>Analisadores de processo e segurança</li>
+          <li>Certificação de redes de comunicação</li>
+          <li>Desenvolvimento e configuração de lógicas de controle</li>
+        </ul>
+      </div>
+      <div class="figs">
+        <figure><img loading="lazy" src="assets/img/instrumentacao.webp" alt="Painel de instrumentação MicroDist"><figcaption><b>FIG. 01·B-1</b> — Painel de instrumentação</figcaption></figure>
+        <figure><img loading="lazy" src="assets/img/analisadores.webp" alt="Analisadores de processo e segurança"><figcaption><b>FIG. 01·B-2</b> — Analisadores de processo</figcaption></figure>
+      </div>
+    </article>
 
-        const consent = localStorage.getItem('frv_cookie_consent');
-        if (consent === 'accepted') {
-            loadAnalytics();
-        } else if (consent !== 'declined') {
-            document.getElementById('cookie-banner').style.display = 'block';
-        }
+    <article class="spec">
+      <div>
+        <div class="code">01·C</div>
+        <h3>Elétrica</h3>
+        <ul class="ul">
+          <li>Projeto / Inspeção / Montagem e comissionamento</li>
+          <li>Teste de cabo BT / MT</li>
+          <li>Teste de transformador / painel</li>
+          <li>Teste de motor elétrico</li>
+          <li>Aterramento / SPDA</li>
+          <li>Análise de qualidade de energia</li>
+        </ul>
+      </div>
+      <div class="figs">
+        <figure><img loading="lazy" src="assets/img/eletrica-painel.jpeg" alt="Teste elétrico em painel industrial"><figcaption><b>FIG. 01·C-1</b> — Teste em painel industrial</figcaption></figure>
+        <figure><img loading="lazy" src="assets/img/eletrica-campo.jpeg" alt="Teste de aterramento em campo"><figcaption><b>FIG. 01·C-2</b> — Aterramento em campo</figcaption></figure>
+      </div>
+    </article>
 
-        document.getElementById('cookie-accept').addEventListener('click', function () {
-            localStorage.setItem('frv_cookie_consent', 'accepted');
-            document.getElementById('cookie-banner').style.display = 'none';
-            loadAnalytics();
-        });
-        document.getElementById('cookie-decline').addEventListener('click', function () {
-            localStorage.setItem('frv_cookie_consent', 'declined');
-            document.getElementById('cookie-banner').style.display = 'none';
-        });
-    </script>
+    <article class="spec rev">
+      <div>
+        <div class="code">01·D</div>
+        <h3>Equipamentos Rotativos / Estáticos</h3>
+        <ul class="ul">
+          <li>Inspeção e comissionamento</li>
+          <li>Alinhamento / Paralelismo final</li>
+          <li>Running em vazio / carga</li>
+          <li>Monitoramento e avaliação de vibração</li>
+          <li>Teste hidrostático</li>
+        </ul>
+      </div>
+      <div class="figs one">
+        <figure><img loading="lazy" src="assets/img/rotativos-turbina.webp" alt="Planta de turbina a gás, referência de equipamento rotativo"><figcaption><b>FIG. 01·D-1</b> — Turbina a gás (referência)</figcaption></figure>
+      </div>
+    </article>
+
+    <article class="spec">
+      <div>
+        <div class="code">01·E · Ciclo completo de obra</div>
+        <h3>Inspeção, Montagem e Comissionamento</h3>
+        <p class="note">Do recebimento de materiais à operação assistida, cobrimos todo o ciclo de vida da instalação.</p>
+        <div class="two">
+          <div>
+            <h4>Inspeção</h4>
+            <ul class="ul">
+              <li>Recebimento e preservação de materiais</li>
+              <li>Nivelamento e pré-alinhamento de eixo</li>
+              <li>Grauteamento</li>
+              <li>Alinhamento final de eixo</li>
+              <li>Liberação das tubulações</li>
+              <li>Teste hidrostático e de estanqueidade</li>
+              <li>Flushing do sistema de lubrificação, controle e selagem</li>
+              <li>Limpeza mecânica e química</li>
+              <li>Testes funcionais de equipamentos</li>
+              <li>Testes de performance de sistemas</li>
+            </ul>
+          </div>
+          <div>
+            <h4>Montagem</h4>
+            <ul class="ul">
+              <li>Turbina a gás / Turbina a vapor</li>
+              <li>Gerador</li>
+              <li>Compressores</li>
+              <li>Conjunto motobomba</li>
+              <li>Ventiladores</li>
+              <li>Tubulações e estruturas metálicas</li>
+              <li>Filtros e juntas de vedação</li>
+              <li>Reparos com solda</li>
+              <li>Aplicação de torque de parafusos com equipamentos especiais</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="figs one">
+        <figure><img loading="lazy" src="assets/img/inspecao-comissionamento.webp" alt="Válvulas e conexões industriais inspecionadas"><figcaption><b>FIG. 01·E-1</b> — Válvulas e conexões inspecionadas</figcaption></figure>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section id="p02">
+  <div class="grp"><div class="c"><span class="grp-n">02</span><div><div class="eyebrow">Pilar</div><h2 class="h2">Contratos de <span>Manutenção</span></h2></div></div></div>
+  <div class="c">
+    <article class="spec rev">
+      <div>
+        <div class="code">02·A</div>
+        <h3>Manutenção Especializada</h3>
+        <ul class="ul">
+          <li>Calibração / Reparo de instrumentos e válvulas</li>
+          <li>System One / DSM / BN-3500</li>
+          <li>UFV</li>
+          <li>HVAC</li>
+          <li>Telemetria de tanques</li>
+          <li>CLP de pacotes</li>
+          <li>Analisadores</li>
+        </ul>
+      </div>
+      <div class="figs">
+        <figure><img loading="lazy" src="assets/img/manutencao-painel.jpeg" alt="Manutenção de painel de controle DSM"><figcaption><b>FIG. 02·A-1</b> — Painel de controle DSM</figcaption></figure>
+        <figure><img loading="lazy" src="assets/img/fotovoltaica.jpeg" alt="Usina fotovoltaica em manutenção"><figcaption><b>FIG. 02·A-2</b> — Usina fotovoltaica</figcaption></figure>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section id="p03">
+  <div class="grp"><div class="c"><span class="grp-n">03</span><div><div class="eyebrow">Pilar</div><h2 class="h2">Energias <span>Renováveis</span></h2></div></div></div>
+  <div class="c">
+    <article class="spec">
+      <div>
+        <div class="code">03·A</div>
+        <h3>Fotovoltaica, PCH/CGH e Turbogeradores</h3>
+        <ul class="ul">
+          <li>Projeto / Inspeção e comissionamento</li>
+          <li>Fotovoltaica</li>
+          <li>PCH / CGH</li>
+          <li>Turbogeradores</li>
+          <li>Consultoria clientes ACL</li>
+        </ul>
+      </div>
+      <div class="figs">
+        <figure><img loading="lazy" src="assets/img/pch-aerea.jpeg" alt="Vista aérea de pequena central hidrelétrica"><figcaption><b>FIG. 03·A-1</b> — PCH, vista aérea</figcaption></figure>
+        <figure><img loading="lazy" src="assets/img/pch-planta.jpeg" alt="Casa de força de PCH"><figcaption><b>FIG. 03·A-2</b> — Casa de força</figcaption></figure>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section class="sec plate" id="inovacao">
+  <div class="plate-grid"></div>
+  <div class="c">
+    <div class="eyebrow">Pilar 04 · Desenvolvimento de tecnologias</div>
+    <h2 class="h2">Tecnologia própria a serviço da <span>engenharia</span></h2>
+    <p class="lead">Soluções desenvolvidas internamente para resolver desafios reais de campo, unindo instrumentação, monitoramento inteligente e inteligência artificial.</p>
+    <div class="mods">
+      <div class="mod">
+        <div class="mod-top"><b>Mód. 01</b><span>Tecnologia própria</span></div>
+        <svg viewBox="0 0 240 92" aria-hidden="true">
+          <path class="h" stroke-dasharray="4 4" d="M12 32 L228 32"/><text class="th" x="12" y="26">LIMITE</text>
+          <polyline class="g" points="12,74 38,70 64,72 90,62 116,66 142,52 168,58 194,46 228,50"/>
+          <circle class="h" cx="228" cy="50" r="3"/>
+        </svg>
+        <div class="mod-b"><h3>Sensor de Amônia</h3><p>Sensor proprietário de alta precisão para monitoramento de amônia em processos industriais críticos.</p></div>
+      </div>
+      <div class="mod">
+        <div class="mod-top"><b>Mód. 02</b><span>Tecnologia própria</span></div>
+        <svg viewBox="0 0 240 92" aria-hidden="true">
+          <path class="g" d="M12 46 L228 46" opacity=".35"/>
+          <path class="h" d="M12 46 C 30 8, 48 8, 66 46 S 102 84, 120 46 S 156 8, 174 46 S 210 84, 228 46"/>
+          <text x="12" y="86">DHT · HARMÔNICAS</text>
+        </svg>
+        <div class="mod-b"><h3>Monitor de Qualidade de Energia</h3><p>Equipamento próprio para análise contínua de qualidade de energia elétrica em plantas industriais.</p></div>
+      </div>
+      <div class="mod">
+        <div class="mod-top"><b>Mód. 03</b><span>Tecnologia própria</span></div>
+        <svg viewBox="0 0 240 92" aria-hidden="true">
+          <path class="g" d="M20 72 L44 28 L84 28 L60 72 Z"/>
+          <path class="g" d="M74 72 L98 28 L138 28 L114 72 Z"/>
+          <path class="h" d="M128 72 L152 28 L192 28 L168 72 Z"/>
+          <text class="th" x="150" y="86">FALHA · STRING 03</text>
+        </svg>
+        <div class="mod-b"><h3>Monitoramento Fotovoltaico</h3><p>Sistema de monitoramento e identificação automática de falhas em usinas fotovoltaicas.</p></div>
+      </div>
+      <div class="mod">
+        <div class="mod-top"><b>Mód. 04</b><span>Tecnologia própria</span></div>
+        <svg viewBox="0 0 240 92" aria-hidden="true">
+          <rect class="g" x="22" y="14" width="46" height="62"/>
+          <path class="g" d="M30 28 L60 28 M30 38 L60 38 M30 48 L54 48 M30 58 L58 58"/>
+          <path class="g" d="M68 45 L118 45 M150 22 L118 45 L150 68 M150 22 L196 30 M150 68 L196 60 M196 30 L196 60" opacity=".7"/>
+          <circle class="g" cx="118" cy="45" r="4"/><circle class="g" cx="150" cy="22" r="4"/><circle class="g" cx="150" cy="68" r="4"/>
+          <circle class="g" cx="196" cy="30" r="4"/><circle class="h" cx="196" cy="60" r="5"/>
+        </svg>
+        <div class="mod-b"><h3>Base de Normas com LLM</h3><p>Banco de dados vetorizado especialista em normas nacionais e internacionais, com LLM para avaliação de relatórios e contratos.</p></div>
+      </div>
+    </div>
+    <div class="figs inov-figs">
+      <figure><img loading="lazy" src="assets/img/qualidade-energia.jpeg" alt="Monitor de qualidade de energia desenvolvido pela FRV Engenharia"><figcaption><b>FIG. 04-1</b> — Monitor de qualidade de energia FRV</figcaption></figure>
+      <figure><img loading="lazy" src="assets/img/painel-controle.jpeg" alt="Painel de controle e monitoramento FRV Engenharia"><figcaption><b>FIG. 04-2</b> — Painel de controle e monitoramento</figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="contato">
+  <div class="grid-bg"></div>
+  <div class="c">
+    <div class="eyebrow">Fale com a gente</div>
+    <h2 class="h2">Entre em <span>contato</span></h2>
+    <div class="ct">
+      <div>
+        <h3>E-mail</h3>
+        <a class="val" href="mailto:roberto@frv.eng.br">roberto@frv.eng.br</a>
+        <a class="btn" href="mailto:roberto@frv.eng.br?subject=Contato%20via%20site%20-%20FRV%20Engenharia&body=Ol%C3%A1%2C%20Roberto!%20Vim%20atrav%C3%A9s%20do%20site%20da%20FRV%20Engenharia%20e%20gostaria%20de%20mais%20informa%C3%A7%C3%B5es%20sobre%20os%20servi%C3%A7os.">Enviar e-mail</a>
+      </div>
+      <div>
+        <h3>Telefone / WhatsApp</h3>
+        <a class="val" href="tel:+5581993657878">(81) 99365-7878</a>
+        <a class="btn ghost" href="https://wa.me/5581993657878?text=Ol%C3%A1!%20Vim%20atrav%C3%A9s%20do%20site%20da%20FRV%20Engenharia%20e%20gostaria%20de%20saber%20mais%20sobre%20os%20servi%C3%A7os%20de%20voc%C3%AAs." target="_blank" rel="noopener">Chamar no WhatsApp</a>
+      </div>
+      <div>
+        <h3>Responsável técnico</h3>
+        <span class="val">Eng. Roberto Fioravante</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="ft">
+  <div class="c">
+    <img loading="lazy" src="assets/img/logo-frv-white.png" alt="FRV Engenharia">
+    <div>
+      <p><strong>FRV Engenharia</strong> — Montagem Eletromecânica, Manutenção, Energias Renováveis e Tecnologia.</p>
+      <p>© 2026 FRV Engenharia. Todos os direitos reservados.</p>
+    </div>
+    <span class="mono">Do projeto ao comissionamento</span>
+  </div>
+</footer>
+
+<div class="ck" id="cookie-banner" hidden>
+  <div class="c">
+    <p>Usamos cookies de análise para entender como os visitantes usam este site. Seus dados não são vendidos nem compartilhados.</p>
+    <div class="ck-act"><button type="button" class="btn ghost" id="cookie-decline">Recusar</button><button type="button" class="btn" id="cookie-accept">Aceitar</button></div>
+  </div>
+</div>
+
 </body>
 </html>
