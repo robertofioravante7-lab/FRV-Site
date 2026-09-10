@@ -1,3 +1,38 @@
+# Publicacao por lista branca.
+#
+# A Netlify publica SO a pasta dist/, montada aqui com o index.html e a pasta
+# assets/. Assim netlify.toml, .gitignore, docs/ e qualquer arquivo novo na
+# raiz do projeto nunca chegam ao visitante. Arquivo novo do site tem de ficar
+# dentro de assets/ (ou entrar neste comando) para ir ao ar.
+[build]
+  command = "rm -rf dist && mkdir dist && cp index.html dist/ && cp -r assets dist/ && rm -rf dist/assets/img/_originais"
+  publish = "dist"
+
+# Cabecalhos de seguranca, em todas as respostas.
+#
+# Content-Security-Policy: o navegador so executa codigo e so carrega recursos
+#   dos enderecos listados (o proprio site, Google Fonts e Google Analytics).
+#   Script injetado por terceiros nao roda.
+# X-Frame-Options e frame-ancestors: nenhum outro site consegue exibir este
+#   dentro de uma moldura (golpe do clique falso).
+# X-Content-Type-Options: o navegador nao "adivinha" o tipo de um arquivo.
+# Referrer-Policy: outros sites so ficam sabendo o dominio de origem.
+# Permissions-Policy: o site nao pede camera, microfone, localizacao nem pagamento.
+# Cross-Origin-Opener-Policy: janela aberta por outro site nao controla esta.
+#
+# ATENCAO: se um dia o site usar outro servico externo (mapa, video,
+# formulario), o endereco dele tem de entrar no Content-Security-Policy,
+# senao o navegador bloqueia.
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Content-Security-Policy = "default-src 'self'; script-src 'self' https://*.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://*.google-analytics.com https://*.googletagmanager.com; connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests"
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=(), payment=(), usb=()"
+    Cross-Origin-Opener-Policy = "same-origin"
+
 # Cabecalhos de cache.
 #
 # Antes desta configuracao a Netlify servia TUDO com
@@ -17,6 +52,18 @@
   [headers.values]
     Cache-Control = "public, max-age=0, must-revalidate"
 
+# Estilo e programacao sao sempre reconferidos (arquivos pequenos). Eles mudam
+# junto com o index.html e nao podem ficar presos no navegador de quem ja visitou.
+[[headers]]
+  for = "/assets/css/*"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+[[headers]]
+  for = "/assets/js/*"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
 # Imagens e logos ficam 30 dias no navegador.
 #
 # ATENCAO: os arquivos nao tem hash no nome. Se voce trocar o conteudo de uma
@@ -24,6 +71,6 @@
 # antiga por ate 30 dias. Ao substituir uma imagem, mude tambem o nome do
 # arquivo (ex.: hero-poster-2.webp) e atualize a referencia no index.html.
 [[headers]]
-  for = "/assets/*"
+  for = "/assets/img/*"
   [headers.values]
     Cache-Control = "public, max-age=2592000"
