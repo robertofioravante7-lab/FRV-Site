@@ -8,6 +8,21 @@
   command = "rm -rf dist && mkdir dist && cp index.html dist/ && cp -r assets dist/ && rm -rf dist/assets/img/_originais"
   publish = "dist"
 
+# Repasse do painel da dieta (projeto Dieta, PLANO-SITE-DIETA.md, 27/09/2026).
+# Tudo em /dieta vem do projeto painel-dieta na Vercel, com a tranca de acesso de la.
+# O site institucional nao muda; o visitante continua vendo frv.eng.br/dieta.
+[[redirects]]
+  from = "/dieta"
+  to = "https://painel-dieta-mu.vercel.app/dieta/"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/dieta/*"
+  to = "https://painel-dieta-mu.vercel.app/dieta/:splat"
+  status = 200
+  force = true
+
 # Cabecalhos de seguranca, em todas as respostas.
 #
 # Content-Security-Policy: o navegador so executa codigo e so carrega recursos
