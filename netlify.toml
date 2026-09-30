@@ -23,6 +23,21 @@
   status = 200
   force = true
 
+# Repasse do painel de ativos (projeto COMPRAS, proposta_painel_v2.md, 30/09/2026).
+# Tudo em /ativos vem do projeto painel-ativos na Vercel, com a tranca de acesso de la.
+# Motivo: o painel lista equipamentos e valores da empresa e nao pode morar neste repositorio publico.
+[[redirects]]
+  from = "/ativos"
+  to = "https://painel-ativos-gold.vercel.app/ativos/"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/ativos/*"
+  to = "https://painel-ativos-gold.vercel.app/ativos/:splat"
+  status = 200
+  force = true
+
 # Cabecalhos de seguranca, em todas as respostas.
 #
 # Content-Security-Policy: o navegador so executa codigo e so carrega recursos
