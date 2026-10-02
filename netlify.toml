@@ -38,6 +38,21 @@
   status = 200
   force = true
 
+# Repasse do painel de custo (projeto Controle de Custo, 02/10/2026).
+# Tudo em /custo vem do projeto painel-custo na Vercel, com a tranca de acesso de la.
+# Motivo: o painel tem gastos pessoais e da empresa e nao pode morar neste repositorio publico.
+[[redirects]]
+  from = "/custo"
+  to = "https://painel-custo.vercel.app/custo/"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/custo/*"
+  to = "https://painel-custo.vercel.app/custo/:splat"
+  status = 200
+  force = true
+
 # Cabecalhos de seguranca, em todas as respostas.
 #
 # Content-Security-Policy: o navegador so executa codigo e so carrega recursos
