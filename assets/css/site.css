@@ -161,7 +161,7 @@ figcaption b{color:var(--sky);font-weight:500}
 @media(max-width:560px){figure img{height:220px}.figs.one img{height:300px}}
 
 /* inovacao: modulos */
-.mods{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:46px}
+.mods{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:46px}
 @media(max-width:1000px){.mods{grid-template-columns:1fr 1fr}}
 @media(max-width:560px){.mods{grid-template-columns:1fr}}
 .mod{border:1px solid var(--line2);background:rgba(6,10,16,.55);display:flex;flex-direction:column;transition:border-color .25s,transform .25s}
@@ -208,3 +208,50 @@ figcaption b{color:var(--sky);font-weight:500}
 .ck-act{display:flex;gap:10px}
 .ck .btn{padding:10px 18px;cursor:pointer;border:0}
 .ck .btn.ghost{border:1px solid var(--line2)}
+
+/* ===== ATALAIA (03/10/2026) ===== */
+/* Cartao do Atalaia na Inovacao: ocupa 2 das 3 colunas e e o unico com link (pagina /atalaia/). */
+.mod-w{grid-column:span 2}
+@media(max-width:560px){.mod-w{grid-column:auto}}
+.mod-top em{font-style:normal;color:var(--amber)}
+.mod-w .mod-top{gap:12px}
+.mod-w .mod-top b{white-space:nowrap}
+.mod-w .mod-top span{text-align:right}
+.mod-w .mod-b{flex:1;display:flex;flex-direction:column}
+.mod-w p{max-width:64ch}
+.mod-lk{margin-top:auto;padding-top:16px;font-family:var(--f-mono);font-size:11px;letter-spacing:1.8px;text-transform:uppercase;color:var(--amber);font-weight:600}
+.mod-w:hover .mod-lk{color:#ffa53d}
+
+/* pagina do produto: selo, nota da demo e captura de tela no lugar do instrumento */
+.seal{display:inline-flex;margin-top:22px;font-family:var(--f-mono);font-size:11px;letter-spacing:1.8px;text-transform:uppercase;color:var(--amber);border:1px solid rgba(247,148,30,.55);background:rgba(247,148,30,.08);padding:7px 12px;border-radius:2px}
+.demo-note{margin-top:14px;font-family:var(--f-mono);font-size:11px;letter-spacing:.4px;color:var(--dim2);line-height:1.6;max-width:56ch}
+.shot-inst{display:block;transition:border-color .25s,transform .25s}
+.shot-inst:hover{border-color:rgba(247,148,30,.6);transform:translateY(-3px)}
+.shot-inst img{width:100%;height:auto}
+
+/* funcoes ATL-01 a ATL-07 */
+.fns{display:grid;grid-template-columns:1fr 1fr;gap:0 48px;margin-top:46px;border-top:1px solid var(--line2)}
+.fn{padding:26px 0 28px;border-bottom:1px solid var(--line2)}
+.fn h3{font-family:var(--f-disp);font-weight:700;font-size:21px;line-height:1.15;letter-spacing:-.015em;margin-top:8px}
+.fn p{color:#c3d0de;font-size:15px;margin-top:10px;max-width:58ch}
+.fn-w{grid-column:1/-1}
+@media(max-width:760px){.fns{grid-template-columns:1fr}}
+
+/* capturas de tela: sem o corte e sem o tom cinza das fotos, senao a tabela sai cortada */
+.shots{margin-top:46px;grid-template-columns:1fr;gap:28px}
+figure.shot img,.figs.one figure.shot img{height:auto;object-fit:contain;filter:none}
+
+/* validacao em numeros, no estilo das leituras do instrumento */
+.vals{display:grid;grid-template-columns:1fr 1fr}
+.vals > div{padding:18px 18px 20px;border-right:1px solid var(--line);border-bottom:1px solid var(--line)}
+.vals > div:nth-child(2n){border-right:none}
+.vals > div:nth-last-child(-n+2){border-bottom:none}
+.vals .v{font-family:var(--f-mono);font-size:28px;font-weight:500;color:var(--amber);font-variant-numeric:tabular-nums;line-height:1.1}
+.vals .k{font-size:13.5px;color:var(--dim);margin-top:8px;line-height:1.5}
+@media(max-width:460px){.vals{grid-template-columns:1fr}.vals > div{border-right:none}.vals > div:nth-last-child(2){border-bottom:1px solid var(--line)}}
+@media(prefers-reduced-motion:reduce){.shot-inst{transition:none}}
+
+/* faixa de normas com 5 itens (pagina do Atalaia) */
+.setores.n5 .c{grid-template-columns:auto repeat(5,1fr)}
+.setor small{display:block;font-family:var(--f-mono);font-size:10.5px;letter-spacing:.3px;white-space:nowrap;font-weight:500;color:var(--dim);margin-top:2px}
+@media(max-width:900px){.setores.n5 .c{grid-template-columns:1fr 1fr}.setores.n5 .setor:nth-child(3),.setores.n5 .setor:nth-child(5){border-right:none}.setores.n5 .setor:nth-child(4),.setores.n5 .setor:nth-child(5){border-bottom:1px solid var(--line)}.setores.n5 .setor:nth-child(6){grid-column:1/-1;border-right:none}}

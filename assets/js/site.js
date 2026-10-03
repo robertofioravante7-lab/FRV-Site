@@ -29,8 +29,11 @@
   window.addEventListener('scroll', function(){ hd.classList.toggle('scrolled', window.scrollY > 40); }, {passive:true});
 
   /* instrumento do topo: diagrama fasorial com tecla RUN/STOP.
-     Se o sistema pede menos movimento, comeca parado (STOP) e a tecla RUN liga. */
-  var inst = document.getElementById('inst'), cv = document.getElementById('wave'), ctx = cv.getContext('2d');
+     Se o sistema pede menos movimento, comeca parado (STOP) e a tecla RUN liga.
+     Pagina sem o instrumento (ex.: /atalaia/) pula este bloco. */
+  var cv = document.getElementById('wave');
+  if(cv){
+  var inst = document.getElementById('inst'), ctx = cv.getContext('2d');
   var btn = document.getElementById('run'), rF = document.getElementById('rF');
   var TAU = Math.PI * 2, COLS = ['#f7941e', '#9fd0f5', '#e9edf3'];
   var W = 0, H = 0, t = 0.9, run = !reduce, vis = false, raf = null, last = 0, lastTick = 0;
@@ -83,6 +86,7 @@
   if('IntersectionObserver' in window){
     new IntersectionObserver(function(es){ vis = es[0].isIntersecting; kick(); },{threshold:.05}).observe(cv);
   } else { vis = true; kick(); }
+  } /* fim do instrumento */
 
   /* unifilar dos pilares: desenha ao entrar na tela; sem suporte, fica desenhado */
   var uf = document.getElementById('uf');

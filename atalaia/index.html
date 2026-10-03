@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FRV Atalaia - Confiabilidade e diagnóstico de sistemas de tocha | FRV Engenharia</title>
+<meta name="description" content="Software de engenharia que verifica o sistema de tocha inteiro pelas normas API 521, API 520 e API 537 e mostra onde dá para reduzir gás de purga sem abrir mão da segurança.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=Manrope:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="/assets/css/site.css">
+<script src="/assets/js/site.js" defer></script>
+</head>
+<body>
+
+<header class="hd" id="hd">
+  <div class="c">
+    <a href="/" class="logo"><img src="/assets/img/logo-icon-white.png" alt="FRV"><small>Engenharia</small></a>
+    <nav>
+      <a href="/#sobre">Sobre</a>
+      <a href="/#areas">Áreas de atuação</a>
+      <a href="/#inovacao">Inovação</a>
+      <a href="#contato">Contato</a>
+    </nav>
+    <a class="btn" href="#contato">Fale conosco</a>
+  </div>
+</header>
+
+<section class="hero" id="topo">
+  <div class="hero-photo"></div>
+  <div class="grid-bg"></div>
+  <div class="c">
+    <div>
+      <div class="eyebrow">Pilar 04 · Software próprio</div>
+      <h1>FRV<span>Atalaia</span></h1>
+      <p class="sub">Confiabilidade e diagnóstico de sistemas de tocha</p>
+      <p class="desc">
+        Software de engenharia que verifica o sistema de tocha inteiro pelas normas API 521, API 520 e API 537
+        e mostra onde dá para reduzir gás de purga sem abrir mão da segurança.
+      </p>
+      <div class="seal">TRL 5 · versão alfa concluída e validada</div>
+      <div class="ctas">
+        <a class="btn" href="/atalaia/demo/" target="_blank" rel="noopener">Ver a demonstração</a>
+        <a class="btn ghost" href="#contato">Avaliar minha planta</a>
+      </div>
+      <p class="demo-note">Demonstração com dados ilustrativos de um sistema de tocha típico de refinaria.</p>
+    </div>
+    <a class="inst shot-inst" href="/atalaia/demo/" target="_blank" rel="noopener" aria-label="Abrir a demonstração: memorial de cálculo gerado pelo FRV Atalaia">
+      <div class="inst-top"><span class="led"></span>Memorial de cálculo · FRV Atalaia<span class="demo">Dados ilustrativos</span></div>
+      <img src="/assets/img/atalaia-painel.webp" width="1366" height="900" alt="Painel do memorial de cálculo do FRV Atalaia: cenários de emergência, verificações de PSV, purga mínima e CO₂ evitável">
+    </a>
+  </div>
+  <div class="setores n5">
+    <div class="c">
+      <div class="lbl">Normas aplicadas</div>
+      <div class="setor"><b>01</b><span>API 520<small>Partes I e II</small></span></div>
+      <div class="setor"><b>02</b><span>API 521</span></div>
+      <div class="setor"><b>03</b><span>API 526</span></div>
+      <div class="setor"><b>04</b><span>API 537</span></div>
+      <div class="setor"><b>05</b><span>EPA AP-42</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="funcoes">
+  <div class="grid-bg"></div>
+  <div class="c">
+    <div class="eyebrow">O que o Atalaia faz</div>
+    <h2 class="h2">O sistema de tocha <span>inteiro</span></h2>
+    <div class="fns">
+      <div class="fn">
+        <div class="code">ATL·01 · API 521</div>
+        <h3>Sistema de alívio e tocha</h3>
+        <p>Perda de carga e número de Mach em toda a rede de coletores, contrapressão em cada ponto, escoamento sônico, dimensionamento do vaso knockout e do selo hidráulico para operação com tocha fechada (closed flare).</p>
+      </div>
+      <div class="fn">
+        <div class="code">ATL·02 · API 520 Partes I e II · API 526</div>
+        <h3>Válvulas de alívio</h3>
+        <p>Área requerida, orifício padronizado, contrapressão admissível conforme o tipo de válvula (convencional, balanceada ou piloto-operada) e a regra dos 3&nbsp;% de perda na entrada.</p>
+      </div>
+      <div class="fn">
+        <div class="code">ATL·03 · API 537</div>
+        <h3>Purga e ponteira</h3>
+        <p>Vazão mínima de gás de purga pela correlação de Husa, com gás combustível ou nitrogênio, poder calorífico mínimo para estabilidade de chama, vapor de assistência e número de pilotos.</p>
+      </div>
+      <div class="fn">
+        <div class="code">ATL·04 · Peng-Robinson</div>
+        <h3>Termodinâmica real</h3>
+        <p>Equação de estado de Peng-Robinson, que verifica se a mistura de gás de alívio e purga condensa nos coletores.</p>
+      </div>
+      <div class="fn">
+        <div class="code">ATL·05 · Dados históricos</div>
+        <h3>Diagnóstico com dados históricos da planta</h3>
+        <p>Balanço de massa da tocha, identificação de eventos de alívio e detecção de válvulas de alívio com passagem.</p>
+      </div>
+      <div class="fn">
+        <div class="code">ATL·06 · EPA AP-42</div>
+        <h3>Emissões</h3>
+        <p>CO₂ por estequiometria e NOx pelo fator de emissão da agência ambiental americana (EPA AP-42, seção 13.5), para medir o ganho de cada melhoria.</p>
+      </div>
+      <div class="fn fn-w">
+        <div class="code">ATL·07 · Rastreabilidade</div>
+        <h3>Memorial de cálculo rastreável</h3>
+        <p>Cada resultado sai com a norma e a equação aplicadas.</p>
+      </div>
+    </div>
+    <div class="figs shots">
+      <figure class="shot"><img loading="lazy" src="/assets/img/atalaia-purga.webp" width="1206" height="590" alt="Memorial do Atalaia: purga dos coletores, troca por nitrogênio e selo hidráulico"><figcaption><b>FIG. ATL-1</b> — Purga dos coletores, troca por N₂ e selo hidráulico (ATL·03) · dados ilustrativos</figcaption></figure>
+      <figure class="shot"><img loading="lazy" src="/assets/img/atalaia-diagnostico.webp" width="1206" height="596" alt="Memorial do Atalaia: diagnóstico com dados históricos, eventos de alívio e PSV com suspeita de passagem"><figcaption><b>FIG. ATL-2</b> — Diagnóstico com dados históricos (ATL·05) · dados ilustrativos</figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<section class="sec plate" id="validacao">
+  <div class="plate-grid"></div>
+  <div class="c">
+    <div class="eyebrow">Validação, em números</div>
+    <h2 class="h2">TRL 5 · <span>versão alfa</span></h2>
+    <div class="about">
+      <div class="about-txt">
+        <p>
+          Na escala TRL de maturidade tecnológica (de 1 a 9), o nível 5 corresponde a componentes validados
+          em ambiente simulado. O Atalaia está nesse ponto: os módulos de cálculo foram integrados num único
+          programa e validados em <strong>71 testes</strong> contra os exemplos resolvidos das próprias normas
+          API e contra dados de referência do NIST.
+        </p>
+      </div>
+      <div class="inst">
+        <div class="inst-top"><span class="led"></span>Validação · versão 0.1.0-alfa</div>
+        <div class="vals">
+          <div><div class="v">71 de 71</div><div class="k">testes de validação aprovados</div></div>
+          <div><div class="v">4</div><div class="k">exemplos resolvidos da API 520 reproduzidos (erro máximo 0,5&nbsp;%)</div></div>
+          <div><div class="v">2</div><div class="k">exemplos resolvidos da API 521 reproduzidos (hidráulica e vaso knockout)</div></div>
+          <div><div class="v">NIST</div><div class="k">densidade e viscosidade de metano, etano e nitrogênio conferidas contra o banco de referência</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="quem">
+  <div class="grid-bg"></div>
+  <div class="c">
+    <div class="eyebrow">Quem está por trás</div>
+    <h2 class="h2">Nasce da prática <span>de campo</span></h2>
+    <div class="about">
+      <div class="about-txt">
+        <p>
+          O Atalaia nasce da prática de campo. Desde 2010, o responsável técnico da FRV atua em sistemas de
+          tocha de refinaria. Participou da instalação e foi o engenheiro responsável pelo comissionamento e
+          pela entrega de um sistema de flare de grande porte, incluindo os seus subsistemas de pilotos,
+          detecção de chama, mistura de ar e gás combustível, ignição e o medidor ultrassônico de vazão
+          mássica da tocha.
+        </p>
+        <p>O software transforma essa experiência em cálculo verificável.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec plate" id="contato">
+  <div class="plate-grid"></div>
+  <div class="c">
+    <div class="eyebrow">Fale com a gente</div>
+    <h2 class="h2">Quer avaliar o sistema de tocha <span>da sua planta?</span></h2>
+    <div class="ct">
+      <div>
+        <h3>E-mail</h3>
+        <a class="val" href="mailto:roberto@frv.eng.br">roberto@frv.eng.br</a>
+        <a class="btn" href="mailto:roberto@frv.eng.br?subject=Contato%20via%20site%20-%20FRV%20Atalaia&body=Ol%C3%A1%2C%20Roberto!%20Vim%20atrav%C3%A9s%20do%20site%20e%20gostaria%20de%20saber%20mais%20sobre%20o%20FRV%20Atalaia.">Enviar e-mail</a>
+      </div>
+      <div>
+        <h3>Telefone / WhatsApp</h3>
+        <a class="val" href="tel:+5581993657878">(81) 99365-7878</a>
+        <a class="btn ghost" href="https://wa.me/5581993657878?text=Ol%C3%A1!%20Vim%20atrav%C3%A9s%20do%20site%20e%20gostaria%20de%20saber%20mais%20sobre%20o%20FRV%20Atalaia." target="_blank" rel="noopener">Chamar no WhatsApp</a>
+      </div>
+      <div>
+        <h3>Demonstração</h3>
+        <a class="val" href="/atalaia/demo/" target="_blank" rel="noopener">Memorial de cálculo</a>
+        <a class="btn ghost" href="/atalaia/demo/atalaia_demo_caso.json" download>Baixar o arquivo de entrada</a>
+        <p class="demo-note">Demonstração com dados ilustrativos de um sistema de tocha típico de refinaria. O arquivo de entrada mostra como um sistema de tocha é descrito para o software.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="ft">
+  <div class="c">
+    <img loading="lazy" src="/assets/img/logo-frv-white.png" alt="FRV Engenharia">
+    <div>
+      <p><strong>FRV Engenharia</strong> — Montagem Eletromecânica, Manutenção, Energias Renováveis e Tecnologia.</p>
+      <p>© 2026 FRV Engenharia. Todos os direitos reservados.</p>
+    </div>
+    <span class="mono">Do projeto ao comissionamento</span>
+  </div>
+</footer>
+
+<div class="ck" id="cookie-banner" hidden>
+  <div class="c">
+    <p>Usamos cookies de análise para entender como os visitantes usam este site. Seus dados não são vendidos nem compartilhados.</p>
+    <div class="ck-act"><button type="button" class="btn ghost" id="cookie-decline">Recusar</button><button type="button" class="btn" id="cookie-accept">Aceitar</button></div>
+  </div>
+</div>
+
+</body>
+</html>

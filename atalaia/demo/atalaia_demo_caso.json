@@ -1,0 +1,53 @@
+{
+  "nome": "Caso demonstrativo — sistema de tocha típico de refinaria (dados ilustrativos)",
+  "observacao": "Dados ilustrativos: geometria, vazões e composições plausíveis de um sistema de tocha de refinaria, montadas para demonstrar o software. Não representam nenhuma planta real.",
+  "ambiente": {"P_atm_kPa": 101.325, "T_min_C": 20.0},
+  "gases": {
+    "alivio_U11_destilacao": {"CH4": 0.10, "C2H6": 0.15, "C3H8": 0.30, "nC4H10": 0.25, "nC5H12": 0.20},
+    "alivio_U21_hidrotratamento": {"H2": 0.45, "CH4": 0.25, "C2H6": 0.12, "C3H8": 0.10, "nC4H10": 0.05, "H2S": 0.03},
+    "alivio_U31_craqueamento": {"CH4": 0.40, "C2H6": 0.15, "C2H4": 0.10, "C3H8": 0.15, "C3H6": 0.10, "nC4H10": 0.10},
+    "gas_combustivel": {"CH4": 0.85, "C2H6": 0.06, "H2": 0.05, "C3H8": 0.02, "N2": 0.02},
+    "N2": {"N2": 1.0}
+  },
+  "tocha": {"D_riser_m": 0.9144, "D_ponteira_m": 0.9144, "assistencia": "vapor", "dp_ponteira_kPa": 2.0},
+  "rede": {
+    "no_saida": "topo",
+    "perdas_no_kPa": {"ko": 1.0},
+    "trechos": [
+      {"nome": "Chaminé da tocha DN 36", "de": "base", "para": "topo", "d_m": 0.889, "L_eq_m": 110.0},
+      {"nome": "Knockout → selo DN 30", "de": "ko", "para": "base", "d_m": 0.737, "L_eq_m": 40.0},
+      {"nome": "Coletor principal DN 30", "de": "H2", "para": "ko", "d_m": 0.737, "L_eq_m": 450.0},
+      {"nome": "Coletor U-11 → H2 DN 24", "de": "H1", "para": "H2", "d_m": 0.590, "L_eq_m": 320.0},
+      {"nome": "Ramal PSV-1101 DN 12", "de": "U11", "para": "H1", "d_m": 0.305, "L_eq_m": 45.0},
+      {"nome": "Ramal PSV-2101 DN 8", "de": "U21", "para": "H2", "d_m": 0.203, "L_eq_m": 35.0},
+      {"nome": "Ramal PSV-3101 DN 8", "de": "U31", "para": "H1", "d_m": 0.203, "L_eq_m": 40.0}
+    ]
+  },
+  "psvs": [
+    {"tag": "PSV-1101", "no": "U11", "tipo": "convencional", "p_ajuste_kPa_man": 350.0, "orificio": "T",
+     "perda_entrada_kPa": 7.0, "gas": "alivio_U11_destilacao", "T_K": 420.0},
+    {"tag": "PSV-2101", "no": "U21", "tipo": "balanceada", "p_ajuste_kPa_man": 1500.0, "orificio": "Q",
+     "perda_entrada_kPa": 30.0, "gas": "alivio_U21_hidrotratamento", "T_K": 400.0},
+    {"tag": "PSV-3101", "no": "U31", "tipo": "piloto", "p_ajuste_kPa_man": 800.0, "orificio": "P",
+     "perda_entrada_kPa": 15.0, "gas": "alivio_U31_craqueamento", "T_K": 350.0}
+  ],
+  "cenarios": [
+    {"nome": "Falha geral de energia elétrica", "causa": "API 521 Tabela 1: falha de utilidade (energia), alívio simultâneo",
+     "psvs": {"PSV-1101": 60000, "PSV-2101": 40000, "PSV-3101": 25000}},
+    {"nome": "Saída bloqueada na U-11", "causa": "API 521 Tabela 1: saída bloqueada (evento isolado)",
+     "psvs": {"PSV-1101": 60000}},
+    {"nome": "Fogo na área da U-21", "causa": "API 521 Tabela 1: fogo externo",
+     "psvs": {"PSV-2101": 40000}}
+  ],
+  "knockout": {"no": "ko", "D_m": 3.5, "L_m": 10.0, "rho_liquido": 600.0, "gota_um": 600, "drenagem_m3": 2.0,
+               "retencao_min": 30.0, "fracao_liquido_padrao": 0.02},
+  "selo": {"no": "base", "p_selo_kPa": 10.0, "d_entrada_m": 0.737, "vacuo_kPa": 34.5, "rho_liquido": 1000.0,
+           "servico": "recuperacao"},
+  "purga": {
+    "vazao_atual_t_mes": 400.0, "gas_atual": "gas_combustivel", "gases_avaliados": ["gas_combustivel", "N2"],
+    "y_m": 7.62, "O2_pct": 6.0, "selo_reducao": "velocidade", "P_coletor_kPa": 110.0,
+    "vazamentos_avaliados": [{"gas": "alivio_U11_destilacao", "kg_h": 50.0}]
+  },
+  "pi": {"arquivo": "serie_pi_demo.csv", "tag_vazao": "FI-TOCHA-001", "purga_kg_h": 548.0,
+         "tags_temperatura_psv": ["TI-PSV-1101", "TI-PSV-2101", "TI-PSV-3101"], "tag_ambiente": "TI-AMBIENTE"}
+}
