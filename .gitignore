@@ -8,3 +8,8 @@ docs/
 
 # Pasta montada pela Netlify na publicacao
 dist/
+
+# Arquivos de chave (05/10/2026). Motivo: a chave do JEV foi salva num .env na
+# raiz e quase ficou exposta no repositorio publico. Nenhum .env sobe, em pasta nenhuma.
+*.env
+.env
