@@ -127,7 +127,9 @@ window.FRV = {
       { b: 'Mód. 04', top: 'Tecnologia própria', vw: 240, svg: `<path class="g" d="M20 72 L44 28 L84 28 L60 72 Z"/><path class="g" d="M74 72 L98 28 L138 28 L114 72 Z"/><path class="h" d="M128 72 L152 28 L192 28 L168 72 Z"/><text class="th" x="150" y="86">FALHA · STRING 03</text>`,
         h3: 'Monitoramento Fotovoltaico', p: 'Sistema de monitoramento e identificação automática de falhas em usinas fotovoltaicas.' },
       { b: 'Mód. 05', top: 'Tecnologia própria', vw: 240, svg: `<rect class="g" x="22" y="14" width="46" height="62"/><path class="g" d="M30 28 L60 28 M30 38 L60 38 M30 48 L54 48 M30 58 L58 58"/><path class="g" d="M68 45 L118 45 M150 22 L118 45 L150 68 M150 22 L196 30 M150 68 L196 60 M196 30 L196 60" opacity=".7"/><circle class="g" cx="118" cy="45" r="4"/><circle class="g" cx="150" cy="22" r="4"/><circle class="g" cx="150" cy="68" r="4"/><circle class="g" cx="196" cy="30" r="4"/><circle class="h" cx="196" cy="60" r="5"/>`,
-        h3: 'Base de Normas com LLM', p: 'Banco de dados vetorizado especialista em normas nacionais e internacionais, com LLM para avaliação de relatórios e contratos.' }
+        h3: 'Base de Normas com LLM', p: 'Banco de dados vetorizado especialista em normas nacionais e internacionais, com LLM para avaliação de relatórios e contratos.' },
+      { b: 'Mód. 06', top: 'Software próprio · ', em: 'ensaio integral · zero dependências', vw: 360, svg: `<path class="g" d="M12 74 L348 74" opacity=".35"/><polyline class="h" fill="none" points="12,66 48,66 48,58 96,58 96,50 144,50 144,42 192,42 192,34 240,34 240,26 288,26 288,18 336,18"/><text x="12" y="88">VARREDURA · BLOCOS DO DEVICE</text><text class="th" x="348" y="88" text-anchor="end">COBERTURA 100 %</text>`,
+        h3: 'FRV XcoInit', p: 'Leitor clean-room de dados de máquina por Modbus/TCP: descobre o mapa do dispositivo sozinho, prova a cobertura do catálogo e coleta em CSV — só leitura, nunca escrita.', link: ['Ver detalhes do produto →', 'xcoinit/'] }
     ]
   },
 

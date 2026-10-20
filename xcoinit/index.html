@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FRV XcoInit - leitor de dados de máquina por Modbus/TCP | FRV Engenharia</title>
+  <meta name="description" content="Software que conversa com servidores Modbus/TCP padrão: descobre o mapa de dados do dispositivo sozinho, provê a cobertura do catálogo e coleta em CSV — só leitura, nunca escrita.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=Manrope:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="/assets/css/site.css">
+  <script src="/assets/js/site.js" defer></script>
+  <style>
+    /* Mock-up da mesa de leitura no hero (específico da página XcoInit) */
+    .xco-mesa-mock{background:#fff;border-radius:10px;overflow:hidden;color:#12233a;font:13px/1.45 'IBM Plex Mono',monospace}
+    .xco-barra{display:flex;gap:14px;justify-content:space-between;background:#0d1b2a;color:#9fb3c8;padding:8px 12px;font-size:11.5px}
+    .xco-barra .xco-ok{color:#56d364}
+    .xco-linha{display:flex;align-items:baseline;gap:8px;padding:7px 12px;border-bottom:1px solid #e5ebf2}
+    .xco-linha b{color:#e8820c;min-width:52px}
+    .xco-linha em{margin-left:auto;font-style:normal;font-weight:700;font-variant-numeric:tabular-nums}
+    .xco-linha em.xco-roda{color:#1f8a4c;font-size:12px}
+    .xco-spark{display:block;width:100%;height:44px;padding:2px 6px 0}
+    .xco-spark polyline{fill:none;stroke:#e8820c;stroke-width:2;stroke-linejoin:round}
+  </style>
+</head>
+<body>
+
+<header class="hd" id="hd">
+  <div class="c">
+    <a href="/" class="logo"><img src="/assets/img/logo-icon-white.png" alt="FRV"><small>Engenharia</small></a>
+    <nav>
+      <a href="/#sobre">Sobre</a>
+      <a href="/#areas">Áreas de atuação</a>
+      <a href="/#inovacao">Inovação</a>
+      <a href="#contato">Contato</a>
+    </nav>
+    <a class="btn" href="#contato">Fale conosco</a>
+  </div>
+</header>
+
+<section class="hero" id="topo">
+  <div class="hero-photo"></div>
+  <div class="grid-bg"></div>
+  <div class="c">
+    <div>
+      <div class="eyebrow">Pilar 04 · Software próprio</div>
+      <h1>FRV<span>XcoInit</span></h1>
+      <p class="sub">Leitura de dados de máquina via Modbus/TCP — só leitura, nunca escrita</p>
+      <p class="desc">
+        Coletor clean-room que conversa com qualquer servidor Modbus/TCP padrão: descobre o mapa de
+        dados do dispositivo sozinho, prova a cobertura do catálogo e coleta tudo em CSV. Núcleo de
+        protocolo escrito do zero, audível linha a linha, sem uma única dependência.
+      </p>
+      <div class="seal">Validado em bancada · ensaio completo contra simulador de dispositivo</div>
+      <div class="ctas">
+        <a class="btn" href="/xcoinit/demo/" target="_blank" rel="noopener">Ver a demonstração</a>
+        <a class="btn ghost" href="#contato">Levar para a minha planta</a>
+      </div>
+      <p class="demo-note">Demonstração com dados ilustrativos de pontos típicos de monitoramento de máquina.</p>
+    </div>
+    <a class="inst shot-inst xco-mesa-inst" href="/xcoinit/demo/" target="_blank" rel="noopener" aria-label="Abrir a demonstração: mesa de leitura do FRV XcoInit">
+      <div class="inst-top"><span class="led"></span>Mesa de leitura · FRV XcoInit<span class="demo">Dados ilustrativos</span></div>
+      <div class="xco-mesa-mock">
+        <div class="xco-barra"><span>127.0.0.1:502</span><span>unit 255</span><span class="xco-ok">● ligado</span></div>
+        <div class="xco-linha"><b>VT-01</b> vibração eixo X · mm/s<em>4,82</em></div>
+        <div class="xco-linha"><b>VT-02</b> vibração eixo Y · mm/s<em>4,91</em></div>
+        <div class="xco-linha"><b>MT-01</b> temperatura mancal · °C<em>63,4</em></div>
+        <div class="xco-linha"><b>CS-01</b> estado · bit FC1<em class="xco-roda">rotando</em></div>
+        <svg class="xco-spark" viewBox="0 0 240 40" preserveAspectRatio="none"><polyline points="0,30 24,26 48,27 72,22 96,23 120,18 144,20 168,15 192,17 216,12 240,14"/></svg>
+      </div>
+    </a>
+  </div>
+  <div class="setores n5">
+    <div class="c">
+      <div class="lbl">O que ele fala</div>
+      <div class="setor"><b>01</b><span>FC01/FC02<small>bits e entradas discretas</small></span></div>
+      <div class="setor"><b>02</b><span>FC03/FC04<small>registradores de retenção e entrada</small></span></div>
+      <div class="setor"><b>03</b><span>Fingerprint<small>resposta às funções de fábrica</small></span></div>
+      <div class="setor"><b>04</b><span>CSV<small>coleta cíclica diária</small></span></div>
+      <div class="setor"><b>05</b><span>Zero deps<small>núcleo MBAP próprio</small></span></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="funcoes">
+  <div class="grid-bg"></div>
+  <div class="c">
+    <div class="eyebrow">O que o XcoInit faz</div>
+    <h2 class="h2">Do barramento ao <span>CSV</span></h2>
+    <div class="fns">
+      <div class="fn">
+        <div class="code">XCL·01 · FC1/FC2</div>
+        <h3>Bits: estado e alarmes</h3>
+        <p>Leitura de entradas discretas e bobinas em lotes de até 1.000 bits por requisição, conforme o padrão Modbus.</p>
+      </div>
+      <div class="fn">
+        <div class="code">XCL·02 · FC3/FC4</div>
+        <h3>Registradores: medições</h3>
+        <p>Leitura de registradores de entrada e de retenção (até 125 por lote, como pede o padrão) com conversão para int, word, float e troca de byte/word quando o dispositivo manda ao contrário.</p>
+      </div>
+      <div class="fn">
+        <div class="code">XCL·03 · Autodescoberta</div>
+        <h3>O mapa se desenha sozinho</h3>
+        <p>Varredura por janelas que agrupa endereços contíguos em blocos e respeita as lacunas do dispositivo — o mapa sai fiel ao que existe no barramento, não ao que se assume.</p>
+      </div>
+      <div class="fn">
+        <div class="code">XCL·04 · Cobertura</div>
+        <h3>Prova do catálogo</h3>
+        <p>Cruza o mapa descoberto com o catálogo de pontos da engenharia e responde, em porcentagem, o que está e o que ficou de fora — a diferença entre conectar e enxergar.</p>
+      </div>
+      <div class="fn">
+        <div class="code">XCL·05 · Coleta cíclica</div>
+        <h3>CSV diário, sozinho</h3>
+        <p>Ciclo configurável (padrão 1 s) com duração programada e parada automática: o valor cru, o valor escalado e a hora de cada ponto no CSV diário, sem ninguém segurando o teclado.</p>
+      </div>
+      <div class="fn">
+        <div class="code">XCL·06 · Fingerprint</div>
+        <h3>Como o dispositivo se comporta</h3>
+        <p>Sonda as funções de diagnóstico de fábrica e registra quem responde e quem é negada — a "assinatura" humana honesta do dispositivo, útil em comissionamento e auditoria.</p>
+      </div>
+      <div class="fn fn-w">
+        <div class="code">XCL·07 · Clean-room</div>
+        <h3>Só leitura, sempre</h3>
+        <p>Nenhuma função de escrita é enviada; o núcleo recusa por projeto. Núcleo MBAP/PDU próprio, zero dependências de runtime, código audível linha a linha.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec plate" id="validacao">
+  <div class="plate-grid"></div>
+  <div class="c">
+    <div class="eyebrow">Validação, em números</div>
+    <h2 class="h2">Bancada própria · <span>ensaio integral</span></h2>
+    <div class="about">
+      <div class="about-txt">
+        <p>
+          Todo caminho do software foi ensaiado numa bancada com um simulador de dispositivo Modbus/TCP:
+          conexão e sondagem, assinatura de funções, varredura com detecção de lacuna, cobertura
+          100&nbsp;% do catálogo e coleta cíclica com fim automático — sem uma falha de leitura.
+          A mesma sequência executa em campo com um único comando.
+        </p>
+      </div>
+      <div class="inst">
+        <div class="inst-top"><span class="led"></span>Ensaio de bancada · versão de campo</div>
+        <div class="vals">
+          <div><div class="v">0</div><div class="k">dependências de runtime (núcleo MBAP/PDU próprio)</div></div>
+          <div><div class="v">100&nbsp;%</div><div class="k">cobertura do catálogo no ensaio (270/270 pontos)</div></div>
+          <div><div class="v">0</div><div class="k">falhas de leitura na coleta cíclica ensaiada</div></div>
+          <div><div class="v">1</div><div class="k">comando — do probe ao CSV, com evidência integral em diário</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="quem">
+  <div class="grid-bg"></div>
+  <div class="c">
+    <div class="eyebrow">Quem está por trás</div>
+    <h2 class="h2">Nasce da prática <span>de confiabilidade</span></h2>
+    <div class="about">
+      <div class="about-txt">
+        <p>
+          O XcoInit nasce da rotina de confiabilidade de máquinas: coletar os dados de condição
+          direto do barramento, na hora e no formato que a engenharia precisa — sem intermediários
+          e sem perder rastreabilidade. Cada leitura sai com endereço, função Modbus e escala,
+          pronta para alimentar laudos e acompanhamentos.
+        </p>
+        <p>O software transforma essa rotina em dados verificáveis.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec plate" id="contato">
+  <div class="plate-grid"></div>
+  <div class="c">
+    <div class="eyebrow">Fale com a gente</div>
+    <h2 class="h2">Quer enxergar os dados <span>da sua planta?</span></h2>
+    <div class="ct">
+      <div>
+        <h3>E-mail</h3>
+        <a class="val" href="mailto:roberto@frv.eng.br">roberto@frv.eng.br</a>
+        <a class="btn" href="mailto:roberto@frv.eng.br?subject=Contato%20via%20site%20-%20FRV%20XcoInit&body=Ol%C3%A1%2C%20Roberto!%20Vim%20atrav%C3%A9s%20do%20site%20e%20gostaria%20de%20saber%20mais%20sobre%20o%20FRV%20XcoInit.">Enviar e-mail</a>
+      </div>
+      <div>
+        <h3>Telefone / WhatsApp</h3>
+        <a class="val" href="tel:+5581993657878">(81) 99365-7878</a>
+        <a class="btn ghost" href="https://wa.me/5581993657878?text=Ol%C3%A1!%20Vim%20atrav%C3%A9s%20do%20site%20e%20gostaria%20de%20saber%20mais%20sobre%20o%20FRV%20XcoInit." target="_blank" rel="noopener">Chamar no WhatsApp</a>
+      </div>
+      <div>
+        <h3>Demonstração</h3>
+        <a class="val" href="/xcoinit/demo/" target="_blank" rel="noopener">Mesa de leitura</a>
+        <a class="btn ghost" href="/xcoinit/demo/xcoinit_demo_pontos.csv" download>Baixar o catálogo de exemplo</a>
+        <p class="demo-note">Demonstração com dados ilustrativos de pontos típicos de monitoramento. O catálogo de exemplo mostra como os pontos do dispositivo são descritos para a validação de cobertura.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="ft">
+  <div class="c">
+    <img loading="lazy" src="/assets/img/logo-frv-white.png" alt="FRV Engenharia">
+    <div>
+      <p><strong>FRV Engenharia</strong> — Montagem Eletromecânica, Manutenção, Energias Renováveis e Tecnologia.</p>
+      <p>© 2026 FRV Engenharia. Todos os direitos reservados.</p>
+    </div>
+    <span class="mono">Do projeto ao comissionamento</span>
+  </div>
+</footer>
+
+<div class="ck" id="cookie-banner" hidden>
+  <div class="c">
+    <p>Usamos cookies de análise para entender como os visitantes usam este site. Seus dados não são vendidos nem compartilhados.</p>
+    <div class="ck-act"><button type="button" class="btn ghost" id="cookie-decline">Recusar</button><button type="button" class="btn" id="cookie-accept">Aceitar</button></div>
+  </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,130 @@
+<!doctype html><html lang='pt-BR'><head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0'>
+<title>XcoInit · mesa de leitura (demonstração)</title><style>
+:root{--tinta:#0d1b2a;--suave:#4a5d73;--linha:#d6dee8;--fundo:#f5f7fa;--cartao:#fff;--laranja:#e8820c;--ok:#1f8a4c;--nok:#c0392b;--alerta:#b9770e}
+*{box-sizing:border-box}body{margin:0;background:var(--fundo);color:var(--tinta);font:15px/1.5 'Segoe UI',Arial,sans-serif}
+header{background:#0d1b2a;color:#fff;padding:22px 40px;display:flex;align-items:center;gap:24px;flex-wrap:wrap}
+header .marca{font-size:28px;font-weight:800;letter-spacing:.06em}header .marca span{color:var(--laranja)}
+header .sub{color:#9fb3c8;font-size:14px}header .ver{margin-left:auto;text-align:right;color:#9fb3c8;font-size:13px}
+main{max-width:1240px;margin:0 auto;padding:24px 32px 60px}
+h2{font-size:20px;margin:34px 0 10px;border-bottom:2px solid var(--laranja);padding-bottom:6px}
+.nota{color:var(--suave);font-size:13px}
+.aviso-caso{background:#fff7e6;border:1px solid #f0c27b;border-radius:8px;padding:10px 14px;margin:14px 0}
+.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:14px}
+.card{background:var(--cartao);border:1px solid var(--linha);border-radius:10px;padding:14px 16px}
+.card .v{font-size:26px;font-weight:800}.card .r{font-size:12px;color:var(--suave);text-transform:uppercase;letter-spacing:.06em}
+table{border-collapse:collapse;width:100%;background:#fff;font-size:13.5px;margin:6px 0 4px}
+th,td{border:1px solid var(--linha);padding:6px 8px;text-align:left;vertical-align:top}th{background:#eef2f7}
+td.n{text-align:right;font-variant-numeric:tabular-nums}
+td svg{display:block;width:150px;height:26px}td svg polyline{fill:none;stroke:var(--laranja);stroke-width:2}
+.ok{color:var(--ok);font-weight:700}.al{color:var(--alerta)}.nok{color:var(--nok);font-weight:700}
+.lote{margin:8px 0;color:var(--suave);font-size:12.5px;font-family:'Consolas','IBM Plex Mono',monospace}
+footer{color:var(--suave);font-size:12px;margin-top:40px;border-top:1px solid var(--linha);padding-top:10px}
+footer a{color:var(--laranja);text-decoration:none}footer a:hover{text-decoration:underline}
+</style></head><body>
+<header>
+  <div><div class='marca'>FRV <span>XCOINIT</span></div>
+  <div class='sub'>Leitor de dados de máquina por Modbus/TCP · FC1/FC2 · FC3/FC4 · fingerprint</div></div>
+  <div class='ver'>Mesa de leitura<br>demonstração · dados ilustrativos<br><span id='clock'>—</span></div>
+</header>
+<main>
+  <h2>Caso</h2>
+  <div><b>Caso demonstrativo — pontos típicos de monitoramento de um compressor (dados ilustrativos)</b></div>
+  <div class='aviso-caso'>Dados ilustrativos: pontos de vibração, temperatura, vazão e estado plausíveis de
+  um compressor de planta industrial, montados para demonstrar o software. Nenhum dispositivo é conectado
+  nesta página — tudo simulação estética no navegador. O produto real lê apenas; nunca escreve.</div>
+  <div class='cards'>
+    <div class='card'><div class='r'>Ciclos</div><div class='v' id='cCiclos'>0</div><div class='nota'>ciclo de 1 s</div></div>
+    <div class='card'><div class='r'>Leituras ok</div><div class='v' id='cOk'>0</div><div class='nota'>pontos × ciclos</div></div>
+    <div class='card'><div class='r'>Falhas</div><div class='v ok'>0</div><div class='nota'>nenhuma no ensaio</div></div>
+    <div class='card'><div class='r'>Cobertura do catálogo</div><div class='v'>100 %</div><div class='nota'>10/10 pontos cobertos</div></div>
+  </div>
+  <p class='nota'>Abaixo, a visão ponto a ponto que o XcoInit grava no CSV diário: valor cru, valor escalado e histórico.</p>
+
+  <h2>Pontos do dispositivo</h2>
+  <div class='lote' id='lote'>(lote exibido no ciclo 0 — FC3 @0x006 range · FC1/FC2 @0x010)</div>
+  <table id='tabeto'>
+    <tr><th>Ponto</th><th>Tag</th><th>Descrição</th><th>FC</th><th>Doc</th><th>Valor</th><th>Unidade</th><th>últimos 40 valores</th><th>Situação</th></tr>
+  </table>
+  <p class='nota'>Valor cru é o que o dispositivo envia (int/float/word); valor escalado aplica min/máx do catálogo. Bits de estado chegam por FC1/FC2; medições por FC3/FC4.</p>
+
+  <h2>O que estaria no CSV</h2>
+  <p>Um arquivo <code>pontos-AAAA-MM-DD.csv</code> por dia, com uma linha por ponto coletado:
+  <code>ts, ponto, doc, fn, addr0, valor_cru, valor_escala, unidade</code> — e, ao lado, o
+  <code>xcoinit-AAAA-MM-DD.csv</code> de lotes e o <code>xcoinit-bits-…csv</code> dos bits.
+  A validação de cobertura cruza o mapa descoberto com este catálogo e responde 100 % (10/10).</p>
+
+  <footer>
+    FRV XcoInit · software de engenharia da <a href='/'>FRV Engenharia</a> ·
+    demonstração com dados ilustrativos · <a href='#' onclick='return false'>nenhum dado real de planta</a>
+    · <a href='/xcoinit/'>voltar à página do produto</a>
+  </footer>
+</main>
+<script>
+// PONTOS ilustrativos (cruzam FC1/FC2 bits + FC3/FC4 registradores)
+const P = [
+  {p:'VT-01', tag:'VT-0101', d:'vibração eixo X · mancal A',   fn:3, doc:30001, cru:i=>3.6+Math.abs(Math.sin(i/9))*2.4,  esc:v=>v,  u:'mm/s'},
+  {p:'VT-02', tag:'VT-0102', d:'vibração eixo Y · mancal A',   fn:3, doc:30002, cru:i=>4.4+Math.abs(Math.cos(i/11))*2.2, esc:v=>v,  u:'mm/s'},
+  {p:'VT-03', tag:'VT-0103', d:'vibração axial · mancal B',    fn:3, doc:30003, cru:i=>2.1+Math.abs(Math.sin(i/7))*1.3,  esc:v=>v,  u:'mm/s'},
+  {p:'MT-01', tag:'MT-0110', d:'temperatura mancal A',         fn:4, doc:40001, cru:i=>58+Math.sin(i/23)*4+ (i%97===0?9:0), esc:v=>v, u:'°C'},
+  {p:'MT-02', tag:'MT-0111', d:'temperatura óleo lubrificante',fn:4, doc:40002, cru:i=>52+Math.sin(i/31)*3,              esc:v=>v,  u:'°C'},
+  {p:'FS-01', tag:'FS-0120', d:'vazão de processo',            fn:3, doc:30007, cru:i=>184+Math.sin(i/17)*12,            esc:v=>v,  u:'m³/h'},
+  {p:'PD-01', tag:'PD-0121', d:'pressão diferencial',          fn:4, doc:40005, cru:i=>64+Math.sin(i/13)*5,              esc:v=>v,  u:'kPa'},
+  {p:'CS-01', tag:'CS-0101', d:'estado · em operação',         fn:1, doc:10001, cru:()=>1,                               esc:v=>v?'rotando':'parado', u:'bit'},
+  {p:'AL-01', tag:'AL-0102', d:'alarme de vibração alto',      fn:2, doc:10002, cru:i=>chk(38.0,'VT-01',i)?1:0,          esc:v=>v?'ALERTA':'normal', u:'bit'},
+  {p:'AL-02', tag:'AL-0103', d:'alarme de temperatura alta',   fn:2, doc:10003, cru:i=>chk(70,'MT-01',i)?1:0,            esc:v=>v?'ALERTA':'normal', u:'bit'},
+];
+// pequeno moto acionado pra demonstrar alarmes em fase com o valor
+const VALS = {};
+P.forEach(p => VALS[p.tag] = []);
+function chk(lim, pai, i){ // TRUE ocacional quando o ponto pai passa do limite
+  const pp = P.find(x => x.p === pai);
+  if (!pp) return false;
+  const v = 3.6+Math.abs(Math.sin(i/9))*2.4; // espelha VT-01 cru
+  return Math.abs(v) >= lim || (i % 61 === 0);
+}
+function spark(arr, tgt){ // polyline dos últimos 40 valores
+  const s = arr.slice(-40);
+  if (!s.length) return;
+  const w = 150, h = 24, mn = Math.min(...s), mx = Math.max(...s), dx = (mx - mn) || 1;
+  const pts = s.map((v,k) => (k / (s.length - 1 || 1) * w).toFixed(1) + ',' + (h - ((v - mn) / dx * (h - 2) + 1)).toFixed(1)).join(' ');
+  tgt.setAttribute('points', pts);
+}
+let t = 0, ok = 0;
+function tick(){
+  t++;
+  document.getElementById('cCiclos').textContent = t;
+  for (const p of P){
+    const cru = p.cru(t), esc = p.esc(cru);
+    ok++;
+    VALS[p.tag].push(cru); if (VALS[p.tag].length > 60) VALS[p.tag].shift();
+    let lin = document.getElementById('L' + p.tag);
+    if (!lin){
+      lin = document.createElement('tr'); lin.id = 'L' + p.tag;
+      lin.innerHTML = '<td><b>' + p.p + '</b></td><td>' + p.tag + '</td><td>' + p.d + '</td><td>FC' + p.fn +
+        '</td><td>' + p.doc + '</td><td class="n" id="V' + p.tag + '"></td><td>' + p.u +
+        '</td><td><svg viewBox="0 0 150 26" preserveAspectRatio="none"><polyline/></svg></td><td id="S' + p.tag + '"></td>';
+      document.getElementById('tabeto').appendChild(lin);
+    }
+    const fmt = (u) => u === 'bit' ? String(cru) : cru.toFixed(2).replace('.', ',');
+    document.getElementById('V' + p.tag).textContent = fmt(p.u) + ' → ' + (p.u === 'bit' ? esc : esc.toFixed(1).replace('.', ','));
+    const alerta = (p.u === '°C' && cru > 66) || (p.u === 'mm/s' && cru > 5.6);
+    const cel = document.getElementById('S' + p.tag);
+    cel.textContent = (p.u === 'bit') ? esc : (alerta ? 'ALERTA' : 'OK');
+    cel.className = (p.u === 'bit') ? (esc === 'ALERTA' ? 'al' : 'ok') : (alerta ? 'al' : 'ok');
+    spark(VALS[p.tag], lin.querySelector('polyline'));
+  }
+  document.getElementById('cOk').textContent = ok;
+  const seq = [];
+  if (t % 5 === 1) seq.push('FC3 lote @0x006 ×7 ok');
+  if (t % 5 === 2) seq.push('FC4 lote @0x000 ×5 ok');
+  if (t % 5 === 3) seq.push('FC1 bits @0x010 ×3 ok');
+  if (t % 5 === 4) seq.push('FC2 bits @0x010 ×3 ok');
+  if (t % 5 === 0) seq.push('cobertura re-verificada: 10/10 (100 %)');
+  document.getElementById('lote').textContent = 'ciclo ' + t + ' · ' + (seq[0] || 'sem lotes pendentes') + ' · latência ~2 ms';
+  document.getElementById('clock').textContent = new Date().toLocaleTimeString('pt-BR');
+}
+document.getElementById('clock').textContent = new Date().toLocaleTimeString('pt-BR');
+setInterval(tick, 1000); tick();
+</script>
+</body></html>
