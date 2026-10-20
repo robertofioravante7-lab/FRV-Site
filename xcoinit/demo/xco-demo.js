@@ -36,7 +36,9 @@ function tick(){
   t++;
   document.getElementById('cCiclos').textContent = t;
   for (const p of P){
-    const cru = p.cru(t), esc = p.esc(cru);
+    let cru = p.cru(t);
+    if (falhaAtiva && p.p === 'VT-03'){ drift = Math.min(2.5, drift + 0.02); cru += drift; }
+    const esc = p.esc(cru);
     ok++;
     VALS[p.tag].push(cru); if (VALS[p.tag].length > 60) VALS[p.tag].shift();
     let lin = document.getElementById('L' + p.tag);
@@ -68,7 +70,6 @@ function tick(){
 document.getElementById('clock').textContent = new Date().toLocaleTimeString('pt-BR');
 
 // ===== módulo de análise (prévia · dados ilustrativos) =====
-const histo = { vt: [], mt: [] };
 const FABRICA = [
   { id: 'F1',   ordem: '1×',   nome: 'f_r (gira do eixo)',    b: 'frequência fundamental do eixo',            f: 49.8,  r: 'desequilíbrio / alinhamento' },
   { id: 'F2',   ordem: '2×',   nome: '2× f_r',                b: 'segundo harmônico do eixo',                 f: 99.6,  r: 'desalinhamento / soltura' },
@@ -97,11 +98,54 @@ function desenhaHisto(id, arr, min, max){
   pl.setAttribute('points', pts);
 }
 let vida = 87 + Math.random() * 6;
+
+// X·1 · normal × agora — aprende 60 ciclos, congela o normal e compara dia contra dia
+const histo = { vt: [], mt: [], vt03: [] };
+const normal = { vt: null, b: null };
+let drift = 0, falhaAtiva = false;
+const fmt2 = (v) => v.toFixed(2).replace('.', ',');
+function estatistica(arr){
+  const n = arr.length, media = arr.reduce((a, b) => a + b, 0) / n;
+  const sigma = Math.sqrt(arr.reduce((a, b) => a + (b - media) * (b - media), 0) / (n - 1));
+  return { m: media, s: sigma };
+}
+function marcaNormal(id, base, ult){
+  if (!base){
+    document.getElementById('n' + id + 'm').textContent = 'aprendendo… ' + t + '/60';
+    return;
+  }
+  const dev = ult - base.m;
+  const z = base.s > 1e-9 ? dev / base.s : (Math.abs(dev) > 1e-9 ? 99 : 0);
+  const abs = Math.min(Math.abs(z), 99);
+  const nivel = abs >= 3 ? 'AÇÃO' : abs >= 2 ? 'ATENÇÃO' : 'BOM';
+  const cls = abs >= 3 ? 'nok' : abs >= 2 ? 'al' : 'ok';
+  document.getElementById('n' + id + 'm').textContent = fmt2(base.m) + ' ± ' + fmt2(base.s);
+  document.getElementById('n' + id + 'a').textContent = fmt2(ult);
+  document.getElementById('n' + id + 'd').textContent = (dev >= 0 ? '+' : '−') + fmt2(Math.abs(dev));
+  document.getElementById('n' + id + 'z').textContent = (z >= 0 ? '+' : '−') + abs.toFixed(1).replace('.', ',');
+  const e = document.getElementById('n' + id + 'e');
+  e.textContent = nivel; e.className = 'pill-estado ' + cls;
+}
+document.getElementById('btnFalha').onclick = function(){
+  falhaAtiva = true;
+  this.disabled = true;
+  document.getElementById('notaFalha').textContent = 'desgaste em curso no mancal B (dados ilustrativos) — observe o z subir sem o alarme tocar';
+};
 function analise(){
   histo.vt.push(VALS['VT-0101'][VALS['VT-0101'].length - 1]);
   histo.mt.push(VALS['MT-0110'][VALS['MT-0110'].length - 1]);
+  histo.vt03.push(VALS['VT-0103'][VALS['VT-0103'].length - 1]);
   while (histo.vt.length > 60) histo.vt.shift();
   while (histo.mt.length > 60) histo.mt.shift();
+  while (histo.vt03.length > 60) histo.vt03.shift();
+  if (!normal.vt && histo.vt.length >= 60){
+    normal.vt = estatistica(histo.vt);
+    normal.b = estatistica(histo.vt03);
+    document.getElementById('btnFalha').disabled = false;
+    document.getElementById('notaFalha').textContent = 'aprendizado concluído — o normal está congelado · o desgaste simulado soma +1,2 mm/s por minuto de máquina, sem passar de nenhum limite · recarregar a página zera tudo';
+  }
+  marcaNormal('VT', normal.vt, histo.vt[histo.vt.length - 1]);
+  marcaNormal('B', normal.b, histo.vt03[histo.vt03.length - 1]);
   desenhaHisto('plVT', histo.vt, 2.5, 8.5);
   desenhaHisto('plMT', histo.mt, 44, 82);
   const vt = histo.vt, mt = histo.mt;

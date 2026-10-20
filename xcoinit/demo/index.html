@@ -39,6 +39,10 @@ td svg{display:block;width:150px;height:26px}td svg polyline{fill:none;stroke:va
 .fbar div{background:var(--laranja);height:9px}
 footer{color:var(--suave);font-size:12px;margin-top:40px;border-top:1px solid var(--linha);padding-top:10px}
 footer a{color:var(--laranja);text-decoration:none}footer a:hover{text-decoration:underline}
+.btn-demo{background:var(--laranja);color:#fff;border:none;border-radius:8px;padding:9px 16px;font:inherit;font-weight:700;cursor:pointer;margin:10px 8px 0 0}
+.btn-demo:disabled{opacity:.4;cursor:default}
+.pill-estado{display:inline-block;padding:2px 10px;border-radius:999px;font-weight:800;font-size:12px}
+.pill-estado.ok{background:#e2f2e6;color:#1f8a4c}.pill-estado.al{background:#fdf0d9;color:#b9770e}.pill-estado.nok{background:#f9e0dd;color:#c0392b}
 </style></head><body>
 <header>
   <div><div class='marca'>FRV <span>XCOINIT</span></div>
@@ -107,6 +111,16 @@ footer a{color:var(--laranja);text-decoration:none}footer a:hover{text-decoratio
       <div class='nota'>estimativa ilustrativa de margem de planejamento até a troca do rolamento</div>
     </div>
   </div>
+
+  <h2>X·1 · Normal × agora — o desvio que os limites não veem (simulação)</h2>
+  <p class='ref'>Nos primeiros 60 ciclos o X·1 <b>aprende</b> o comportamento de cada ponto (média ± σ) e congela esse estado como o <b>normal</b>. Daí em diante a comparação é dia contra dia: se o ponto desvia do próprio normal, vira atenção — <b>mesmo sem nunca cruzar um limite de alarme</b>.</p>
+  <table class='tab-freq' id='tabNormal'>
+    <tr><th>Ponto</th><th>Normal (congelado no ciclo 60)</th><th>Agora</th><th>Desvio</th><th>z</th><th>Estado</th></tr>
+    <tr><td>VT-01 · vibração mancal A</td><td id='nVTm'>aprendendo…</td><td id='nVTa'>—</td><td id='nVTd'>—</td><td id='nVTz'>—</td><td><span class='pill-estado' id='nVTe'>—</span></td></tr>
+    <tr><td>VT-03 · vibração axial mancal B</td><td id='nBm'>aprendendo…</td><td id='nBa'>—</td><td id='nBd'>—</td><td id='nBz'>—</td><td><span class='pill-estado' id='nBe'>—</span></td></tr>
+  </table>
+  <button class='btn-demo' id='btnFalha' disabled>▶ simular desgaste lento no mancal B</button>
+  <span class='nota' id='notaFalha'>o botão destrava depois do aprendizado (ciclo 60) · o desgaste simulado soma +1,2 mm/s por minuto de máquina, sem passar de nenhum limite · recarregar a página zera tudo</span>
 
   <h2>X·1 · Frequências do rolamento · marcadores (geometria ilustrativa)</h2>
   <p class='ref'>Rolamento ilustrativo: 9 corpos · razão d/D = 0,40 · anel externo fixo · eixo @2.985 rpm (f_r = 49,8 Hz). Marcadores com a nomenclatura usual de manutenção:</p>
