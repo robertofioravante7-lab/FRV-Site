@@ -7,13 +7,13 @@ const P = [
   {p:'VT-01', tag:'VT-0101', d:'vibração eixo X · mancal A',   fn:3, doc:30001, cru:i=>3.6+Math.abs(Math.sin(i/9))*2.4,  esc:v=>v,  u:'mm/s'},
   {p:'VT-02', tag:'VT-0102', d:'vibração eixo Y · mancal A',   fn:3, doc:30002, cru:i=>4.4+Math.abs(Math.cos(i/11))*2.2, esc:v=>v,  u:'mm/s'},
   {p:'VT-03', tag:'VT-0103', d:'vibração axial · mancal B',    fn:3, doc:30003, cru:i=>2.1+Math.abs(Math.sin(i/7))*1.3,  esc:v=>v,  u:'mm/s'},
-  {p:'MT-01', tag:'MT-0110', d:'temperatura mancal A',         fn:4, doc:40001, cru:i=>58+Math.sin(i/23)*4+ (i%97===0?9:0), esc:v=>v, u:'°C'},
-  {p:'MT-02', tag:'MT-0111', d:'temperatura óleo lubrificante',fn:4, doc:40002, cru:i=>52+Math.sin(i/31)*3,              esc:v=>v,  u:'°C'},
+  {p:'TT-01', tag:'TT-0110', d:'temperatura mancal A',         fn:4, doc:40001, cru:i=>58+Math.sin(i/23)*4+ (i%97===0?9:0), esc:v=>v, u:'°C'},
+  {p:'TT-02', tag:'TT-0111', d:'temperatura óleo lubrificante',fn:4, doc:40002, cru:i=>52+Math.sin(i/31)*3,              esc:v=>v,  u:'°C'},
   {p:'FS-01', tag:'FS-0120', d:'vazão de processo',            fn:3, doc:30007, cru:i=>184+Math.sin(i/17)*12,            esc:v=>v,  u:'m³/h'},
   {p:'PD-01', tag:'PD-0121', d:'pressão diferencial',          fn:4, doc:40005, cru:i=>64+Math.sin(i/13)*5,              esc:v=>v,  u:'kPa'},
   {p:'CS-01', tag:'CS-0101', d:'estado · em operação',         fn:1, doc:10001, cru:()=>1,                               esc:v=>v?'rotando':'parado', u:'bit'},
   {p:'AL-01', tag:'AL-0102', d:'alarme de vibração alto',      fn:2, doc:10002, cru:i=>chk(38.0,'VT-01',i)?1:0,          esc:v=>v?'ALERTA':'normal', u:'bit'},
-  {p:'AL-02', tag:'AL-0103', d:'alarme de temperatura alta',   fn:2, doc:10003, cru:i=>chk(70,'MT-01',i)?1:0,            esc:v=>v?'ALERTA':'normal', u:'bit'},
+  {p:'AL-02', tag:'AL-0103', d:'alarme de temperatura alta',   fn:2, doc:10003, cru:i=>chk(70,'TT-01',i)?1:0,            esc:v=>v?'ALERTA':'normal', u:'bit'},
 ];
 // pequeno motor acionado pra demonstrar alarmes em fase com o valor
 const VALS = {};
@@ -133,7 +133,7 @@ document.getElementById('btnFalha').onclick = function(){
 };
 function analise(){
   histo.vt.push(VALS['VT-0101'][VALS['VT-0101'].length - 1]);
-  histo.mt.push(VALS['MT-0110'][VALS['MT-0110'].length - 1]);
+  histo.mt.push(VALS['TT-0110'][VALS['TT-0110'].length - 1]);
   histo.vt03.push(VALS['VT-0103'][VALS['VT-0103'].length - 1]);
   while (histo.vt.length > 60) histo.vt.shift();
   while (histo.mt.length > 60) histo.mt.shift();
