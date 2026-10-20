@@ -44,6 +44,8 @@
     .x1-pill.ok{background:#e2f2e6;color:#1f8a4c}.x1-pill.al{background:#fdf0d9;color:#b9770e}.x1-pill.nok{background:#f9e0dd;color:#c0392b}
     .x1-area{display:flex;justify-content:space-between;align-items:center;padding:5px 2px;border-bottom:1px dashed #e5ebf2;font:12.5px 'IBM Plex Mono',monospace;color:#12233a}
     .x1-area:last-child{border-bottom:none}
+    .x1-medida.mini{padding:7px 14px;display:flex;flex-direction:column;justify-content:center}
+    .x1-medida.mini .x1-area{padding:4px 2px;font:11px 'IBM Plex Mono',monospace}
     .x1-laudo{width:100%;border-collapse:collapse;font:12.5px/1.5 'IBM Plex Mono',monospace;margin:6px 0 4px}
     .x1-laudo th{text-align:left;font-size:10.5px;text-transform:uppercase;letter-spacing:.05em;color:#9fb3c8;border-bottom:2px solid #e5ebf2;padding:4px 8px 6px 0}
     .x1-laudo td{border-bottom:1px solid #e5ebf2;padding:7px 8px 7px 0;vertical-align:top}
@@ -147,15 +149,15 @@
         <h3>Como o dispositivo se comporta</h3>
         <p>Sonda as funções de diagnóstico de fábrica e registra quem responde e quem é negada — a "assinatura" humana honesta do dispositivo, útil em comissionamento e auditoria.</p>
       </div>
-      <div class="fn fn-w">
+      <div class="fn">
         <div class="code">XCL·07 · Mesa de operação</div>
         <h3>Uma tela, todo o circuito</h3>
         <p>Conexão, sondagem, varredura e coleta em uma única mesa gráfica, com estatísticas ao vivo e catálogo carregado do arquivo — o operador acompanha o circuito inteiro sem linha de comando.</p>
       </div>
-      <div class="fn fn-w">
+      <div class="fn">
         <div class="code">XCL·08 · Módulo X·1 <em>na bancada</em></div>
         <h3>X·1: a análise que aprende o normal da máquina</h3>
-        <p>Estado por ponto com limites, alteração de percentual entre amostras (com a régua das quatro anteriores), minitendências e marcadores de frequência de rolamento (FTF · BSF · BPFO · BPFI) com geometria catalogada e fonte citada. E o novo coração: o X·1 guarda a assinatura saudável de cada ponto — média e variação do dia — e compara dia contra dia, apontando o desvio do normal antes mesmo de qualquer limite ser cruzado. Resumo por área, análise ao vivo durante a coleta e laudo automático ao fim do dia de campo. Prévia na demonstração.</p>
+        <p>Estado por ponto com limites, alteração de percentual com a régua das quatro anteriores, minitendências e marcadores de rolamento com geometria e fonte citadas. O coração: o X·1 guarda a assinatura saudável de cada ponto e compara dia contra dia — desvio do normal acende antes de qualquer limite. Resumo por área, análise ao vivo na mesa e laudo automático. Prévia na demonstração.</p>
       </div>
     </div>
   </div>
@@ -196,7 +198,7 @@
         <div class="code">X·1 · normal</div>
         <h3>Desvio do próprio normal (z)</h3>
         <div class="x1-medida">
-          <svg viewBox="0 0 300 58" role="img" aria-label="Régua z com zonas das duas e três variações e o ponto de hoje em desvio alto">
+          <svg viewBox="0 0 300 56" role="img" aria-label="Régua z com zonas das duas e três variações e o ponto de hoje em desvio alto">
             <rect x="53" y="20" width="34" height="12" fill="#fdf0d9"/>
             <rect x="19" y="20" width="34" height="12" fill="#f9e0dd"/>
             <rect x="223" y="20" width="34" height="12" fill="#fdf0d9"/>
@@ -218,17 +220,17 @@
         <div class="code">X·1 · mudança</div>
         <h3>Mudança com memória</h3>
         <div class="x1-medida">
-          <svg viewBox="0 0 300 58" role="img" aria-label="Cinco barras ascendentes, a última em laranja">
-            <rect x="20" y="36" width="40" height="8" rx="2" fill="#9fb3c8"/>
-            <rect x="74" y="32" width="40" height="12" rx="2" fill="#9fb3c8"/>
-            <rect x="128" y="29" width="40" height="15" rx="2" fill="#9fb3c8"/>
-            <rect x="182" y="25" width="40" height="19" rx="2" fill="#9fb3c8"/>
-            <rect x="236" y="20" width="40" height="24" rx="2" fill="#e8820c"/>
-            <text x="40" y="55" text-anchor="middle" style="font:9px 'IBM Plex Mono',monospace" fill="#9fb3c8">-4</text>
-            <text x="94" y="55" text-anchor="middle" style="font:9px 'IBM Plex Mono',monospace" fill="#9fb3c8">-3</text>
-            <text x="148" y="55" text-anchor="middle" style="font:9px 'IBM Plex Mono',monospace" fill="#9fb3c8">-2</text>
-            <text x="202" y="55" text-anchor="middle" style="font:9px 'IBM Plex Mono',monospace" fill="#9fb3c8">-1</text>
-            <text x="256" y="55" text-anchor="middle" style="font:9px 'IBM Plex Mono',monospace" fill="#e8820c">hoje</text>
+          <svg viewBox="0 0 300 56" role="img" aria-label="Cinco barras ascendentes, a última em laranja">
+            <rect x="20" y="34" width="40" height="8" rx="2" fill="#9fb3c8"/>
+            <rect x="74" y="30" width="40" height="12" rx="2" fill="#9fb3c8"/>
+            <rect x="128" y="27" width="40" height="15" rx="2" fill="#9fb3c8"/>
+            <rect x="182" y="23" width="40" height="19" rx="2" fill="#9fb3c8"/>
+            <rect x="236" y="18" width="40" height="24" rx="2" fill="#e8820c"/>
+            <text x="40" y="53" text-anchor="middle" style="font:9px 'IBM Plex Mono',monospace" fill="#9fb3c8">-4</text>
+            <text x="94" y="53" text-anchor="middle" style="font:9px 'IBM Plex Mono',monospace" fill="#9fb3c8">-3</text>
+            <text x="148" y="53" text-anchor="middle" style="font:9px 'IBM Plex Mono',monospace" fill="#9fb3c8">-2</text>
+            <text x="202" y="53" text-anchor="middle" style="font:9px 'IBM Plex Mono',monospace" fill="#9fb3c8">-1</text>
+            <text x="256" y="53" text-anchor="middle" style="font:9px 'IBM Plex Mono',monospace" fill="#e8820c">hoje</text>
           </svg>
         </div>
         <p class="x1-leg">hoje <b>+19,1 %</b> contra a régua das 4 amostras anteriores</p>
@@ -238,9 +240,9 @@
         <div class="code">X·1 · minitendência</div>
         <h3>Direção por hora</h3>
         <div class="x1-medida">
-          <svg viewBox="0 0 300 58" role="img" aria-label="Série subindo com linha de tendência pontilhada">
-            <line x1="12" y1="46" x2="288" y2="18" stroke="#9fb3c8" stroke-dasharray="4 4" stroke-width="1.4"/>
-            <polyline fill="none" stroke="#e8820c" stroke-width="2.5" stroke-linejoin="round" points="12,44 40,42 68,41 96,38 124,37 152,34 180,33 208,28 236,27 264,22 288,20"/>
+          <svg viewBox="0 0 300 56" role="img" aria-label="Série subindo com linha de tendência pontilhada">
+            <line x1="12" y1="44" x2="288" y2="16" stroke="#9fb3c8" stroke-dasharray="4 4" stroke-width="1.4"/>
+            <polyline fill="none" stroke="#e8820c" stroke-width="2.5" stroke-linejoin="round" points="12,42 40,40 68,39 96,36 124,35 152,32 180,31 208,26 236,25 264,20 288,18"/>
           </svg>
         </div>
         <p class="x1-leg">janela de 60 min · declive <b>+0,6 mm/s por hora</b></p>
@@ -250,25 +252,25 @@
         <div class="code">X·1 · marcadores</div>
         <h3>Frequências de rolamento</h3>
         <div class="x1-medida">
-          <svg viewBox="0 0 300 66" role="img" aria-label="Espectro com picos nas frequências de rolamento catalogadas">
-            <line x1="10" y1="50" x2="290" y2="50" stroke="#9fb3c8" stroke-width="1.5"/>
-            <rect x="21" y="34" width="5" height="16" fill="#e8820c"/>
-            <rect x="52" y="28" width="5" height="22" fill="#e8820c"/>
-            <rect x="62" y="38" width="5" height="12" fill="#e8820c"/>
-            <rect x="95" y="20" width="5" height="30" fill="#e8820c"/>
-            <rect x="125" y="16" width="5" height="34" fill="#c0392b"/>
-            <rect x="281" y="28" width="5" height="22" fill="#e8820c"/>
-            <text x="23" y="30" style="font:9px 'IBM Plex Mono',monospace" fill="#4a5d73">FTF</text>
-            <text x="54" y="24" style="font:9px 'IBM Plex Mono',monospace" fill="#4a5d73">1×</text>
-            <text x="68" y="35" style="font:9px 'IBM Plex Mono',monospace" fill="#4a5d73">BSF</text>
-            <text x="97" y="16" style="font:9px 'IBM Plex Mono',monospace" fill="#4a5d73">2×</text>
-            <text x="127" y="12" style="font:9px 'IBM Plex Mono',monospace" fill="#c0392b">BPFO</text>
-            <text x="283" y="24" text-anchor="middle" style="font:9px 'IBM Plex Mono',monospace" fill="#4a5d73">BPFI</text>
-            <text x="23" y="61" text-anchor="middle" style="font:8px 'IBM Plex Mono',monospace" fill="#9fb3c8">14,9</text>
-            <text x="54" y="61" text-anchor="middle" style="font:8px 'IBM Plex Mono',monospace" fill="#9fb3c8">49,8</text>
-            <text x="97" y="61" text-anchor="middle" style="font:8px 'IBM Plex Mono',monospace" fill="#9fb3c8">99,6</text>
-            <text x="127" y="61" text-anchor="middle" style="font:8px 'IBM Plex Mono',monospace" fill="#9fb3c8">134,5</text>
-            <text x="281" y="61" text-anchor="middle" style="font:8px 'IBM Plex Mono',monospace" fill="#9fb3c8">313,7</text>
+          <svg viewBox="0 0 300 56" role="img" aria-label="Espectro com picos nas frequências de rolamento catalogadas">
+            <line x1="10" y1="46" x2="290" y2="46" stroke="#9fb3c8" stroke-width="1.5"/>
+            <rect x="21" y="30" width="5" height="16" fill="#e8820c"/>
+            <rect x="52" y="24" width="5" height="22" fill="#e8820c"/>
+            <rect x="62" y="34" width="5" height="12" fill="#e8820c"/>
+            <rect x="95" y="16" width="5" height="30" fill="#e8820c"/>
+            <rect x="125" y="12" width="5" height="34" fill="#c0392b"/>
+            <rect x="281" y="24" width="5" height="22" fill="#e8820c"/>
+            <text x="23" y="26" style="font:9px 'IBM Plex Mono',monospace" fill="#4a5d73">FTF</text>
+            <text x="54" y="20" style="font:9px 'IBM Plex Mono',monospace" fill="#4a5d73">1×</text>
+            <text x="68" y="31" style="font:9px 'IBM Plex Mono',monospace" fill="#4a5d73">BSF</text>
+            <text x="97" y="12" style="font:9px 'IBM Plex Mono',monospace" fill="#4a5d73">2×</text>
+            <text x="127" y="8" style="font:9px 'IBM Plex Mono',monospace" fill="#c0392b">BPFO</text>
+            <text x="283" y="20" text-anchor="middle" style="font:9px 'IBM Plex Mono',monospace" fill="#4a5d73">BPFI</text>
+            <text x="23" y="54" text-anchor="middle" style="font:8px 'IBM Plex Mono',monospace" fill="#9fb3c8">14,9</text>
+            <text x="54" y="54" text-anchor="middle" style="font:8px 'IBM Plex Mono',monospace" fill="#9fb3c8">49,8</text>
+            <text x="97" y="54" text-anchor="middle" style="font:8px 'IBM Plex Mono',monospace" fill="#9fb3c8">99,6</text>
+            <text x="127" y="54" text-anchor="middle" style="font:8px 'IBM Plex Mono',monospace" fill="#9fb3c8">134,5</text>
+            <text x="281" y="54" text-anchor="middle" style="font:8px 'IBM Plex Mono',monospace" fill="#9fb3c8">313,7</text>
           </svg>
         </div>
         <p class="x1-leg">geometria catalogada e <b>fonte citada</b> no laudo — frequência errada manda manutenção pro lugar errado</p>
@@ -277,15 +279,12 @@
       <div class="fn">
         <div class="code">X·1 · máquina</div>
         <h3>Confirmação e vista da máquina</h3>
-        <div>
-          <span class="x1-chip">confirmação 3/3 ciclos</span>
-        </div>
-        <div class="x1-medida" style="padding:8px 14px 8px">
+        <div class="x1-medida mini">
           <div class="x1-area"><span>Mancal A</span><span class="x1-pill ok" style="margin:0">BOM</span></div>
           <div class="x1-area"><span>Mancal B</span><span class="x1-pill nok" style="margin:0">AÇÃO</span></div>
           <div class="x1-area"><span>Óleo e lubrificação</span><span class="x1-pill al" style="margin:0">ATENÇÃO</span></div>
         </div>
-        <p class="x1-leg">estado não escala com uma leitura — escala com ciclos seguidos</p>
+        <p class="x1-leg">confirmação <b>3/3 ciclos</b> — estado não escala com uma leitura, escala com ciclos seguidos</p>
         <p>Nada vira alarme por sobressalto: a régua confirma em ciclos seguidos antes de escalar, e a máquina aparece inteira, área por área, no laudo.</p>
       </div>
       <div class="fn fn-w" style="grid-column:1/-1">
