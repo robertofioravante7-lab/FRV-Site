@@ -34,6 +34,11 @@
     @keyframes visao-gira{to{transform:rotate(360deg)}}
     .visao-txt{font:11px 'IBM Plex Mono',monospace;fill:#4a5d73}
     .visao-spark{fill:none;stroke:#e8820c;stroke-width:2;stroke-linejoin:round}
+    .visao-gira.lento{animation-duration:6.5s}
+    .visao-pistao{animation:visao-pistao 1.2s ease-in-out infinite alternate}
+    .visao-pistao.p2{animation-delay:-.6s}
+    @keyframes visao-pistao{from{transform:translateY(-5px)}to{transform:translateY(5px)}}
+    .visao-bolha{fill:#0a1522;stroke:#26364a;stroke-width:1}
     /* Régua X·1 — visual das ferramentas de análise */
     .x1-medida{background:#fff;border:1px solid #e5ebf2;border-radius:10px;padding:12px 14px 4px;margin:12px 0 4px}
     .x1-medida svg{display:block;width:100%;height:auto}
@@ -95,7 +100,7 @@
         <div class="xco-barra"><span>127.0.0.1:502</span><span>unit 255</span><span class="xco-ok">● ligado</span></div>
         <div class="xco-linha"><b>VT-01</b> vibração eixo X · mm/s<em id="hVT1">4,82</em></div>
         <div class="xco-linha"><b>VT-02</b> vibração eixo Y · mm/s<em id="hVT2">4,91</em></div>
-        <div class="xco-linha"><b>MT-01</b> temperatura mancal · °C<em id="hMT1">63,4</em></div>
+        <div class="xco-linha"><b>TT-01</b> temperatura mancal · °C<em id="hMT1">63,4</em></div>
         <div class="xco-linha"><b>CS-01</b> estado · bit FC1<em class="xco-roda">rotando</em></div>
         <svg class="xco-spark" viewBox="0 0 240 40" preserveAspectRatio="none"><polyline id="hSpark" points="0,30 24,26 48,27 72,22 96,23 120,18 144,20 168,15 192,17 216,12 240,14"/></svg>
       </div>
@@ -295,7 +300,7 @@
           <tr><th>Ponto</th><th>Hoje</th><th>Normal (± σ)</th><th>Desvio</th><th>Estado</th><th>Motivo</th></tr>
           <tr><td>VT-01 · mancal A</td><td>4,82 mm/s</td><td>4,60 ± 0,55</td><td>+0,22 · z +0,4</td><td><span class="x1-pill ok">BOM</span></td><td class="okc">dentro da assinatura aprendida</td></tr>
           <tr><td>VT-03 · mancal B</td><td>4,18 mm/s</td><td>2,90 ± 0,32</td><td>+1,28 · z +4,0</td><td><span class="x1-pill nok">AÇÃO</span></td><td class="nok">desviando do próprio normal, subindo — sem tocar o alarme 5,6</td></tr>
-          <tr><td>MT-01 · mancal A</td><td>58,4 °C</td><td>60,2 ± 1,8</td><td>-1,8 · z -1,0</td><td><span class="x1-pill ok">BOM</span></td><td class="okc">estável dentro da banda da própria máquina</td></tr>
+          <tr><td>TT-01 · mancal A</td><td>58,4 °C</td><td>60,2 ± 1,8</td><td>-1,8 · z -1,0</td><td><span class="x1-pill ok">BOM</span></td><td class="okc">estável dentro da banda da própria máquina</td></tr>
         </table>
         <p>Ao fim do dia de coleta o relatório sai sozinho, com método, fonte de geometria e linhagem declarados — o laudo que se lê sem abrir planilha.</p>
       </div>
@@ -308,43 +313,113 @@
   <div class="c">
     <div class="eyebrow">A planta em movimento</div>
     <h2 class="h2">A máquina, <span>em movimento</span></h2>
-    <p>Cara de sistema: sensores pulsando nos mancais, eixo girando, fluxo de processo correndo e a mesa
-    do XcoInit recebendo cada leitura. Diagrama animado com dados ilustrativos — uma das visões planejadas
-    para o módulo X·1 de análise de condição de máquina.</p>
+    <p>Cara de sistema: pistões de dois estágios alternados, virabrequim girando e 8 pontos lendo a
+    máquina — velocidade no acoplamento (ST), vibração (VT), temperatura (TT), deslocamento axial e
+    radial (XT) e queda de haste (RD) — até a mesa do XcoInit receber cada leitura. Diagrama animado
+    com dados ilustrativos — uma das visões planejadas para o módulo X·1 de análise de condição.</p>
     <div class="visao-moldura">
-      <svg viewBox="0 0 720 250" role="img" aria-label="Diagrama animado de um trem motor-compressor com sensores e a mesa de dados do XcoInit">
-        <rect x="40" y="104" width="110" height="88" rx="10" fill="#fff" stroke="#d6dee8"/>
-        <text x="95" y="152" text-anchor="middle" class="visao-txt">MOTOR</text>
-        <rect x="150" y="146" width="76" height="8" rx="4" fill="#4a5d73"/>
+      <svg viewBox="0 0 860 320" role="img" aria-label="Diagrama animado do trem: motor de indução + compressor alternativo de dois estágios, com sensores ST, VT, TT, XT e rod drop, e a mesa do XcoInit coletando">
+        <!-- skid -->
+        <rect x="40" y="262" width="640" height="9" rx="4" fill="#141f2b"/>
+        <!-- motor -->
+        <rect x="60" y="132" width="180" height="108" rx="14" fill="#fff" stroke="#d6dee8" stroke-width="1.5"/>
+        <line x1="72" y1="144" x2="228" y2="144" stroke="#e6ecf3" stroke-width="2.5"/>
+        <line x1="72" y1="156" x2="228" y2="156" stroke="#e6ecf3" stroke-width="2.5"/>
+        <line x1="72" y1="208" x2="228" y2="208" stroke="#e6ecf3" stroke-width="2.5"/>
+        <line x1="72" y1="220" x2="228" y2="220" stroke="#e6ecf3" stroke-width="2.5"/>
+        <text x="150" y="186" text-anchor="middle" class="visao-txt">MOTOR</text>
+        <rect x="120" y="110" width="60" height="22" rx="4" fill="#fff" stroke="#d6dee8"/>
+        <circle cx="126" cy="121" r="1.5" fill="#9fb3c8"/><circle cx="174" cy="121" r="1.5" fill="#9fb3c8"/>
+        <rect x="64" y="240" width="26" height="22" fill="#fff" stroke="#d6dee8"/>
+        <rect x="206" y="240" width="26" height="22" fill="#fff" stroke="#d6dee8"/>
+        <rect x="240" y="182" width="32" height="8" rx="4" fill="#4a5d73"/>
+        <!-- acoplamento + ST velocidade -->
+        <rect x="272" y="169" width="10" height="34" rx="2" fill="#4a5d73"/>
+        <rect x="308" y="169" width="10" height="34" rx="2" fill="#4a5d73"/>
+        <rect x="282" y="179" width="26" height="14" fill="#9fb3c8"/>
+        <rect x="291" y="158" width="8" height="12" rx="2" fill="#e8820c"/>
+        <circle cx="295" cy="154" r="4" fill="#e8820c"/><circle cx="295" cy="154" r="4" class="visao-pulso"/>
+        <line x1="295" y1="150" x2="295" y2="120" class="visao-fio"/>
+        <rect x="250" y="104" width="104" height="16" rx="8" class="visao-bolha"/>
+        <text x="302" y="116" text-anchor="middle" style="font:9.5px 'IBM Plex Mono',monospace" fill="#ffd9a0">ST-01 · 2.985 rpm</text>
+        <!-- compressor: bloco, virabrequim e pés -->
+        <rect x="330" y="172" width="190" height="66" rx="10" fill="#fff" stroke="#d6dee8" stroke-width="1.5"/>
+        <line x1="336" y1="220" x2="514" y2="220" stroke="#d6dee8" stroke-dasharray="4 3"/>
+        <circle cx="396" cy="205" r="24" fill="#eef2f7" stroke="#d6dee8"/>
         <g class="visao-gira">
-          <line x1="176" y1="150" x2="194" y2="150" stroke="#e8820c" stroke-width="3" stroke-linecap="round"/>
-          <line x1="185" y1="141" x2="185" y2="159" stroke="#e8820c" stroke-width="3" stroke-linecap="round"/>
+          <rect x="394" y="185" width="4" height="20" rx="2" fill="#e8820c"/>
+          <rect x="386" y="203" width="20" height="4" rx="2" fill="#e8820c"/>
         </g>
-        <rect x="222" y="92" width="134" height="112" rx="14" fill="#fff" stroke="#d6dee8"/>
-        <text x="289" y="152" text-anchor="middle" class="visao-txt">COMPRESSOR</text>
-        <line x1="150" y1="150" x2="156" y2="150" stroke="none"/>
-        <circle cx="162" cy="150" r="6" fill="#e8820c"/><circle cx="162" cy="150" r="6" class="visao-pulso"/>
-        <circle cx="212" cy="150" r="6" fill="#e8820c"/><circle cx="212" cy="150" r="6" class="visao-pulso d2"/>
-        <circle cx="289" cy="86" r="6" fill="#1f8a4c"/><circle cx="289" cy="86" r="6" class="visao-pulso d3"/>
-        <text x="162" y="128" text-anchor="middle" class="visao-txt">VT-01</text>
-        <text x="212" y="128" text-anchor="middle" class="visao-txt">VT-02</text>
-        <text x="289" y="66" text-anchor="middle" class="visao-txt">MT-01</text>
-        <rect x="356" y="141" width="180" height="18" rx="9" fill="#eef2f7" stroke="#d6dee8"/>
-        <line x1="366" y1="150" x2="514" y2="150" class="visao-fluxo"/>
-        <polygon points="516,144 528,150 516,156" fill="#1f8a4c"/>
-        <circle cx="450" cy="141" r="5" fill="#e8820c"/><circle cx="450" cy="141" r="5" class="visao-pulso d4"/>
-        <text x="450" y="122" text-anchor="middle" class="visao-txt">PD-01</text>
-        <line x1="168" y1="144" x2="552" y2="96" class="visao-fio"/>
-        <line x1="218" y1="144" x2="552" y2="112" class="visao-fio"/>
-        <line x1="293" y1="80" x2="552" y2="86" class="visao-fio"/>
-        <line x1="455" y1="136" x2="552" y2="140" class="visao-fio"/>
-        <rect x="552" y="54" width="146" height="126" rx="12" fill="#0d1b2a"/>
-        <text x="568" y="84" fill="#fff" style="font:700 13px 'IBM Plex Mono',monospace">FRV XCOINIT</text>
-        <text x="568" y="102" fill="#e8820c" style="font:600 10.5px 'IBM Plex Mono',monospace">MODBUS/TCP · X·1</text>
-        <polyline id="spX" class="visao-spark" points="566,130 576,128 586,131 596,126 606,128 616,122 626,125 636,120 646,123 656,118 666,121 676,116 686,119 690,117"/>
-        <circle cx="566" cy="164" r="3.5" fill="#56d364"/>
-        <text x="576" y="168" fill="#9fb3c8" style="font:10px 'IBM Plex Mono',monospace">ligado · coletando</text>
-        <text x="690" y="242" text-anchor="end" style="font:10px 'IBM Plex Mono',monospace" fill="#9aa9b8">diagrama ilustrativo · dados fictícios</text>
+        <circle cx="396" cy="205" r="3" fill="#4a5d73"/>
+        <text x="430" y="234" text-anchor="middle" class="visao-txt">COMPRESSOR</text>
+        <rect x="346" y="238" width="20" height="24" fill="#fff" stroke="#d6dee8"/>
+        <rect x="486" y="238" width="20" height="24" fill="#fff" stroke="#d6dee8"/>
+        <text x="376" y="254" text-anchor="middle" style="font:8.5px 'IBM Plex Mono',monospace" fill="#9fb3c8">est. 1</text>
+        <text x="468" y="254" text-anchor="middle" style="font:8.5px 'IBM Plex Mono',monospace" fill="#9fb3c8">est. 2</text>
+        <!-- cilindros e pistões (dois estágios, alternados) -->
+        <rect x="360" y="100" width="52" height="72" rx="4" fill="#eef2f7" stroke="#d6dee8"/>
+        <rect x="440" y="100" width="36" height="72" rx="4" fill="#eef2f7" stroke="#d6dee8"/>
+        <g class="visao-pistao">
+          <rect x="364" y="112" width="44" height="18" rx="3" fill="#cbd5e2" stroke="#98a8b8"/>
+          <rect x="382" y="130" width="10" height="48" fill="#7a8fa3"/>
+        </g>
+        <g class="visao-pistao p2">
+          <rect x="446" y="114" width="24" height="16" rx="3" fill="#cbd5e2" stroke="#98a8b8"/>
+          <rect x="455" y="130" width="8" height="48" fill="#7a8fa3"/>
+        </g>
+        <rect x="356" y="86" width="60" height="14" rx="3" fill="#fff" stroke="#d6dee8"/>
+        <rect x="436" y="86" width="44" height="14" rx="3" fill="#fff" stroke="#d6dee8"/>
+        <!-- tubos: admissão, intercooler entre estágios, descarga -->
+        <rect x="330" y="94" width="26" height="8" fill="#eef2f7" stroke="#d6dee8"/>
+        <line x1="332" y1="98" x2="354" y2="98" class="visao-fluxo"/>
+        <rect x="414" y="92" width="20" height="10" fill="#eef2f7" stroke="#d6dee8"/>
+        <line x1="418" y1="93" x2="418" y2="101" stroke="#d6dee8"/><line x1="423" y1="93" x2="423" y2="101" stroke="#d6dee8"/><line x1="428" y1="93" x2="428" y2="101" stroke="#d6dee8"/><line x1="433" y1="93" x2="433" y2="101" stroke="#d6dee8"/>
+        <line x1="416" y1="97" x2="434" y2="97" class="visao-fluxo"/>
+        <rect x="480" y="94" width="26" height="8" fill="#eef2f7" stroke="#d6dee8"/>
+        <line x1="484" y1="98" x2="504" y2="98" class="visao-fluxo"/>
+        <polygon points="506,94 514,98 506,102" fill="#1f8a4c"/>
+        <!-- TT: temperatura nas cabeças -->
+        <circle cx="386" cy="84" r="4" fill="#1f8a4c"/><circle cx="386" cy="84" r="4" class="visao-pulso d3"/>
+        <line x1="386" y1="80" x2="386" y2="62" class="visao-fio"/>
+        <rect x="346" y="44" width="92" height="16" rx="8" class="visao-bolha"/>
+        <text x="392" y="56" text-anchor="middle" style="font:9.5px 'IBM Plex Mono',monospace" fill="#ffd9a0">TT-01 · 58,4 °C</text>
+        <circle cx="458" cy="84" r="4" fill="#1f8a4c"/><circle cx="458" cy="84" r="4" class="visao-pulso d4"/>
+        <line x1="458" y1="82" x2="492" y2="58" class="visao-fio"/>
+        <rect x="486" y="44" width="92" height="16" rx="8" class="visao-bolha"/>
+        <text x="532" y="56" text-anchor="middle" style="font:9.5px 'IBM Plex Mono',monospace" fill="#ffd9a0">TT-02 · 64,1 °C</text>
+        <!-- VT: vibração nos blocos -->
+        <circle cx="354" cy="142" r="4" fill="#e8820c"/><circle cx="354" cy="142" r="4" class="visao-pulso"/>
+        <rect x="246" y="130" width="104" height="16" rx="8" class="visao-bolha"/>
+        <text x="298" y="142" text-anchor="middle" style="font:9.5px 'IBM Plex Mono',monospace" fill="#ffd9a0">VT-01 · 4,82 mm/s</text>
+        <circle cx="480" cy="142" r="4" fill="#e8820c"/><circle cx="480" cy="142" r="4" class="visao-pulso d2"/>
+        <line x1="482" y1="142" x2="494" y2="142" class="visao-fio"/>
+        <rect x="496" y="130" width="104" height="16" rx="8" class="visao-bolha"/>
+        <text x="548" y="142" text-anchor="middle" style="font:9.5px 'IBM Plex Mono',monospace" fill="#ffd9a0">VT-02 · 4,18 mm/s</text>
+        <!-- XT e RD: deslocamento e queda de haste -->
+        <circle cx="459" cy="174" r="4" fill="#e8820c"/><circle cx="459" cy="174" r="4" class="visao-pulso d3"/>
+        <polyline points="459,178 459,266 375,266 375,278" class="visao-fio"/>
+        <rect x="330" y="280" width="90" height="16" rx="8" class="visao-bolha"/>
+        <text x="375" y="292" text-anchor="middle" style="font:9.5px 'IBM Plex Mono',monospace" fill="#f3c268">RD-01 · 0,42 mm</text>
+        <circle cx="522" cy="205" r="4" fill="#e8820c"/><circle cx="522" cy="205" r="4" class="visao-pulso d2"/>
+        <polyline points="522,209 522,270 479,270 479,278" class="visao-fio"/>
+        <rect x="428" y="280" width="102" height="16" rx="8" class="visao-bolha"/>
+        <text x="479" y="292" text-anchor="middle" style="font:9.5px 'IBM Plex Mono',monospace" fill="#ffd9a0">XT-01 ax · 0,20 mm</text>
+        <circle cx="432" cy="214" r="4" fill="#e8820c"/><circle cx="432" cy="214" r="4" class="visao-pulso d4"/>
+        <polyline points="432,218 432,276 586,276 586,278" class="visao-fio"/>
+        <rect x="538" y="280" width="96" height="16" rx="8" class="visao-bolha"/>
+        <text x="586" y="292" text-anchor="middle" style="font:9.5px 'IBM Plex Mono',monospace" fill="#ffd9a0">XT-02 · 0,15 mm</text>
+        <!-- fios para a mesa -->
+        <polyline points="458,86 692,150" class="visao-fio"/>
+        <polyline points="480,142 692,188" class="visao-fio"/>
+        <polyline points="522,208 692,224" class="visao-fio"/>
+        <!-- mesa -->
+        <rect x="692" y="140" width="140" height="112" rx="12" fill="#0d1b2a" stroke="#26364a"/>
+        <text x="704" y="168" fill="#fff" style="font:700 13px 'IBM Plex Mono',monospace">FRV XCOINIT</text>
+        <text x="704" y="186" fill="#e8820c" style="font:600 10.5px 'IBM Plex Mono',monospace">MODBUS/TCP · X·1</text>
+        <polyline id="spX" class="visao-spark" points="706,206 716,204 726,207 736,202 746,204 756,198 766,201 776,196 786,199 796,194 806,197 816,192 826,195 830,193"/>
+        <circle cx="706" cy="240" r="3.5" fill="#56d364"/>
+        <text x="716" y="244" fill="#9fb3c8" style="font:10px 'IBM Plex Mono',monospace">ligado · coletando</text>
+        <text x="40" y="308" style="font:10px 'IBM Plex Mono',monospace" fill="#9aa9b8">8 pontos · trem motor + compressor de dois estágios · diagrama ilustrativo, valores fictícios</text>
       </svg>
     </div>
   </div>

@@ -18,7 +18,7 @@
     ).join(' ');
   };
 
-  // --- mock do hero: VT-01 / VT-02 / MT-01 caminham, série cresce
+  // --- mock do hero: VT-01 / VT-02 / TT-01 caminham, série cresce
   const eVT1 = document.getElementById('hVT1');
   const eVT2 = document.getElementById('hVT2');
   const eMT1 = document.getElementById('hMT1');
@@ -38,7 +38,7 @@
     const spX = document.getElementById('spX');
     if (spX) spX.setAttribute('points', pontos(hist, 124, 36, 3.2, 6.8)
       .split(' ').map((pt) => pt.split(',').map(Number))
-      .map(([x, y]) => (566 + x).toFixed(1) + ',' + (112 + y).toFixed(1))
+      .map(([x, y]) => (706 + x).toFixed(1) + ',' + (196 + y).toFixed(1))
       .join(' '));
   }, 1500);
 })();
