@@ -19,6 +19,24 @@ td.n{text-align:right;font-variant-numeric:tabular-nums}
 td svg{display:block;width:150px;height:26px}td svg polyline{fill:none;stroke:var(--laranja);stroke-width:2}
 .ok{color:var(--ok);font-weight:700}.al{color:var(--alerta)}.nok{color:var(--nok);font-weight:700}
 .lote{margin:8px 0;color:var(--suave);font-size:12.5px;font-family:'Consolas','IBM Plex Mono',monospace}
+.limite-al{stroke:#c0392b;stroke-width:1;stroke-dasharray:4 3;opacity:.55}
+.serie{fill:none;stroke:var(--laranja);stroke-width:2}.serie.vermelho{stroke:#c0392b}
+.tendiras{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.tendiras-box{background:var(--cartao);border:1px solid var(--linha);border-radius:10px;padding:10px 12px}
+.tb-hd{display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px}
+.tb-ft{display:flex;justify-content:space-between;font-size:11px;color:var(--suave)}
+.tb-ft .al0{color:var(--nok)}.tb-ft .al1{color:var(--alerta)}
+.tendiras-box svg{display:block;width:100%;height:90px}
+.saude{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+.saude>div{background:var(--cartao);border:1px solid var(--linha);border-radius:10px;padding:14px 16px}
+.saude .r{font-size:12px;color:var(--suave);text-transform:uppercase;letter-spacing:.06em}
+.saude .v{font-size:26px;font-weight:800;margin:4px 0}
+.saude .nota{font-size:12px}
+.barra{background:#eef2f7;border-radius:6px;height:10px;overflow:hidden;margin:6px 0}
+.barra-fill{background:var(--ok);height:10px;width:0%;transition:width .6s}
+.tab-freq td:first-child{font-weight:700;color:var(--laranja)}
+.fbar{background:#eef2f7;border-radius:5px;height:9px;overflow:hidden;width:180px}
+.fbar div{background:var(--laranja);height:9px}
 footer{color:var(--suave);font-size:12px;margin-top:40px;border-top:1px solid var(--linha);padding-top:10px}
 footer a{color:var(--laranja);text-decoration:none}footer a:hover{text-decoration:underline}
 </style></head><body>
@@ -47,6 +65,56 @@ footer a{color:var(--laranja);text-decoration:none}footer a:hover{text-decoratio
     <tr><th>Ponto</th><th>Tag</th><th>Descrição</th><th>FC</th><th>Doc</th><th>Valor</th><th>Unidade</th><th>últimos 40 valores</th><th>Situação</th></tr>
   </table>
   <p class='nota'>Valor cru é o que o dispositivo envia (int/float/word); valor escalado aplica min/máx do catálogo. Bits de estado chegam por FC1/FC2; medições por FC3/FC4.</p>
+
+  <h2>Tendências · janela deslizante (simulação)</h2>
+  <div class='aviso-caso'>Janela simulada: cada ciclo de 1 s da demo representa 1 min de dados. Linhas de limite como no leitor real: alerta <b>5,6 mm/s</b> e alarme <b>7,1 mm/s</b> (vibração), <b>75 °C</b> (temperatura).</div>
+  <div class='tendiras'>
+    <div class='tendiras-box'>
+      <div class='tb-hd'><b>VT-01 · vibração mancal A</b><span>mm/s</span></div>
+      <svg id='sgVT' viewBox='0 0 560 90' preserveAspectRatio='none'>
+        <line x1='0' y1='22' x2='560' y2='22' class='limite-al'/>
+        <line x1='0' y1='39' x2='560' y2='39' class='limite-al'/>
+        <polyline id='plVT' class='serie' points=''/>
+      </svg>
+      <div class='tb-ft'><span>-59 min</span><span class='al0'>alarme 7,1</span><span class='al1'>alerta 5,6</span><span>agora</span></div>
+    </div>
+    <div class='tendiras-box'>
+      <div class='tb-hd'><b>MT-01 · temperatura mancal A</b><span>°C</span></div>
+      <svg id='sgMT' viewBox='0 0 560 90' preserveAspectRatio='none'>
+        <line x1='0' y1='18' x2='560' y2='18' class='limite-al'/>
+        <polyline id='plMT' class='serie vermelho' points=''/>
+      </svg>
+      <div class='tb-ft'><span>-59 min</span><span class='al0'>alarme 75</span><span></span><span>agora</span></div>
+    </div>
+  </div>
+
+  <h2>Saúde do rolamento · mancal A (VT-01 + MT-01)</h2>
+  <div class='saude'>
+    <div class='saude-esq'>
+      <div class='r'>Índice de desgaste</div>
+      <div class='v' id='sIdx'>—</div>
+      <div class='barra'><div id='sBar' class='barra-fill'></div></div>
+      <div class='nota'>combina vibração (RMS), temperatura contra a baseline e a inclinação da tendência (como um juízo de decisão por regra)</div>
+    </div>
+    <div class='saude-meio'>
+      <div class='r'>Estado</div>
+      <div class='v' id='sEstado'>—</div>
+      <div class='nota' id='sMsg'>—</div>
+    </div>
+    <div class='saude-dir'>
+      <div class='r'>Sugestão de janela</div>
+      <div class='v' id='sJanela'>—</div>
+      <div class='nota'>estimativa ilustrativa de margem de planejamento até a troca do rolamento</div>
+    </div>
+  </div>
+
+  <h2>Frequências do rolamento · marcadores (geometria ilustrativa)</h2>
+  <p class='ref'>Rolamento ilustrativo: 9 corpos · razão d/D = 0,40 · anel externo fixo · eixo @2.985 rpm (f_r = 49,8 Hz). Marcadores com a nomenclatura usual de manutenção:</p>
+  <table class='tab-freq'>
+    <tr><th>Ordem</th><th>Nome</th><th>Explicação curta</th><th>Frequência (Hz)</th><th>Energia na banda (ilustrativa)</th><th>Relação com</th></tr>
+  </table>
+  <p class='nota'>O módulo de análise do XcoInit marcará essas bandas sobre as tendências e faixas do dispositivo — sem espectro, mas com as amplitudes que o canal Modbus entrega.</p>
+
 
   <h2>O que estaria no CSV</h2>
   <p>Um arquivo <code>pontos-AAAA-MM-DD.csv</code> por dia, com uma linha por ponto coletado:
@@ -125,6 +193,66 @@ function tick(){
   document.getElementById('clock').textContent = new Date().toLocaleTimeString('pt-BR');
 }
 document.getElementById('clock').textContent = new Date().toLocaleTimeString('pt-BR');
-setInterval(tick, 1000); tick();
+
+// ===== módulo de análise (prévia · dados ilustrativos) =====
+const histo = { vt: [], mt: [] };
+const FABRICA = [
+  { id: 'F1',   ordem: '1×',   nome: 'f_r (gira do eixo)',    b: 'frequência fundamental do eixo',            f: 49.8,  r: 'desequilíbrio / alinhamento' },
+  { id: 'F2',   ordem: '2×',   nome: '2× f_r',                b: 'segundo harmônico do eixo',                 f: 99.6,  r: 'desalinhamento / soltura' },
+  { id: 'FTF',  ordem: 'FTF',  nome: 'gaiola',                b: 'frequência fundamental da gaiola',          f: 14.9,  r: 'jaula / lubrificação' },
+  { id: 'BSF',  ordem: 'BSF',  nome: 'giro da bola',          b: 'giro do corpo rolante',                     f: 52.3,  r: 'defeito no corpo rolante' },
+  { id: 'BPFO', ordem: 'BPFO', nome: 'anel externo',          b: 'passagem da bola na pista externa',         f: 134.5, r: 'defeito na pista externa' },
+  { id: 'BPFI', ordem: 'BPFI', nome: 'anel interno',          b: 'passagem da bola na pista interna',         f: 313.7, r: 'defeito na pista interna' },
+];
+for (const m of FABRICA){
+  const tr = document.createElement('tr');
+  tr.innerHTML = '<td>' + m.ordem + '</td><td><b>' + m.nome + '</b></td><td>' + m.b + '</td>' +
+    "<td class='n'>" + m.f.toFixed(1) + ' Hz</td>' +
+    "<td><div class='fbar'><div id='" + m.id + "'></div></div></td>" +
+    '<td>' + m.r + '</td>';
+  document.getElementById('tab-freq').appendChild(tr);
+}
+const ENER = { F1: 22, F2: 14, FTF: 8, BSF: 17, BPFO: 29, BPFI: 20 }; // frações ilustrativas
+function desenhaHisto(id, arr, min, max){
+  const pl = document.getElementById(id);
+  const h = 76, dx = (max - min) || 1;
+  const pts = arr.map((v, k) => {
+    const x = (k / 59 * 560).toFixed(1);
+    const y = (h - 2 - ((v - min) / dx * (h - 8))).toFixed(1);
+    return x + ',' + y;
+  }).join(' ');
+  pl.setAttribute('points', pts);
+}
+let vida = 87 + Math.random() * 6;
+function analise(){
+  histo.vt.push(VALS['VT-0101'][VALS['VT-0101'].length - 1]);
+  histo.mt.push(VALS['MT-0110'][VALS['MT-0110'].length - 1]);
+  while (histo.vt.length > 60) histo.vt.shift();
+  while (histo.mt.length > 60) histo.mt.shift();
+  desenhaHisto('plVT', histo.vt, 2.5, 8.5);
+  desenhaHisto('plMT', histo.mt, 44, 82);
+  const vt = histo.vt, mt = histo.mt;
+  const rms = vt.length ? vt[vt.length - 1] : 4;
+  const dc = (mt.length ? mt[mt.length - 1] : 52) - 52;
+  const declive = vt.length > 12 ? (vt[vt.length - 1] - vt[0]) / 12 : 0;
+  const idx = Math.max(0, Math.min(100,
+    0.55 * (rms / 7.1 * 42) + 0.25 * (dc / 25 * 34) + 0.20 * Math.abs(declive) * 240));
+  document.getElementById('sIdx').textContent = idx.toFixed(0) + ' / 100';
+  const bar = document.getElementById('sBar');
+  bar.style.width = idx + '%';
+  bar.style.background = idx < 40 ? '#1f8a4c' : idx < 70 ? '#b9770e' : '#c0392b';
+  const est = document.getElementById('sEstado');
+  const msg = document.getElementById('sMsg');
+  const jan = document.getElementById('sJanela');
+  if (idx < 40){ est.textContent = 'BOM'; est.className = 'v ok'; msg.textContent = 'comportamento normal contra a baseline'; jan.textContent = 'sem prazo'; }
+  else if (idx < 70){ est.textContent = 'ATENÇÃO'; est.className = 'v al'; msg.textContent = 'energia acima do normal — vigiar na próxima janela'; jan.textContent = 'planejar ~' + Math.max(1, Math.round((90 - vida) / 4)) + ' sem.'; }
+  else { est.textContent = 'AÇÃO'; est.className = 'v nok'; msg.textContent = 'padrão compatível com degradação de pista'; jan.textContent = 'troca em ~' + Math.max(1, Math.round((100 - vida) / 9)) + ' dias'; }
+  if (Math.abs(declive) > 0.08) vida = Math.max(12, vida - 0.05);
+  for (const [k, frac] of Object.entries(ENER)){
+    const el = document.getElementById(k);
+    if (el) el.style.width = Math.min(100, frac * (0.9 + Math.random() * 0.25)) + '%';
+  }
+}
+setInterval(tick, 1000); tick(); analise(); setInterval(analise, 1000);
 </script>
 </body></html>
