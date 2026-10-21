@@ -142,6 +142,7 @@ function analise(){
     normal.vt = estatistica(histo.vt);
     normal.b = estatistica(histo.vt03);
     document.getElementById('btnFalha').disabled = false;
+    ritmo(1000); // normal congelado: o tempo volta ao ritmo real
     document.getElementById('notaFalha').textContent = 'aprendizado concluído — o normal está congelado · o desgaste simulado soma +1,2 mm/s por minuto de máquina, sem passar de nenhum limite · recarregar a página zera tudo';
   }
   marcaNormal('VT', normal.vt, histo.vt[histo.vt.length - 1]);
@@ -170,4 +171,13 @@ function analise(){
     if (el) el.style.width = Math.min(100, frac * (0.9 + Math.random() * 0.25)) + '%';
   }
 }
-setInterval(tick, 1000); tick(); analise(); setInterval(analise, 1000);
+// agendador: aprendizado em velocidade rápida (60 ciclos em ~6 s); após o congelamento
+// do normal, o cronômetro volta ao ritmo real de 1 ciclo por segundo.
+let idTick = null, idAn = null;
+function ritmo(ms){
+  if (idTick) clearInterval(idTick);
+  if (idAn) clearInterval(idAn);
+  idTick = setInterval(tick, ms);
+  idAn = setInterval(analise, ms);
+}
+ritmo(100); tick(); analise();
