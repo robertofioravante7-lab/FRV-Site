@@ -313,7 +313,11 @@ a.mod:hover .mod-lk{color:var(--amb2)}
 .nw-sub{font-size:17px;color:var(--tx2);margin-top:12px}
 .nw-p{padding:26px 28px 28px}
 .nw-p p{font-size:16px;color:var(--tx2)}
-.nw-p p+p{margin-top:12px}
+.nw-p p+p,.nw-p .nw-ls+p{margin-top:12px}
+.nw-ls{list-style:none;margin-top:8px}
+.nw-ls li{position:relative;padding-left:18px;font-size:16px;color:var(--tx2)}
+.nw-ls li+li{margin-top:4px}
+.nw-ls li::before{content:"";position:absolute;left:2px;top:.72em;width:7px;height:2px;background:var(--amb)}
 .nw-lk{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}
 
 /* Contato: onde o circuito fecha */

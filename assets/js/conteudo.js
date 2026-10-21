@@ -134,15 +134,17 @@ window.FRV = {
   },
 
   /* Noticias (20/10/2026): texto aprovado pelo Roberto no plano docs/noticias/2026-10-20-plano-noticias.md.
-     Registro de eventos, o mais recente primeiro. quando = data em ISO (para o <time>), links = [rotulo, destino]. */
+     Registro de eventos, o mais recente primeiro. quando = data em ISO (para o <time>), p = paragrafos (uma lista entra como array), links = [rotulo, destino]. */
   noticias: {
     eyebrow: 'Notícias', h2a: 'Últimas da', h2b: 'FRV',
     itens: [
       { id: 'xcoinit-trl5', data: '20/10/2026', quando: '2026-10-20', k: 'Lançamento · ', em: 'TRL 5',
-        h3: 'FRV lança o XcoInit, coletor de dados de máquina por Modbus/TCP, em TRL 5',
-        sub: 'O software descobre sozinho o mapa de dados do dispositivo, prova a cobertura do catálogo de pontos e coleta tudo em CSV.',
-        p: ['Em 20 de outubro de 2026, a FRV Engenharia lançou o FRV XcoInit, um software próprio que conversa com qualquer servidor Modbus/TCP padrão. Ele descobre sozinho o mapa de dados do dispositivo e o compara com o catálogo de pontos da engenharia. Em seguida, mostra em porcentagem o que está no catálogo e o que ficou de fora. Por fim, coleta tudo em CSV diário, com parada automática.',
-            'O XcoInit chega em TRL 5. Ele foi validado em bancada, num ensaio completo contra um simulador de dispositivo. O núcleo de protocolo foi escrito do zero, sem nenhuma dependência externa. Junto vem a prévia do módulo X·1, que lê o diário de coleta. Para cada ponto, o X·1 devolve o estado, a tendência, o desvio em relação ao normal da máquina e os marcadores de rolamento. Assim, o laudo nasce no fim do dia.'],
+        h3: 'FRV lança o XcoInit, sistema próprio de monitoramento de condição de máquinas, em TRL 5',
+        sub: 'Ele lê vibração, temperatura e deslocamento direto do barramento da planta e entrega, no fim do dia, o laudo de condição de cada ponto.',
+        p: ['Em 20 de outubro de 2026, a FRV Engenharia lançou o FRV XcoInit, um sistema próprio de monitoramento de condição de máquinas. Ele se conecta ao barramento Modbus/TCP da planta e descobre sozinho o mapa de dados do dispositivo. Depois prova, em porcentagem, que cobriu o catálogo de pontos da engenharia. A partir daí, coleta cada ponto de vibração, temperatura, velocidade e deslocamento num diário de coleta.',
+            'O coração é o módulo X·1, que aplica as ferramentas clássicas do monitoramento de condição:',
+            ['o estado de cada ponto, pelos limites de alerta e alarme;', 'o desvio em relação ao normal que ele aprendeu da máquina;', 'a mudança comparada às quatro leituras anteriores;', 'a tendência por hora;', 'os marcadores de defeito de rolamento.'],
+            'O desvio do normal acende antes de qualquer limite, e o laudo de condição sai sozinho no fim do dia. O XcoInit chega em TRL 5: ele foi validado em bancada, num ensaio completo contra um simulador de dispositivo. O X·1 está em prévia na demonstração.'],
         links: [['Conhecer o XcoInit →', 'xcoinit/'], ['Ver a demonstração', 'xcoinit/demo/']] },
       { id: 'atalaia-trl5', data: '03/10/2026', quando: '2026-10-03', k: 'Lançamento · ', em: 'TRL 5',
         h3: 'FRV lança o Atalaia, software próprio para sistemas de tocha, em TRL 5',
