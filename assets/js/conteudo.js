@@ -157,8 +157,8 @@ window.FRV = {
 
   contato: {
     eyebrow: 'Fale com a gente', h2a: 'Entre em', h2b: 'contato',
-    emailH: 'E-mail', email: 'roberto@frv.eng.br', emailHref: 'mailto:roberto@frv.eng.br', emailBtn: 'Enviar e-mail',
-    emailBtnHref: 'mailto:roberto@frv.eng.br?subject=Contato%20via%20site%20-%20FRV%20Engenharia&body=Ol%C3%A1%2C%20Roberto!%20Vim%20atrav%C3%A9s%20do%20site%20da%20FRV%20Engenharia%20e%20gostaria%20de%20mais%20informa%C3%A7%C3%B5es%20sobre%20os%20servi%C3%A7os.',
+    emailH: 'E-mail', email: 'assistente@frv.eng.br', emailHref: 'mailto:assistente@frv.eng.br', emailBtn: 'Enviar e-mail',
+    emailBtnHref: 'mailto:assistente@frv.eng.br?subject=Contato%20via%20site%20-%20FRV%20Engenharia&body=Ol%C3%A1%2C%20Roberto!%20Vim%20atrav%C3%A9s%20do%20site%20da%20FRV%20Engenharia%20e%20gostaria%20de%20mais%20informa%C3%A7%C3%B5es%20sobre%20os%20servi%C3%A7os.',
     telH: 'Telefone / WhatsApp', tel: '(81) 99365-7878', telHref: 'tel:+5581993657878', waBtn: 'Chamar no WhatsApp',
     waHref: 'https://wa.me/5581993657878?text=Ol%C3%A1!%20Vim%20atrav%C3%A9s%20do%20site%20da%20FRV%20Engenharia%20e%20gostaria%20de%20saber%20mais%20sobre%20os%20servi%C3%A7os%20de%20voc%C3%AAs.',
     respH: 'Responsável técnico', resp: 'Eng. Roberto Fioravante'
