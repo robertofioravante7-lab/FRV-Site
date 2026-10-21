@@ -5,7 +5,7 @@ window.FRV = {
   img: 'assets/img/',
   title: 'FRV Engenharia - Montagem Eletromecânica, Manutenção e Energias Renováveis',
   logo: { icon: 'logo-icon-white.png', full: 'logo-frv-white.png', alt: 'FRV', altFull: 'FRV Engenharia', small: 'Engenharia' },
-  nav: [['Sobre', 'sobre'], ['Áreas de atuação', 'areas'], ['Inovação', 'inovacao'], ['Contato', 'contato']],
+  nav: [['Sobre', 'sobre'], ['Áreas de atuação', 'areas'], ['Inovação', 'inovacao'], ['Notícias', 'noticias'], ['Contato', 'contato']],
   navCta: ['Fale conosco', 'contato'],
 
   hero: {
@@ -130,6 +130,26 @@ window.FRV = {
         h3: 'Base de Normas com LLM', p: 'Banco de dados vetorizado especialista em normas nacionais e internacionais, com LLM para avaliação de relatórios e contratos.' },
       { b: 'Mód. 06', top: 'Software próprio · ', em: 'ensaio integral · zero dependências', vw: 360, svg: `<path class="g" d="M12 74 L348 74" opacity=".35"/><polyline class="h" fill="none" points="12,66 48,66 48,58 96,58 96,50 144,50 144,42 192,42 192,34 240,34 240,26 288,26 288,18 336,18"/><text x="12" y="88">VARREDURA · BLOCOS DO DEVICE</text><text class="th" x="348" y="88" text-anchor="end">COBERTURA 100 %</text>`,
         h3: 'FRV XcoInit', p: 'Leitor de dados de máquina por Modbus/TCP: descobre o mapa do dispositivo sozinho, prova a cobertura do catálogo e coleta tudo em CSV.', link: ['Ver detalhes do produto →', 'xcoinit/'] }
+    ]
+  },
+
+  /* Noticias (20/10/2026): texto aprovado pelo Roberto no plano docs/noticias/2026-10-20-plano-noticias.md.
+     Registro de eventos, o mais recente primeiro. quando = data em ISO (para o <time>), links = [rotulo, destino]. */
+  noticias: {
+    eyebrow: 'Notícias', h2a: 'Últimas da', h2b: 'FRV',
+    itens: [
+      { id: 'xcoinit-trl5', data: '20/10/2026', quando: '2026-10-20', k: 'Lançamento · ', em: 'TRL 5',
+        h3: 'FRV lança o XcoInit, coletor de dados de máquina por Modbus/TCP, em TRL 5',
+        sub: 'O software descobre sozinho o mapa de dados do dispositivo, prova a cobertura do catálogo de pontos e coleta tudo em CSV.',
+        p: ['Em 20 de outubro de 2026, a FRV Engenharia lançou o FRV XcoInit, um software próprio que conversa com qualquer servidor Modbus/TCP padrão. Ele descobre sozinho o mapa de dados do dispositivo e o compara com o catálogo de pontos da engenharia. Em seguida, mostra em porcentagem o que está no catálogo e o que ficou de fora. Por fim, coleta tudo em CSV diário, com parada automática.',
+            'O XcoInit chega em TRL 5. Ele foi validado em bancada, num ensaio completo contra um simulador de dispositivo. O núcleo de protocolo foi escrito do zero, sem nenhuma dependência externa. Junto vem a prévia do módulo X·1, que lê o diário de coleta. Para cada ponto, o X·1 devolve o estado, a tendência, o desvio em relação ao normal da máquina e os marcadores de rolamento. Assim, o laudo nasce no fim do dia.'],
+        links: [['Conhecer o XcoInit →', 'xcoinit/'], ['Ver a demonstração', 'xcoinit/demo/']] },
+      { id: 'atalaia-trl5', data: '03/10/2026', quando: '2026-10-03', k: 'Lançamento · ', em: 'TRL 5',
+        h3: 'FRV lança o Atalaia, software próprio para sistemas de tocha, em TRL 5',
+        sub: 'A versão alfa verifica o sistema de tocha inteiro pelas normas API e aponta onde dá para reduzir gás de purga sem abrir mão da segurança.',
+        p: ['Em 3 de outubro de 2026, a FRV Engenharia apresentou publicamente o FRV Atalaia. É um software de engenharia que verifica o sistema de tocha (flare) inteiro pelas normas API 521, API 520 e API 537. A verificação cobre a rede de coletores, as válvulas de alívio, o vaso knockout, o selo hidráulico, a purga e a ponteira.',
+            'O Atalaia chega em TRL 5, versão alfa. Os módulos de cálculo foram integrados num único programa e aprovados em 71 de 71 testes de validação. Os testes usaram os exemplos resolvidos das próprias normas API e os dados de referência do NIST. Cada resultado sai com a norma e a equação aplicadas, num memorial de cálculo rastreável.'],
+        links: [['Conhecer o Atalaia →', 'atalaia/'], ['Ver a demonstração', 'atalaia/demo/']] }
     ]
   },
 

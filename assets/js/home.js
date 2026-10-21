@@ -118,6 +118,20 @@
       return m.link ? '<a class="fp mod mod-w" href="' + esc(m.link[1]) + '">' + inner + '</a>' : '<div class="fp mod">' + inner + '</div>';
     }).join('') + '</div></div></section>';
 
+  /* ---------- Noticias: registro de eventos, o mais recente em cima (20/10/2026) ---------- */
+  var Nw = F.noticias;
+  html += '<section class="scr" id="noticias" data-k="noticias"><div class="c">' + scrHd(Nw.eyebrow, '', 'news') +
+    '<h2 class="h2">' + esc(Nw.h2a) + ' <span>' + esc(Nw.h2b) + '</span></h2>' +
+    '<div class="nws">' + Nw.itens.map(function(n){
+      return '<article class="fp nw" id="n-' + n.id + '">' +
+        '<header class="nw-hd"><span class="tag sm" data-node="evt">' + led() + '<time datetime="' + n.quando + '">' + esc(n.data) + '</time></span>' +
+          '<span class="mod-top">' + esc(n.k) + (n.em ? '<em>' + esc(n.em) + '</em>' : '') + '</span></header>' +
+        '<div class="nw-g"><div class="nw-t"><h3>' + esc(n.h3) + '</h3><p class="nw-sub">' + esc(n.sub) + '</p></div>' +
+          '<div class="nw-p">' + n.p.map(function(t){ return '<p>' + esc(t) + '</p>'; }).join('') +
+          '<div class="nw-lk">' + n.links.map(function(l, i){ return '<a class="btn sm' + (i ? ' ghost' : '') + '" href="' + esc(l[1]) + '">' + esc(l[0]) + '</a>'; }).join('') + '</div></div>' +
+        '</div></article>';
+    }).join('') + '</div></div></section>';
+
   /* ---------- Contato: o circuito fecha aqui ---------- */
   var C = F.contato;
   html += '<section class="scr" id="contato" data-k="contato"><div class="c">' + scrHd(C.eyebrow, '', 'end-hd') +
@@ -343,6 +357,14 @@
             '<circle class="dot" cx="' + f1(dx) + '" cy="' + f1(l.y) + '" r="' + LR + '"/></g>', l.els);
           P('M' + f1(rx) + ' ' + f1(l.y) + ' H' + f1(dx - LR), 'tap dr', id);
         });
+      });
+
+      /* noticias: a linha principal atravessa a tela; cada registro e uma carga ligada direto nela */
+      $$('[data-node=news]').forEach(function(el){ node(cy(el), '<g id="%ID%"></g>', [el.closest('section')]); });
+      $$('[data-node=evt]').forEach(function(el){
+        var y = cy(el), id = node(y, '<g class="sym ld" id="%ID%"><circle class="jn" cx="' + f1(sx) + '" cy="' + f1(y) + '" r="' + JN + '"/>' +
+          '<circle class="halo" cx="' + f1(dx) + '" cy="' + f1(y) + '" r="' + (LR + 7) + '"/><circle class="dot" cx="' + f1(dx) + '" cy="' + f1(y) + '" r="' + LR + '"/></g>', [el.closest('.fp')]);
+        P('M' + f1(sx) + ' ' + f1(y) + ' H' + f1(dx - LR), 'tap dr', id);
       });
 
       /* fim: o circuito fecha no faceplate de contato */
