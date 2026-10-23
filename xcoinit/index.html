@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FRV XcoInit - leitor de dados de máquina por Modbus/TCP | FRV Engenharia</title>
+  <title>FRV XcoInit - coleta e laudo de condição de máquina por Modbus/TCP | FRV Engenharia</title>
   <meta name="description" content="Software que conversa com servidores Modbus/TCP padrão: descobre o mapa de dados do dispositivo sozinho, prova a cobertura do catálogo, coleta tudo em CSV e fecha o dia em laudo de condição de máquina com o módulo X·1.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -81,15 +81,16 @@
     <div>
       <div class="eyebrow">Pilar 04 · Software próprio</div>
       <h1>FRV<span>XcoInit</span></h1>
-      <p class="sub">Dados de condição de máquina direto do barramento Modbus/TCP</p>
+      <p class="sub">Da máquina ao laudo de condição, sem trocar de ferramenta — direto do barramento Modbus/TCP</p>
       <p class="desc">
-        Coletor de dados de máquina que conversa com qualquer servidor Modbus/TCP padrão: descobre o mapa de
-        dados do dispositivo sozinho, prova a cobertura do catálogo e coleta tudo em CSV. O módulo X·1 lê esse
-        diário e devolve estado com severidade, eventos de alarme, tendência, desvio do normal e marcadores
-        de rolamento — a rota inteira vira laudo no fim do dia. Núcleo de protocolo escrito do zero, audível
-        linha a linha, sem uma única dependência.
+        O laudo de condição da sua máquina nasce no fim do dia, direto do barramento que a planta já tem.
+        Sem intermediários: o XcoInit conversa com qualquer servidor Modbus/TCP padrão, descobre o mapa do
+        dispositivo sozinho, prova a cobertura do catálogo e coleta tudo em CSV; o módulo X·1 devolve estado
+        com severidade, eventos de alarme, tendência, desvio do normal e marcadores de rolamento — a rota
+        inteira vira laudo. Núcleo de protocolo escrito do zero, audível linha a linha, sem uma única
+        dependência.
       </p>
-      <div class="seal">Validado em bancada · ensaio completo contra simulador de dispositivo</div>
+      <div class="seal">TRL 5 · validado em bancada · ensaio integral contra simulador de dispositivo</div>
       <div class="ctas">
         <a class="btn" href="/xcoinit/demo/" target="_blank" rel="noopener">Ver a demonstração</a>
         <a class="btn ghost" href="#contato">Levar para a minha planta</a>
@@ -110,7 +111,7 @@
   </div>
   <div class="setores n5">
     <div class="c">
-      <div class="lbl">O que ele fala</div>
+      <div class="lbl">Do bit ao laudo — o que ele fala</div>
       <div class="setor"><b>01</b><span>FC01/FC02<small>bits e entradas discretas</small></span></div>
       <div class="setor"><b>02</b><span>FC03/FC04<small>registradores de retenção e entrada</small></span></div>
       <div class="setor"><b>03</b><span>Fingerprint<small>resposta às funções de fábrica</small></span></div>
@@ -471,7 +472,7 @@
           e sem perder rastreabilidade. Cada leitura sai com endereço, função Modbus e escala,
           pronta para alimentar laudos e acompanhamentos.
         </p>
-        <p>O software transforma essa rotina em dados verificáveis.</p>
+        <p>O software transforma essa rotina em laudo verificável, dia após dia.</p>
       </div>
     </div>
   </div>
