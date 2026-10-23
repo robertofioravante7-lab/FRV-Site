@@ -56,6 +56,21 @@
     .x1-laudo td{border-bottom:1px solid #e5ebf2;padding:7px 8px 7px 0;vertical-align:top}
     .x1-laudo td:first-child,.x1-laudo th:first-child{font-weight:700;color:#e8820c}
     .x1-laudo .nok{color:#c0392b;font-weight:700}.x1-laudo .okc{color:#1f8a4c}.x1-laudo .alc{color:#b9770e}
+    /* Leva X·1 — visuais da régua (escopo desta página; sem seletor global) */
+    .x1-evtl{margin:8px 0 2px;border-top:2px solid #e5ebf2;padding-top:8px}
+    .x1-evb{font:11.5px/1.7 'IBM Plex Mono',monospace;color:#4a5d73;padding:2px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .x1-evb i{font-style:normal;font-weight:800;display:inline-block;width:15px;text-align:center}
+    .x1-evb b{color:#12233a}
+    .x1-evb .ev-nok{color:#c0392b}.x1-evb .ev-al{color:#b9770e}.x1-evb .ev-ok{color:#1f8a4c}
+    .x1-evb .ev-ack{color:#1f8a4c;font-size:10px}
+    .x1-resumo{display:grid;grid-template-columns:repeat(auto-fit,minmax(128px,1fr));gap:8px;margin:10px 0 2px;max-width:720px}
+    .x1-re{background:#fff;border:1px solid #e5ebf2;border-radius:8px;padding:8px 10px;text-align:center}
+    .x1-re b{display:block;font:800 20px 'IBM Plex Mono',monospace;color:#12233a}
+    .x1-re span{font:10px 'IBM Plex Mono',monospace;color:#4a5d73}
+    .x1-re.nok b{color:#c0392b}.x1-re.al b{color:#b9770e}.x1-re.okr b{color:#1f8a4c}
+    .x1-rota{margin:10px 0 2px;background:#fff;border:1px solid #e5ebf2;border-radius:10px;padding:6px 14px 2px;max-width:520px}
+    .x1-falta span:last-child{color:#c0392b}
+    .v-trilha{display:block;width:100%;height:auto;margin-top:10px}
   </style>
 </head>
 <body>
@@ -294,6 +309,11 @@
           <div class="x1-area"><span>Óleo e lubrificação</span><span class="x1-pill al" style="margin:0">ATENÇÃO</span></div>
         </div>
         <p class="x1-leg">confirmação <b>3/3 ciclos</b> — estado não escala com uma leitura, escala com ciclos seguidos</p>
+        <div class="x1-evtl" aria-label="Eventos de alarme do dia, com reconhecimento do operador">
+          <div class="x1-evb"><i class="ev-nok">▲</i> Mancal B entrou em <b>AÇÃO</b> · <em style="font-style:normal">14:32</em> <span class="ev-ack">reconhecido</span></div>
+          <div class="x1-evb"><i class="ev-al">↑</i> Óleo subiu a <b>ATENÇÃO</b> · <em style="font-style:normal">10:05</em> <span class="ev-ack">reconhecido</span></div>
+          <div class="x1-evb"><i class="ev-ok">▼</i> Mancal A voltou ao <b>BOM</b> · <em style="font-style:normal">08:17</em> <span class="ev-ack">reconhecido</span></div>
+        </div>
         <p>Nada vira alarme por sobressalto: a régua confirma em ciclos seguidos antes de escalar, e a histerese pede o mesmo passo calmo no retorno — o alarme fecha só com o valor estabilizado, sem pisca-alarme. Cada virada de nível vira um evento — ▲ entrou, ↑ agravou, ↓ atenuou, ▼ retornou —, cada evento aceita o reconhecimento do operador, e a janela de supressão mantém o alarme crônico de engolir o novo. A máquina aparece inteira, área por área, no laudo e no resumo de alarmes do dia.</p>
       </div>
       <div class="fn fn-w" style="grid-column:1/-1">
@@ -306,6 +326,18 @@
           <tr><td>VT-03 · mancal B</td><td>4,18 mm/s</td><td>2,90 ± 0,32</td><td>+1,28 · z +4,0</td><td><span class="x1-pill nok">AÇÃO</span></td><td class="nok">desviando do próprio normal, subindo — sem tocar o alarme 5,6</td></tr>
           <tr><td>TT-01 · mancal A</td><td>58,4 °C</td><td>60,2 ± 1,8</td><td>-1,8 · z -1,0</td><td><span class="x1-pill ok">BOM</span></td><td class="okc">estável dentro da banda da própria máquina</td></tr>
         </table>
+        <div class="x1-resumo" aria-label="Resumo de alarmes do dia">
+          <div class="x1-re"><b>13</b><span>contagens do resumo</span></div>
+          <div class="x1-re nok"><b>2</b><span>não reconhecidos</span></div>
+          <div class="x1-re al"><b>1</b><span>excluído na janela</span></div>
+          <div class="x1-re okr"><b>4</b><span>alarmes novos</span></div>
+        </div>
+        <div class="x1-rota" aria-label="Rota multi-máquina do dia">
+          <div class="x1-area"><span>Máquina 01 · 42 pontos</span><span class="x1-pill ok" style="margin:0">BOM</span></div>
+          <div class="x1-area"><span>Máquina 02 · 78 pontos</span><span class="x1-pill nok" style="margin:0">AÇÃO</span></div>
+          <div class="x1-area x1-falta"><span>Máquina 02 · coleta do dia</span><span>⌀ 1 ponto não chegou</span></div>
+          <div class="x1-area"><span>Máquina 03 · 55 pontos</span><span class="x1-pill al" style="margin:0">ATENÇÃO</span></div>
+        </div>
         <p>Ao fim do dia de coleta o relatório sai sozinho: estado e motivo de cada ponto, resumo de alarmes (não reconhecidos, excluídos e com alarme novo, por nível), notas de caso anexadas ao ponto e a rota de várias máquinas — resumo por máquina e de coleta, com os pontos que não chegaram declarados, nunca escondidos. Método, fonte de geometria e linhagem declarados o tempo todo.</p>
       </div>
     </div>
@@ -454,6 +486,24 @@
           <div><div class="v">0</div><div class="k">falhas de leitura na coleta cíclica ensaiada</div></div>
           <div><div class="v">1</div><div class="k">comando — do probe ao CSV, com evidência integral em diário</div></div>
         </div>
+        <svg class="v-trilha" viewBox="0 0 560 46" role="img" aria-label="Trilha do ensaio: conexão, assinatura, varredura e coleta concluídas na bancada; próximo passo device real em 13/11">
+          <line x1="16" y1="20" x2="544" y2="20" stroke="#9fb3c8" stroke-width="1.5"/>
+          <circle cx="40" cy="20" r="9" fill="#1f8a4c"/>
+          <text x="40" y="24" text-anchor="middle" style="font:700 10px 'IBM Plex Mono',monospace" fill="#fff">✓</text>
+          <circle cx="160" cy="20" r="9" fill="#1f8a4c"/>
+          <text x="160" y="24" text-anchor="middle" style="font:700 10px 'IBM Plex Mono',monospace" fill="#fff">✓</text>
+          <circle cx="280" cy="20" r="9" fill="#1f8a4c"/>
+          <text x="280" y="24" text-anchor="middle" style="font:700 10px 'IBM Plex Mono',monospace" fill="#fff">✓</text>
+          <circle cx="400" cy="20" r="9" fill="#1f8a4c"/>
+          <text x="400" y="24" text-anchor="middle" style="font:700 10px 'IBM Plex Mono',monospace" fill="#fff">✓</text>
+          <circle cx="520" cy="20" r="9" fill="none" stroke="#e8820c" stroke-width="2" stroke-dasharray="3 2"/>
+          <text x="520" y="24" text-anchor="middle" style="font:700 9px 'IBM Plex Mono',monospace" fill="#e8820c">13/11</text>
+          <text x="40" y="42" text-anchor="middle" style="font:9px 'IBM Plex Mono',monospace" fill="#4a5d73">conexão</text>
+          <text x="160" y="42" text-anchor="middle" style="font:9px 'IBM Plex Mono',monospace" fill="#4a5d73">assinatura</text>
+          <text x="280" y="42" text-anchor="middle" style="font:9px 'IBM Plex Mono',monospace" fill="#4a5d73">varredura</text>
+          <text x="400" y="42" text-anchor="middle" style="font:9px 'IBM Plex Mono',monospace" fill="#4a5d73">coleta</text>
+          <text x="508" y="42" text-anchor="start" style="font:700 9px 'IBM Plex Mono',monospace" fill="#e8820c">device real</text>
+        </svg>
       </div>
     </div>
   </div>
