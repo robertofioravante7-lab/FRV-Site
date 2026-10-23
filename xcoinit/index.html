@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>FRV XcoInit - leitor de dados de máquina por Modbus/TCP | FRV Engenharia</title>
-  <meta name="description" content="Software que conversa com servidores Modbus/TCP padrão: descobre o mapa de dados do dispositivo sozinho, prova a cobertura do catálogo e coleta tudo em CSV.">
+  <meta name="description" content="Software que conversa com servidores Modbus/TCP padrão: descobre o mapa de dados do dispositivo sozinho, prova a cobertura do catálogo, coleta tudo em CSV e fecha o dia em laudo de condição de máquina com o módulo X·1.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=Manrope:wght@400;500;600;700&display=swap">
@@ -85,8 +85,9 @@
       <p class="desc">
         Coletor de dados de máquina que conversa com qualquer servidor Modbus/TCP padrão: descobre o mapa de
         dados do dispositivo sozinho, prova a cobertura do catálogo e coleta tudo em CSV. O módulo X·1 lê esse
-        diário e devolve estado, tendência, desvio do normal e marcadores de rolamento — o laudo nasce no fim
-        do dia. Núcleo de protocolo escrito do zero, audível linha a linha, sem uma única dependência.
+        diário e devolve estado com severidade, eventos de alarme, tendência, desvio do normal e marcadores
+        de rolamento — a rota inteira vira laudo no fim do dia. Núcleo de protocolo escrito do zero, audível
+        linha a linha, sem uma única dependência.
       </p>
       <div class="seal">Validado em bancada · ensaio completo contra simulador de dispositivo</div>
       <div class="ctas">
@@ -114,7 +115,7 @@
       <div class="setor"><b>02</b><span>FC03/FC04<small>registradores de retenção e entrada</small></span></div>
       <div class="setor"><b>03</b><span>Fingerprint<small>resposta às funções de fábrica</small></span></div>
       <div class="setor"><b>04</b><span>CSV<small>coleta cíclica diária</small></span></div>
-      <div class="setor"><b>05</b><span>X·1<small>análise de condição no laudo do dia</small></span></div>
+      <div class="setor"><b>05</b><span>X·1<small>severidade, evento de alarme e laudo do dia</small></span></div>
     </div>
   </div>
 </section>
@@ -158,12 +159,12 @@
       <div class="fn">
         <div class="code">XCL·07 · Mesa de operação</div>
         <h3>Uma tela, todo o circuito</h3>
-        <p>Conexão, sondagem, varredura e coleta em uma única mesa gráfica, com estatísticas ao vivo e catálogo carregado do arquivo — o operador acompanha o circuito inteiro sem linha de comando.</p>
+        <p>Conexão, sondagem, varredura e coleta em uma única mesa gráfica, com estatísticas ao vivo, resumo de alarmes do dia e catálogo carregado do arquivo — o operador acompanha o circuito inteiro sem linha de comando.</p>
       </div>
       <div class="fn">
         <div class="code">XCL·08 · Módulo X·1 <em>na bancada</em></div>
         <h3>X·1: a análise que aprende o normal da máquina</h3>
-        <p>Estado por ponto com limites, alteração de percentual com a régua das quatro anteriores, minitendências e marcadores de rolamento com geometria e fonte citadas. O coração: o X·1 guarda a assinatura saudável de cada ponto e compara dia contra dia — desvio do normal acende antes de qualquer limite. Resumo por área, análise ao vivo na mesa e laudo automático. Prévia na demonstração.</p>
+        <p>Estado por ponto — BOM, ATENÇÃO, AÇÃO — com a severidade de 1 a 4 de cada ocorrência, alteração de percentual com a régua das quatro anteriores, minitendências e marcadores de rolamento com geometria e fonte citadas. Cada virada de nível vira um evento de alarme com reconhecimento do operador, e o X·1 guarda a assinatura saudável de cada ponto — o desvio do normal acende antes de qualquer limite. Resumo por área, resumo de alarmes, rota de várias máquinas, análise ao vivo na mesa e laudo automático. Prévia na demonstração.</p>
       </div>
     </div>
   </div>
@@ -175,9 +176,10 @@
     <div class="eyebrow">Módulo X·1 · análise de condição</div>
     <h2 class="h2">O diário do dia vira <span>régua de máquina</span></h2>
     <p>O CSV do dia entra, a leitura de condição sai: cada ponto passa por uma régua de ferramentas
-    destilada das práticas clássicas de monitoramento de máquina — cor por limite, desvio do próprio
-    normal, memória de mudança, tendência por hora e marcadores de rolamento. A mesma régua roda no
-    laudo automático do fim do dia e na mesa, ao vivo, durante a coleta.</p>
+    destilada das práticas clássicas de monitoramento de máquina — cor por limite com severidade de 1 a 4,
+    eventos de alarme a cada virada de nível, desvio do próprio normal, memória de mudança, tendência por
+    hora e marcadores de rolamento. A mesma régua roda no laudo automático do fim do dia e na mesa, ao
+    vivo, durante a coleta.</p>
     <div class="fns">
       <div class="fn">
         <div class="code">X·1 · limite</div>
@@ -197,8 +199,8 @@
             <text x="238" y="31" text-anchor="middle" style="font:9.5px 'IBM Plex Mono',monospace" fill="#7a4e06">atenção</text>
           </svg>
         </div>
-        <p class="x1-leg">mm/s · alerta <b>5,6</b> · alarme <b>7,1</b> — cada ponto carrega os próprios limites</p>
-        <p>Leitura entra, cor responde: verde, âmbar ou vermelho no ponto — sem interpretação no meio do caminho.</p>
+        <p class="x1-leg">mm/s · alerta <b>5,6</b> · alarme <b>7,1</b> — severidade 1 a 4, limiar por ponto</p>
+        <p>Leitura entra, severidade responde: três estados de cor (BOM, ATENÇÃO, AÇÃO) e severidade 1 a 4 da ocorrência — limiares do arquivo da engenharia, sem interpretação no meio do caminho.</p>
       </div>
       <div class="fn">
         <div class="code">X·1 · normal</div>
@@ -291,7 +293,7 @@
           <div class="x1-area"><span>Óleo e lubrificação</span><span class="x1-pill al" style="margin:0">ATENÇÃO</span></div>
         </div>
         <p class="x1-leg">confirmação <b>3/3 ciclos</b> — estado não escala com uma leitura, escala com ciclos seguidos</p>
-        <p>Nada vira alarme por sobressalto: a régua confirma em ciclos seguidos antes de escalar, e a máquina aparece inteira, área por área, no laudo.</p>
+        <p>Nada vira alarme por sobressalto: a régua confirma em ciclos seguidos antes de escalar, e a histerese pede o mesmo passo calmo no retorno — o alarme fecha só com o valor estabilizado, sem pisca-alarme. Cada virada de nível vira um evento — ▲ entrou, ↑ agravou, ↓ atenuou, ▼ retornou —, cada evento aceita o reconhecimento do operador, e a janela de supressão mantém o alarme crônico de engolir o novo. A máquina aparece inteira, área por área, no laudo e no resumo de alarmes do dia.</p>
       </div>
       <div class="fn fn-w" style="grid-column:1/-1">
         <div class="code">XCL·09 · Laudo automático</div>
@@ -303,7 +305,7 @@
           <tr><td>VT-03 · mancal B</td><td>4,18 mm/s</td><td>2,90 ± 0,32</td><td>+1,28 · z +4,0</td><td><span class="x1-pill nok">AÇÃO</span></td><td class="nok">desviando do próprio normal, subindo — sem tocar o alarme 5,6</td></tr>
           <tr><td>TT-01 · mancal A</td><td>58,4 °C</td><td>60,2 ± 1,8</td><td>-1,8 · z -1,0</td><td><span class="x1-pill ok">BOM</span></td><td class="okc">estável dentro da banda da própria máquina</td></tr>
         </table>
-        <p>Ao fim do dia de coleta o relatório sai sozinho, com método, fonte de geometria e linhagem declarados — o laudo que se lê sem abrir planilha.</p>
+        <p>Ao fim do dia de coleta o relatório sai sozinho: estado e motivo de cada ponto, resumo de alarmes (não reconhecidos, excluídos e com alarme novo, por nível), notas de caso anexadas ao ponto e a rota de várias máquinas — resumo por máquina e de coleta, com os pontos que não chegaram declarados, nunca escondidos. Método, fonte de geometria e linhagem declarados o tempo todo.</p>
       </div>
     </div>
   </div>
@@ -318,7 +320,7 @@
     máquina — velocidade no acoplamento (ST), vibração (VT), temperatura (TT) e deslocamento, com a
     queda de haste dentro (XT): axial, radial e rod drop — até a mesa do XcoInit receber cada leitura.
     Diagrama animado com dados ilustrativos — uma das visões planejadas para o módulo X·1 de análise
-    de condição.</p>
+    de condição: a planta colorida pelo estado do dia, severidade por ponto.</p>
     <div class="visao-moldura">
       <svg viewBox="0 0 860 320" role="img" aria-label="Diagrama animado do trem: motor de indução + compressor alternativo de dois estágios, com sensores ST, VT, TT, XT e rod drop, e a mesa do XcoInit coletando">
         <!-- skid -->
@@ -438,7 +440,9 @@
           Todo caminho do software foi ensaiado numa bancada com um simulador de dispositivo Modbus/TCP:
           conexão e sondagem, assinatura de funções, varredura com detecção de lacuna, cobertura
           100&nbsp;% do catálogo e coleta cíclica com fim automático — sem uma falha de leitura.
-          A mesma sequência executa em campo com um único comando.
+          A mesma sequência executa em campo com um único comando. Próximo passo, no mesmo espírito:
+          bancada real com um dispositivo de monitoramento de campo conectado, marcada para 13/11/2026 —
+          a mesma régua de ensaios, agora contra o device de verdade.
         </p>
       </div>
       <div class="inst">
