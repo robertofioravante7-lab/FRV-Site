@@ -63,14 +63,24 @@
     .x1-evb b{color:#12233a}
     .x1-evb .ev-nok{color:#c0392b}.x1-evb .ev-al{color:#b9770e}.x1-evb .ev-ok{color:#1f8a4c}
     .x1-evb .ev-ack{color:#1f8a4c;font-size:10px}
-    .x1-resumo{display:grid;grid-template-columns:repeat(auto-fit,minmax(128px,1fr));gap:8px;margin:10px 0 2px;max-width:720px}
-    .x1-re{background:#fff;border:1px solid #e5ebf2;border-radius:8px;padding:8px 10px;text-align:center}
-    .x1-re b{display:block;font:800 20px 'IBM Plex Mono',monospace;color:#12233a}
-    .x1-re span{font:10px 'IBM Plex Mono',monospace;color:#4a5d73}
-    .x1-re.nok b{color:#c0392b}.x1-re.al b{color:#b9770e}.x1-re.okr b{color:#1f8a4c}
-    .x1-rota{margin:10px 0 2px;background:#fff;border:1px solid #e5ebf2;border-radius:10px;padding:6px 14px 2px;max-width:520px}
-    .x1-falta span:last-child{color:#c0392b}
-    .v-trilha{display:block;width:100%;height:auto;margin-top:10px}
+    .x1-strip{display:flex;flex-wrap:wrap;gap:4px 16px;align-items:baseline;background:#f6f9fb;border:1px solid #e5ebf2;border-left:3px solid #e8820c;border-radius:8px;padding:9px 14px;margin:10px 0 12px;font:11.5px 'IBM Plex Mono',monospace;color:#4a5d73}
+    .x1-strip b{font:800 12px 'IBM Plex Mono',monospace;color:#12233a}
+    .x1-strip .ttl{font-weight:700;color:#12233a;letter-spacing:.3px}
+    .x1-strip .nok b{color:#c0392b}.x1-strip .al b{color:#b9770e}.x1-strip .okr b{color:#1f8a4c}
+    .x1-rota{display:grid;grid-template-columns:repeat(auto-fit,minmax(168px,1fr));gap:8px;margin:2px 0 12px}
+    .x1-rm{background:#fff;border:1px solid #e5ebf2;border-radius:8px;padding:10px 12px 11px;position:relative;overflow:hidden}
+    .x1-rm i{position:absolute;top:0;left:0;right:0;height:3px}
+    .x1-rm i.ok{background:#1f8a4c}.x1-rm i.nok{background:#c0392b}.x1-rm i.al{background:#b9770e}
+    .x1-rm b{display:block;font:700 12.5px 'IBM Plex Mono',monospace;color:#12233a}
+    .x1-rm em{font-style:normal;float:right;font:800 10.5px 'IBM Plex Mono',monospace;padding:1px 8px;border-radius:999px}
+    .x1-rm em.ok{background:#e2f2e6;color:#1f8a4c}.x1-rm em.nok{background:#f9e0dd;color:#c0392b}.x1-rm em.al{background:#fdf0d9;color:#b9770e}
+    .x1-rm span{display:block;font:10.5px 'IBM Plex Mono',monospace;color:#4a5d73;margin-top:3px}
+    .x1-rm .falta{color:#c0392b;margin-top:4px}
+    .v-trilha{display:block;width:100%;max-width:720px;height:auto;margin:16px auto 0}
+    .xco-icone{flex:0 0 auto;width:24px;height:24px}
+    .xco-strip .setor{gap:8px;padding:20px 12px}
+    .xco-strip .setor small{white-space:normal;line-height:1.35}
+    .x1-mini{display:block;height:auto;margin:4px 0 8px}
   </style>
 </head>
 <body>
@@ -124,14 +134,14 @@
       </div>
     </a>
   </div>
-  <div class="setores n5">
+  <div class="setores n5 xco-strip">
     <div class="c">
       <div class="lbl">Do bit ao laudo — o que ele fala</div>
-      <div class="setor"><b>01</b><span>FC01/FC02<small>bits e entradas discretas</small></span></div>
-      <div class="setor"><b>02</b><span>FC03/FC04<small>registradores de retenção e entrada</small></span></div>
-      <div class="setor"><b>03</b><span>Fingerprint<small>resposta às funções de fábrica</small></span></div>
-      <div class="setor"><b>04</b><span>CSV<small>coleta cíclica diária</small></span></div>
-      <div class="setor"><b>05</b><span>X·1<small>severidade, evento de alarme e laudo do dia</small></span></div>
+      <div class="setor"><svg class="xco-icone" viewBox="0 0 24 24" aria-hidden="true"><rect x="2.2" y="5" width="4.6" height="4.6" fill="#f7941e"/><rect x="9.4" y="5" width="4.6" height="4.6" fill="#f7941e"/><rect x="16.6" y="5" width="4.6" height="4.6" fill="#f7941e"/><rect x="2.2" y="14.4" width="4.6" height="4.6" fill="none" stroke="#f7941e" stroke-width="1.5"/><rect x="9.4" y="14.4" width="4.6" height="4.6" fill="none" stroke="#f7941e" stroke-width="1.5"/><rect x="16.6" y="14.4" width="4.6" height="4.6" fill="none" stroke="#f7941e" stroke-width="1.5"/></svg><b>01</b><span>FC01/FC02<small>bits e entradas discretas</small></span></div>
+      <div class="setor"><svg class="xco-icone" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4.5" width="18" height="15" rx="2" fill="none" stroke="#f7941e" stroke-width="1.5"/><line x1="3" y1="9.5" x2="21" y2="9.5" stroke="#f7941e" stroke-width="1.5"/><line x1="3" y1="14.5" x2="21" y2="14.5" stroke="#f7941e" stroke-width="1.5"/><line x1="12" y1="4.5" x2="12" y2="19.5" stroke="#f7941e" stroke-width="1.5"/></svg><b>02</b><span>FC03/FC04<small>registradores de retenção e entrada</small></span></div>
+      <div class="setor"><svg class="xco-icone" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="2.2" fill="none" stroke="#f7941e" stroke-width="1.5"/><path d="M6 20c-1.8-6 2.5-11 6-11s7.8 5 6 11" fill="none" stroke="#f7941e" stroke-width="1.5"/><path d="M9 20c-.8-4 1.6-7 3-7s3.8 3 3 7" fill="none" stroke="#f7941e" stroke-width="1.5"/><line x1="12" y1="17" x2="12" y2="20" stroke="#f7941e" stroke-width="1.5"/></svg><b>03</b><span>Fingerprint<small>resposta às funções de fábrica</small></span></div>
+      <div class="setor"><svg class="xco-icone" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3.5h9.5L18 7v13.5H5z" fill="none" stroke="#f7941e" stroke-width="1.5"/><line x1="8" y1="9.5" x2="14.5" y2="9.5" stroke="#f7941e" stroke-width="1.5"/><line x1="8" y1="13" x2="14.5" y2="13" stroke="#f7941e" stroke-width="1.5"/><path d="M11.5 15.5v4.5m0 0l-2.2-2.2m2.2 2.2l2.2-2.2" fill="none" stroke="#f7941e" stroke-width="1.5"/></svg><b>04</b><span>CSV<small>coleta cíclica diária</small></span></div>
+      <div class="setor"><svg class="xco-icone" viewBox="0 0 24 24" aria-hidden="true"><polyline points="2.5,17 7,14.5 10.5,16 14,11 17.5,12.5 21,7.5" fill="none" stroke="#f7941e" stroke-width="1.7"/><line x1="17.5" y1="4" x2="17.5" y2="20" stroke="#f7941e" stroke-width="1.2" stroke-dasharray="2.5 2.5"/><circle cx="21" cy="7.5" r="2" fill="#f7941e"/></svg><b>05</b><span>X·1<small>severidade, evento de alarme e laudo do dia</small></span></div>
     </div>
   </div>
 </section>
@@ -160,11 +170,31 @@
       <div class="fn">
         <div class="code">XCL·04 · Cobertura</div>
         <h3>Prova do catálogo</h3>
+        <svg class="x1-mini" style="width:58px" viewBox="0 0 60 60" role="img" aria-label="Anel de cobertura: 100 por cento no ensaio de bancada">
+          <circle cx="30" cy="30" r="24" fill="none" stroke="#e5ebf2" stroke-width="5.5"/>
+          <circle cx="30" cy="30" r="24" fill="none" stroke="#1f8a4c" stroke-width="5.5" transform="rotate(-90 30 30)"/>
+          <text x="30" y="34" text-anchor="middle" style="font:800 10.5px 'IBM Plex Mono',monospace" fill="#12233a">100%</text>
+        </svg>
         <p>Cruza o mapa descoberto com o catálogo de pontos da engenharia e responde, em porcentagem, o que está e o que ficou de fora — a diferença entre conectar e enxergar.</p>
       </div>
       <div class="fn">
         <div class="code">XCL·05 · Coleta cíclica</div>
         <h3>CSV diário, sozinho</h3>
+        <svg class="x1-mini" viewBox="0 0 260 30" role="img" aria-label="Coleta do dia de 08:00 a 17:00, ciclo de 1 segundo por ponto">
+          <line x1="8" y1="14" x2="252" y2="14" stroke="#9fb3c8" stroke-width="2"/>
+          <line x1="8" y1="9" x2="8" y2="19" stroke="#e8820c" stroke-width="2"/>
+          <line x1="35" y1="11" x2="35" y2="17" stroke="#9fb3c8" stroke-width="1.4"/>
+          <line x1="62" y1="11" x2="62" y2="17" stroke="#9fb3c8" stroke-width="1.4"/>
+          <line x1="89" y1="11" x2="89" y2="17" stroke="#9fb3c8" stroke-width="1.4"/>
+          <line x1="116" y1="11" x2="116" y2="17" stroke="#9fb3c8" stroke-width="1.4"/>
+          <line x1="143" y1="11" x2="143" y2="17" stroke="#9fb3c8" stroke-width="1.4"/>
+          <line x1="170" y1="11" x2="170" y2="17" stroke="#9fb3c8" stroke-width="1.4"/>
+          <line x1="197" y1="11" x2="197" y2="17" stroke="#9fb3c8" stroke-width="1.4"/>
+          <line x1="224" y1="11" x2="224" y2="17" stroke="#9fb3c8" stroke-width="1.4"/>
+          <line x1="252" y1="9" x2="252" y2="19" stroke="#e8820c" stroke-width="2"/>
+          <text x="8" y="28" style="font:8.5px 'IBM Plex Mono',monospace" fill="#4a5d73">08:00</text>
+          <text x="252" y="28" text-anchor="end" style="font:8.5px 'IBM Plex Mono',monospace" fill="#4a5d73">17:00</text>
+        </svg>
         <p>Ciclo configurável (padrão 1 s) com duração programada e parada automática: o valor cru, o valor escalado e a hora de cada ponto no CSV diário, sem ninguém segurando o teclado.</p>
       </div>
       <div class="fn">
@@ -326,17 +356,17 @@
           <tr><td>VT-03 · mancal B</td><td>4,18 mm/s</td><td>2,90 ± 0,32</td><td>+1,28 · z +4,0</td><td><span class="x1-pill nok">AÇÃO</span></td><td class="nok">desviando do próprio normal, subindo — sem tocar o alarme 5,6</td></tr>
           <tr><td>TT-01 · mancal A</td><td>58,4 °C</td><td>60,2 ± 1,8</td><td>-1,8 · z -1,0</td><td><span class="x1-pill ok">BOM</span></td><td class="okc">estável dentro da banda da própria máquina</td></tr>
         </table>
-        <div class="x1-resumo" aria-label="Resumo de alarmes do dia">
-          <div class="x1-re"><b>13</b><span>contagens do resumo</span></div>
-          <div class="x1-re nok"><b>2</b><span>não reconhecidos</span></div>
-          <div class="x1-re al"><b>1</b><span>excluído na janela</span></div>
-          <div class="x1-re okr"><b>4</b><span>alarmes novos</span></div>
+        <div class="x1-strip" aria-label="Resumo de alarmes do dia">
+          <span class="ttl">Resumo de alarmes</span>
+          <span><b>13</b> contagens</span>
+          <span class="nok"><b>2</b> não reconhecidos</span>
+          <span class="al"><b>1</b> excluído na janela</span>
+          <span class="okr"><b>4</b> alarmes novos</span>
         </div>
         <div class="x1-rota" aria-label="Rota multi-máquina do dia">
-          <div class="x1-area"><span>Máquina 01 · 42 pontos</span><span class="x1-pill ok" style="margin:0">BOM</span></div>
-          <div class="x1-area"><span>Máquina 02 · 78 pontos</span><span class="x1-pill nok" style="margin:0">AÇÃO</span></div>
-          <div class="x1-area x1-falta"><span>Máquina 02 · coleta do dia</span><span>⌀ 1 ponto não chegou</span></div>
-          <div class="x1-area"><span>Máquina 03 · 55 pontos</span><span class="x1-pill al" style="margin:0">ATENÇÃO</span></div>
+          <div class="x1-rm"><i class="ok"></i><em class="ok">BOM</em><b>Máquina 01</b><span>42 pontos coletados</span></div>
+          <div class="x1-rm"><i class="nok"></i><em class="nok">AÇÃO</em><b>Máquina 02</b><span>78 pontos coletados</span><span class="falta">⌀ 1 ponto não chegou</span></div>
+          <div class="x1-rm"><i class="al"></i><em class="al">ATENÇÃO</em><b>Máquina 03</b><span>55 pontos coletados</span></div>
         </div>
         <p>Ao fim do dia de coleta o relatório sai sozinho: estado e motivo de cada ponto, resumo de alarmes (não reconhecidos, excluídos e com alarme novo, por nível), notas de caso anexadas ao ponto e a rota de várias máquinas — resumo por máquina e de coleta, com os pontos que não chegaram declarados, nunca escondidos. Método, fonte de geometria e linhagem declarados o tempo todo.</p>
       </div>
@@ -486,26 +516,26 @@
           <div><div class="v">0</div><div class="k">falhas de leitura na coleta cíclica ensaiada</div></div>
           <div><div class="v">1</div><div class="k">comando — do probe ao CSV, com evidência integral em diário</div></div>
         </div>
-        <svg class="v-trilha" viewBox="0 0 560 46" role="img" aria-label="Trilha do ensaio: conexão, assinatura, varredura e coleta concluídas na bancada; próximo passo device real em 13/11">
-          <line x1="16" y1="20" x2="544" y2="20" stroke="#9fb3c8" stroke-width="1.5"/>
-          <circle cx="40" cy="20" r="9" fill="#1f8a4c"/>
-          <text x="40" y="24" text-anchor="middle" style="font:700 10px 'IBM Plex Mono',monospace" fill="#fff">✓</text>
-          <circle cx="160" cy="20" r="9" fill="#1f8a4c"/>
-          <text x="160" y="24" text-anchor="middle" style="font:700 10px 'IBM Plex Mono',monospace" fill="#fff">✓</text>
-          <circle cx="280" cy="20" r="9" fill="#1f8a4c"/>
-          <text x="280" y="24" text-anchor="middle" style="font:700 10px 'IBM Plex Mono',monospace" fill="#fff">✓</text>
-          <circle cx="400" cy="20" r="9" fill="#1f8a4c"/>
-          <text x="400" y="24" text-anchor="middle" style="font:700 10px 'IBM Plex Mono',monospace" fill="#fff">✓</text>
-          <circle cx="520" cy="20" r="9" fill="none" stroke="#e8820c" stroke-width="2" stroke-dasharray="3 2"/>
-          <text x="520" y="24" text-anchor="middle" style="font:700 9px 'IBM Plex Mono',monospace" fill="#e8820c">13/11</text>
-          <text x="40" y="42" text-anchor="middle" style="font:9px 'IBM Plex Mono',monospace" fill="#4a5d73">conexão</text>
-          <text x="160" y="42" text-anchor="middle" style="font:9px 'IBM Plex Mono',monospace" fill="#4a5d73">assinatura</text>
-          <text x="280" y="42" text-anchor="middle" style="font:9px 'IBM Plex Mono',monospace" fill="#4a5d73">varredura</text>
-          <text x="400" y="42" text-anchor="middle" style="font:9px 'IBM Plex Mono',monospace" fill="#4a5d73">coleta</text>
-          <text x="508" y="42" text-anchor="start" style="font:700 9px 'IBM Plex Mono',monospace" fill="#e8820c">device real</text>
-        </svg>
       </div>
     </div>
+    <svg class="v-trilha" viewBox="0 0 560 46" role="img" aria-label="Trilha do ensaio: conexão, assinatura, varredura e coleta concluídas na bancada; próximo passo device real em 13/11">
+      <line x1="16" y1="20" x2="544" y2="20" stroke="#9fb3c8" stroke-width="1.5"/>
+      <circle cx="40" cy="20" r="9" fill="#1f8a4c"/>
+      <text x="40" y="24" text-anchor="middle" style="font:700 10px 'IBM Plex Mono',monospace" fill="#fff">✓</text>
+      <circle cx="160" cy="20" r="9" fill="#1f8a4c"/>
+      <text x="160" y="24" text-anchor="middle" style="font:700 10px 'IBM Plex Mono',monospace" fill="#fff">✓</text>
+      <circle cx="280" cy="20" r="9" fill="#1f8a4c"/>
+      <text x="280" y="24" text-anchor="middle" style="font:700 10px 'IBM Plex Mono',monospace" fill="#fff">✓</text>
+      <circle cx="400" cy="20" r="9" fill="#1f8a4c"/>
+      <text x="400" y="24" text-anchor="middle" style="font:700 10px 'IBM Plex Mono',monospace" fill="#fff">✓</text>
+      <circle cx="520" cy="20" r="9" fill="none" stroke="#e8820c" stroke-width="2" stroke-dasharray="3 2"/>
+      <text x="520" y="24" text-anchor="middle" style="font:700 7px 'IBM Plex Mono',monospace" fill="#e8820c">13/11</text>
+      <text x="40" y="42" text-anchor="middle" style="font:9px 'IBM Plex Mono',monospace" fill="#4a5d73">conexão</text>
+      <text x="160" y="42" text-anchor="middle" style="font:9px 'IBM Plex Mono',monospace" fill="#4a5d73">assinatura</text>
+      <text x="280" y="42" text-anchor="middle" style="font:9px 'IBM Plex Mono',monospace" fill="#4a5d73">varredura</text>
+      <text x="400" y="42" text-anchor="middle" style="font:9px 'IBM Plex Mono',monospace" fill="#4a5d73">coleta</text>
+      <text x="520" y="42" text-anchor="middle" style="font:700 9px 'IBM Plex Mono',monospace" fill="#e8820c">device real</text>
+    </svg>
   </div>
 </section>
 
