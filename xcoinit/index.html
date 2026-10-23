@@ -81,6 +81,13 @@
     .xco-strip .setor{gap:8px;padding:20px 12px}
     .xco-strip .setor small{white-space:normal;line-height:1.35}
     .x1-mini{display:block;height:auto;margin:4px 0 8px}
+    /* Passada 5 — acabamento typesafe-inspired (chips do hero + tipografia) — escopo da página */
+    .xco-chips{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px;max-width:560px}
+    .xco-hero-chip{font:600 11px 'IBM Plex Mono',monospace;letter-spacing:.9px;text-transform:uppercase;color:#cfd9e4;border:1px solid rgba(195,208,222,.28);border-radius:999px;padding:5px 12px;white-space:nowrap}
+    .xco-hero-chip.xco-destaque{color:#f7941e;border-color:rgba(247,148,30,.55)}
+    .hero .sub{font-size:19px;font-weight:600;color:#d8e0ea;line-height:1.45;letter-spacing:-.005em}
+    .hero .desc{font-size:15px;line-height:1.62;color:#a9b8c7}
+    .xco-mesa-mock .xco-linha em:not(.xco-roda){font-size:15px;font-weight:800}
   </style>
 </head>
 <body>
@@ -107,6 +114,13 @@
       <div class="eyebrow">Pilar 04 · Software próprio</div>
       <h1>FRV<span>XcoInit</span></h1>
       <p class="sub">Da máquina ao laudo de condição, sem trocar de ferramenta — direto do barramento Modbus/TCP</p>
+      <div class="xco-chips" role="list" aria-label="Destaques do XcoInit">
+        <span class="xco-hero-chip" role="listitem">Modbus/TCP padrão</span>
+        <span class="xco-hero-chip" role="listitem">mapa descoberto sozinho</span>
+        <span class="xco-hero-chip" role="listitem">cobertura provada</span>
+        <span class="xco-hero-chip" role="listitem">CSV integral</span>
+        <span class="xco-hero-chip xco-destaque" role="listitem">laudo ao fim do dia</span>
+      </div>
       <p class="desc">
         O laudo de condição da sua máquina nasce no fim do dia, direto do barramento que a planta já tem.
         Sem intermediários: o XcoInit conversa com qualquer servidor Modbus/TCP padrão, descobre o mapa do
