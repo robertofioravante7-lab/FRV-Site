@@ -3,10 +3,16 @@
 Uso:  python jev_consulta.py <arquivo.json>
 O JSON deve ter: {"state": "<contexto em texto>", "questions": {<nome>: {"type": "noul|choice|score", "instructions": "...", "criteria": "...", "options": [...]}}}
 Imprime as respostas do Jev em JSON.
-"""
-import json, sys, urllib.request, urllib.error
 
-ENV = "C:/Users/Duda Gomes/OneDrive/Projetos/Softwares/GatoMestre/typesafe.env"
+A chave vem do arquivo apontado pela variavel de ambiente TYPESAFE_ENV
+(o typesafe.env de casa; configure uma vez: setx TYPESAFE_ENV "<caminho>").
+O caminho da maquina nao mora neste repositorio (o repositorio e publico).
+"""
+import json, os, sys, urllib.request, urllib.error
+
+ENV = os.environ.get("TYPESAFE_ENV", "")
+if not ENV:
+    print("ERRO: variavel TYPESAFE_ENV nao definida (aponte pro typesafe.env de casa)"); sys.exit(1)
 key = None
 for linha in open(ENV, encoding="utf-8"):
     linha = linha.strip()

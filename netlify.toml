@@ -7,7 +7,7 @@
 # A pasta atalaia/ (pagina do produto e demo) entrou na lista em 03/10/2026.
 # A pasta xcoinit/ (pagina do produto e demo) entrou na lista em 19/10/2026.
 [build]
-  command = "rm -rf dist && mkdir dist && cp index.html dist/ && cp -r assets atalaia xcoinit dist/ && rm -rf dist/assets/img/_originais"
+  command = "rm -rf dist && mkdir dist && cp index.html dist/ && cp -r assets atalaia xcoinit dist/ && rm -rf dist/assets/img/_originais && rm -f dist/xcoinit/index-v*.html"
   publish = "dist"
 
 # Repasse do painel da dieta (projeto Dieta, PLANO-SITE-DIETA.md, 27/09/2026).
