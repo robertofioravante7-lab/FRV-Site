@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FRV XcoInit - coleta e laudo de condição de máquina por Modbus/TCP | FRV Engenharia</title>
+  <meta name="description" content="Software que conversa com servidores Modbus/TCP padrão: descobre o mapa de dados do dispositivo sozinho, prova a cobertura do catálogo, coleta tudo em CSV e fecha o dia em laudo de condição de máquina com o módulo X·1.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=Manrope:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="/assets/css/site.css">
+  <script src="/assets/js/site.js" defer></script>
+  <style>
+    /* Mock-up da mesa de leitura no hero (específico da página XcoInit) */
+    .xco-mesa-mock{background:#fff;border-radius:10px;overflow:hidden;color:#12233a;font:13px/1.45 'IBM Plex Mono',monospace}
+    .xco-barra{display:flex;gap:14px;justify-content:space-between;background:#0d1b2a;color:#9fb3c8;padding:8px 12px;font-size:11.5px}
+    .xco-barra .xco-ok{color:#56d364}
+    .xco-linha{display:flex;align-items:baseline;gap:8px;padding:7px 12px;border-bottom:1px solid #d6dee8}
+    .xco-linha b{color:#e8820c;min-width:52px}
+    .xco-linha em{margin-left:auto;font-style:normal;font-weight:700;font-variant-numeric:tabular-nums}
+    .xco-linha em.xco-roda{color:#1f8a4c;font-size:12px}
+    .xco-spark{display:block;width:100%;height:44px;padding:2px 6px 0}
+    .xco-spark polyline{fill:none;stroke:#e8820c;stroke-width:2;stroke-linejoin:round}
+    /* Diagrama animado do trem compressor (a planta em movimento) */
+    .visao-moldura{background:#fff;border:1px solid #d6dee8;border-radius:14px;padding:20px 20px 10px;margin:16px 0 6px;box-shadow:0 10px 30px rgba(13,27,42,.06)}
+    .visao-moldura svg{display:block;width:100%;height:auto}
+    .visao-fio{stroke:#9fb3c8;stroke-width:1.2;stroke-dasharray:3 3;fill:none;opacity:.8}
+    .visao-fluxo{stroke:#1f8a4c;stroke-width:3;stroke-linecap:round;stroke-dasharray:7 6;animation:visao-fluxo 1.1s linear infinite}
+    @keyframes visao-fluxo{to{stroke-dashoffset:-52}}
+    .visao-pulso{fill:none;stroke:#e8820c;stroke-width:2;animation:visao-pulso 1.7s ease-out infinite}
+    .visao-pulso.d2{animation-delay:.45s}.visao-pulso.d3{animation-delay:.85s}.visao-pulso.d4{animation-delay:1.25s}
+    @keyframes visao-pulso{from{r:6;opacity:.8}to{r:20;opacity:0}}
+    .visao-gira{transform-box:fill-box;transform-origin:center;animation:visao-gira 4.5s linear infinite}
+    @keyframes visao-gira{to{transform:rotate(360deg)}}
+    .visao-txt{font:11px 'IBM Plex Mono',monospace;fill:#4a5d73}
+    .visao-spark{fill:none;stroke:#e8820c;stroke-width:2;stroke-linejoin:round}
+    .visao-gira.lento{animation-duration:6.5s}
+    .visao-pistao{animation:visao-pistao 1.2s ease-in-out infinite alternate}
+    .visao-pistao.p2{animation-delay:-.6s}
+    @keyframes visao-pistao{from{transform:translateY(-5px)}to{transform:translateY(5px)}}
+    .visao-bolha{fill:#0a1522;stroke:#26364a;stroke-width:1}
+    /* Régua X·1 — visual das ferramentas de análise */
+    .x1-medida{background:#fff;border:1px solid #d6dee8;border-radius:10px;padding:12px 14px 4px;margin:12px 0 4px}
+    .x1-medida svg{display:block;width:100%;height:auto}
+    .x1-leg{font:11.5px/1.5 'IBM Plex Mono',monospace;color:#4a5d73;margin:2px 0 10px}
+    .x1-leg b{color:#12233a}
+    .x1-chip{display:inline-block;background:#0d1b2a;color:#ffd9a0;border-radius:999px;padding:3px 11px;font:700 12px 'IBM Plex Mono',monospace;margin:0 6px 6px 0}
+    .x1-pill{display:inline-block;border-radius:999px;padding:2px 11px;font-weight:800;font-size:11.5px;margin:0 5px 8px 0}
+    .x1-pill.ok{background:#e2f2e6;color:#1f8a4c}.x1-pill.al{background:#fdf0d9;color:#b9770e}.x1-pill.nok{background:#f9e0dd;color:#c0392b}
+    .x1-area{display:flex;justify-content:space-between;align-items:center;padding:5px 2px;border-bottom:1px dashed #d6dee8;font:12.5px 'IBM Plex Mono',monospace;color:#12233a}
+    .x1-area:last-child{border-bottom:none}
+    .x1-medida.mini{padding:7px 14px;display:flex;flex-direction:column;justify-content:center}
+    .x1-medida.mini .x1-area{padding:4px 2px;font:11px 'IBM Plex Mono',monospace}
+    .x1-laudo{width:100%;border-collapse:collapse;font:12.5px/1.5 'IBM Plex Mono',monospace;margin:6px 0 4px}
+    .x1-laudo th{text-align:left;font-size:10.5px;text-transform:uppercase;letter-spacing:.05em;color:#9fb3c8;border-bottom:2px solid #d6dee8;padding:4px 8px 6px 0}
+    .x1-laudo td{border-bottom:1px solid #d6dee8;padding:7px 8px 7px 0;vertical-align:top}
+    .x1-laudo td:first-child,.x1-laudo th:first-child{font-weight:700;color:#e8820c}
+    .x1-laudo .nok{color:#c0392b;font-weight:700}.x1-laudo .okc{color:#1f8a4c}.x1-laudo .alc{color:#b9770e}
+    /* Leva X·1 — visuais da régua (escopo desta página; sem seletor global) */
+    .x1-evtl{margin:8px 0 2px;border-top:2px solid #d6dee8;padding-top:8px}
+    .x1-evb{font:11.5px/1.7 'IBM Plex Mono',monospace;color:#4a5d73;padding:2px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .x1-evb i{font-style:normal;font-weight:800;display:inline-block;width:15px;text-align:center}
+    .x1-evb b{color:#12233a}
+    .x1-evb .ev-nok{color:#c0392b}.x1-evb .ev-al{color:#b9770e}.x1-evb .ev-ok{color:#1f8a4c}
+    .x1-evb .ev-ack{color:#1f8a4c;font-size:10px}
+    .x1-strip{display:flex;flex-wrap:wrap;gap:4px 16px;align-items:baseline;background:#f5f7fa;border:1px solid #d6dee8;border-left:3px solid #e8820c;border-radius:8px;padding:9px 14px;margin:10px 0 12px;font:11.5px 'IBM Plex Mono',monospace;color:#4a5d73}
+    .x1-strip b{font:800 12px 'IBM Plex Mono',monospace;color:#12233a}
+    .x1-strip .ttl{font-weight:700;color:#12233a;letter-spacing:.3px}
+    .x1-strip .nok b{color:#c0392b}.x1-strip .al b{color:#b9770e}.x1-strip .okr b{color:#1f8a4c}
+    .x1-rota{display:grid;grid-template-columns:repeat(auto-fit,minmax(168px,1fr));gap:8px;margin:2px 0 12px}
+    .x1-rm{background:#fff;border:1px solid #d6dee8;border-radius:8px;padding:10px 12px 11px;position:relative;overflow:hidden}
+    .x1-rm i{position:absolute;top:0;left:0;right:0;height:3px}
+    .x1-rm i.ok{background:#1f8a4c}.x1-rm i.nok{background:#c0392b}.x1-rm i.al{background:#b9770e}
+    .x1-rm b{display:block;font:700 12.5px 'IBM Plex Mono',monospace;color:#12233a}
+    .x1-rm em{font-style:normal;float:right;font:800 10.5px 'IBM Plex Mono',monospace;padding:1px 8px;border-radius:999px}
+    .x1-rm em.ok{background:#e2f2e6;color:#1f8a4c}.x1-rm em.nok{background:#f9e0dd;color:#c0392b}.x1-rm em.al{background:#fdf0d9;color:#b9770e}
+    .x1-rm span{display:block;font:10.5px 'IBM Plex Mono',monospace;color:#4a5d73;margin-top:3px}
+    .x1-rm .falta{color:#c0392b;margin-top:4px}
+    .v-trilha{display:block;width:100%;max-width:720px;height:auto;margin:16px auto 0}
+    .xco-icone{flex:0 0 auto;width:24px;height:24px}
+    .xco-strip .setor{gap:8px;padding:20px 12px}
+    .xco-strip .setor small{white-space:normal;line-height:1.35}
+    .x1-mini{display:block;height:auto;margin:4px 0 8px}
+    /* Passada 5 — acabamento typesafe-inspired (chips do hero + tipografia) — escopo da página */
+    .xco-chips{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px;max-width:560px}
+    .xco-hero-chip{font:600 11px 'IBM Plex Mono',monospace;letter-spacing:.9px;text-transform:uppercase;color:#cfd9e4;border:1px solid rgba(195,208,222,.28);border-radius:999px;padding:5px 12px;white-space:nowrap}
+    .xco-hero-chip.xco-destaque{color:#f7941e;border-color:rgba(247,148,30,.55)}
+    .hero .sub{font-size:19px;font-weight:600;color:#d8e0ea;line-height:1.45;letter-spacing:-.005em}
+    .hero .desc{font-size:15px;line-height:1.62;color:#a9b8c7}
+    .xco-mesa-mock .xco-linha em:not(.xco-roda){font-size:15px;font-weight:800}
+    /* Passada 7 — régua de severidade nos blocos de dado + mini-visuais dos cards (escopo da página) */
+    .x1-rm.is-ok{opacity:.72}
+    .x1-rm.is-acao{box-shadow:inset 3px 0 0 #c0392b}
+    .x1-laudo tr.hl-nok td:first-child{box-shadow:inset 3px 0 0 #c0392b}
+    .x1-laudo tr.hl-ok{opacity:.78}
+    .x1-pillrow{display:flex;gap:6px;flex-wrap:wrap;margin:4px 0 8px}
+    .x1-pillrow .x1-pill{margin:0}
+    /* ===== V4 · storytelling: a jornada do dado em destaque, visuais grandes ===== */
+    .h2{font-size:clamp(38px,5vw,58px)}
+    .hero .sub{font-size:22px;max-width:38ch}
+    .hero .c{padding-top:96px;padding-bottom:84px}
+    .fns{gap:56px 72px}
+    .sec .c{padding-top:88px;padding-bottom:88px}
+    .xco-icone{width:34px;height:34px}
+    .xco-strip .setor{padding:30px 12px;position:relative}
+    .xco-strip .setor b{font-size:17px}
+    .xco-strip .setor span{font-size:16px}
+    .xco-strip .lbl{width:150px;white-space:normal;line-height:1.55}
+    .xco-strip .setor small{font-size:10px;line-height:1.35}
+    .xco-strip .setor:not(:last-child)::after{content:"→";position:absolute;right:-3px;top:50%;transform:translateY(-50%);font:700 15px 'IBM Plex Mono',monospace;color:#e8820c}
+    .x1-medida{padding:20px 22px 12px}
+    .x1-medida svg{width:100%}
+    .v-trilha{max-width:880px;margin:28px auto 0}
+    .visao-moldura{padding:26px 26px 14px}
+    @media(max-width:900px){.xco-strip .setor:not(:last-child)::after{display:none}}
+  </style>
+</head>
+<body>
+
+<header class="hd" id="hd">
+  <div class="c">
+    <a href="/" class="logo"><img src="/assets/img/logo-icon-white.png" alt="FRV"><small>Engenharia</small></a>
+    <nav>
+      <a href="/#sobre">Sobre</a>
+      <a href="/#areas">Áreas de atuação</a>
+      <a href="/#inovacao">Inovação</a>
+      <a href="/#noticias">Notícias</a>
+      <a href="#contato">Contato</a>
+    </nav>
+    <a class="btn" href="#contato">Fale conosco</a>
+  </div>
+</header>
+
+<section class="hero" id="topo">
+  <div class="hero-photo"></div>
+  <div class="grid-bg"></div>
+  <div class="c">
+    <div>
+      <div class="eyebrow">Pilar 04 · Software próprio</div>
+      <h1>FRV<span>XcoInit</span></h1>
+      <p class="sub">Da máquina ao laudo de condição, sem trocar de ferramenta — direto do barramento Modbus/TCP</p>
+      <div class="xco-chips" role="list" aria-label="Destaques do XcoInit">
+        <span class="xco-hero-chip" role="listitem">Modbus/TCP padrão</span>
+        <span class="xco-hero-chip" role="listitem">mapa descoberto sozinho</span>
+        <span class="xco-hero-chip" role="listitem">cobertura provada</span>
+        <span class="xco-hero-chip" role="listitem">CSV integral</span>
+        <span class="xco-hero-chip xco-destaque" role="listitem">laudo ao fim do dia</span>
+      </div>
+      <p class="desc">
+        O laudo de condição da sua máquina nasce no fim do dia, direto do barramento que a planta já tem.
+        Sem intermediários: o XcoInit conversa com qualquer servidor Modbus/TCP padrão, descobre o mapa do
+        dispositivo sozinho, prova a cobertura do catálogo e coleta tudo em CSV; o módulo X·1 devolve estado
+        com severidade, eventos de alarme, tendência, desvio do normal e marcadores de rolamento — a rota
+        inteira vira laudo. Núcleo de protocolo escrito do zero, audível linha a linha, sem uma única
+        dependência.
+      </p>
+      <div class="seal">TRL 5 · validado em bancada · ensaio integral contra simulador de dispositivo</div>
+      <div class="ctas">
+        <a class="btn" href="/xcoinit/demo/" target="_blank" rel="noopener">Ver a demonstração</a>
+        <a class="btn ghost" href="#contato">Levar para a minha planta</a>
+      </div>
+      <p class="demo-note">Demonstração com dados ilustrativos de pontos típicos de monitoramento de máquina.</p>
+    </div>
+    <a class="inst shot-inst xco-mesa-inst" href="/xcoinit/demo/" target="_blank" rel="noopener" aria-label="Abrir a demonstração: mesa de leitura do FRV XcoInit">
+      <div class="inst-top"><span class="led"></span>Mesa de leitura · FRV XcoInit<span class="demo">Dados ilustrativos</span></div>
+      <div class="xco-mesa-mock">
+        <div class="xco-barra"><span>127.0.0.1:502</span><span>unit 255</span><span class="xco-ok">● ligado</span></div>
+        <div class="xco-linha"><b>VT-01</b> vibração eixo X · mm/s<em id="hVT1">4,82</em></div>
+        <div class="xco-linha"><b>VT-02</b> vibração eixo Y · mm/s<em id="hVT2">4,91</em></div>
+        <div class="xco-linha"><b>TT-01</b> temperatura mancal · °C<em id="hMT1">63,4</em></div>
+        <div class="xco-linha"><b>CS-01</b> estado · bit FC1<em class="xco-roda">rotando</em></div>
+        <svg class="xco-spark" viewBox="0 0 240 40" preserveAspectRatio="none"><polyline id="hSpark" points="0,30 24,26 48,27 72,22 96,23 120,18 144,20 168,15 192,17 216,12 240,14"/></svg>
+      </div>
+    </a>
+  </div>
+  <div class="setores n5 xco-strip">
+    <div class="c">
+      <div class="lbl">Do bit ao laudo — o que ele fala</div>
+      <div class="setor"><svg class="xco-icone" viewBox="0 0 24 24" aria-hidden="true"><rect x="2.2" y="5" width="4.6" height="4.6" fill="#f7941e"/><rect x="9.4" y="5" width="4.6" height="4.6" fill="#f7941e"/><rect x="16.6" y="5" width="4.6" height="4.6" fill="#f7941e"/><rect x="2.2" y="14.4" width="4.6" height="4.6" fill="none" stroke="#f7941e" stroke-width="1.5"/><rect x="9.4" y="14.4" width="4.6" height="4.6" fill="none" stroke="#f7941e" stroke-width="1.5"/><rect x="16.6" y="14.4" width="4.6" height="4.6" fill="none" stroke="#f7941e" stroke-width="1.5"/></svg><b>01</b><span>FC01/FC02<small>bits e entradas discretas</small></span></div>
+      <div class="setor"><svg class="xco-icone" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4.5" width="18" height="15" rx="2" fill="none" stroke="#f7941e" stroke-width="1.5"/><line x1="3" y1="9.5" x2="21" y2="9.5" stroke="#f7941e" stroke-width="1.5"/><line x1="3" y1="14.5" x2="21" y2="14.5" stroke="#f7941e" stroke-width="1.5"/><line x1="12" y1="4.5" x2="12" y2="19.5" stroke="#f7941e" stroke-width="1.5"/></svg><b>02</b><span>FC03/FC04<small>registradores de retenção e entrada</small></span></div>
+      <div class="setor"><svg class="xco-icone" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="2.2" fill="none" stroke="#f7941e" stroke-width="1.5"/><path d="M6 20c-1.8-6 2.5-11 6-11s7.8 5 6 11" fill="none" stroke="#f7941e" stroke-width="1.5"/><path d="M9 20c-.8-4 1.6-7 3-7s3.8 3 3 7" fill="none" stroke="#f7941e" stroke-width="1.5"/><line x1="12" y1="17" x2="12" y2="20" stroke="#f7941e" stroke-width="1.5"/></svg><b>03</b><span>Fingerprint<small>resposta às funções de fábrica</small></span></div>
+      <div class="setor"><svg class="xco-icone" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3.5h9.5L18 7v13.5H5z" fill="none" stroke="#f7941e" stroke-width="1.5"/><line x1="8" y1="9.5" x2="14.5" y2="9.5" stroke="#f7941e" stroke-width="1.5"/><line x1="8" y1="13" x2="14.5" y2="13" stroke="#f7941e" stroke-width="1.5"/><path d="M11.5 15.5v4.5m0 0l-2.2-2.2m2.2 2.2l2.2-2.2" fill="none" stroke="#f7941e" stroke-width="1.5"/></svg><b>04</b><span>CSV<small>coleta cíclica diária</small></span></div>
+      <div class="setor"><svg class="xco-icone" viewBox="0 0 24 24" aria-hidden="true"><polyline points="2.5,17 7,14.5 10.5,16 14,11 17.5,12.5 21,7.5" fill="none" stroke="#f7941e" stroke-width="1.7"/><line x1="17.5" y1="4" x2="17.5" y2="20" stroke="#f7941e" stroke-width="1.2" stroke-dasharray="2.5 2.5"/><circle cx="21" cy="7.5" r="2" fill="#f7941e"/></svg><b>05</b><span>X·1<small>severidade, evento de alarme e laudo do dia</small></span></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="funcoes">
+  <div class="grid-bg"></div>
+  <div class="c">
+    <div class="eyebrow">O que o XcoInit faz</div>
+    <h2 class="h2">Do barramento ao <span>CSV</span></h2>
+    <div class="fns">
+      <div class="fn">
+        <div class="code">XCL·01 · FC1/FC2</div>
+        <h3>Bits: estado e alarmes</h3>
+        <svg class="x1-mini" style="width:132px" viewBox="0 0 132 20" role="img" aria-label="Lote de bits: três em 1 laranja, os demais em 0 vazados">
+          <rect x="0" y="4" width="10" height="10" rx="2" fill="#e8820c"/>
+          <rect x="13" y="4" width="10" height="10" rx="2" fill="none" stroke="#9fb3c8" stroke-width="1.3"/>
+          <rect x="26" y="4" width="10" height="10" rx="2" fill="none" stroke="#9fb3c8" stroke-width="1.3"/>
+          <rect x="39" y="4" width="10" height="10" rx="2" fill="#e8820c"/>
+          <rect x="52" y="4" width="10" height="10" rx="2" fill="none" stroke="#9fb3c8" stroke-width="1.3"/>
+          <rect x="65" y="4" width="10" height="10" rx="2" fill="none" stroke="#9fb3c8" stroke-width="1.3"/>
+          <rect x="78" y="4" width="10" height="10" rx="2" fill="#e8820c"/>
+          <rect x="91" y="4" width="10" height="10" rx="2" fill="none" stroke="#9fb3c8" stroke-width="1.3"/>
+          <rect x="104" y="4" width="10" height="10" rx="2" fill="none" stroke="#9fb3c8" stroke-width="1.3"/>
+          <rect x="117" y="4" width="10" height="10" rx="2" fill="none" stroke="#9fb3c8" stroke-width="1.3"/>
+        </svg>
+        <p>Leitura de entradas discretas e bobinas em lotes de até 1.000 bits por requisição, conforme o padrão Modbus.</p>
+      </div>
+      <div class="fn">
+        <div class="code">XCL·02 · FC3/FC4</div>
+        <h3>Registradores: medições</h3>
+        <svg class="x1-mini" style="width:140px" viewBox="0 0 140 30" role="img" aria-label="Mini grade de registradores: oito células, uma em destaque">
+          <rect x="1" y="2" width="31" height="12" rx="2" fill="#fff" stroke="#d6dee8"/>
+          <rect x="37" y="2" width="31" height="12" rx="2" fill="#fff" stroke="#d6dee8"/>
+          <rect x="73" y="2" width="31" height="12" rx="2" fill="#e8820c"/>
+          <rect x="109" y="2" width="30" height="12" rx="2" fill="#fff" stroke="#d6dee8"/>
+          <rect x="1" y="17" width="31" height="12" rx="2" fill="#fff" stroke="#d6dee8"/>
+          <rect x="37" y="17" width="31" height="12" rx="2" fill="#fff" stroke="#d6dee8"/>
+          <rect x="73" y="17" width="31" height="12" rx="2" fill="#fff" stroke="#d6dee8"/>
+          <rect x="109" y="17" width="30" height="12" rx="2" fill="#fff" stroke="#d6dee8"/>
+        </svg>
+        <p>Leitura de registradores de entrada e de retenção (até 125 por lote, como pede o padrão) com conversão para int, word, float e troca de byte/word quando o dispositivo manda ao contrário.</p>
+      </div>
+      <div class="fn">
+        <div class="code">XCL·03 · Autodescoberta</div>
+        <h3>O mapa se desenha sozinho</h3>
+        <svg class="x1-mini" style="width:140px" viewBox="0 0 140 20" role="img" aria-label="Mapa descoberto: blocos de endereços contíguos com lacunas respeitadas">
+          <rect x="0" y="4" width="34" height="12" rx="2" fill="#0d1b2a"/>
+          <rect x="38" y="4" width="18" height="12" rx="2" fill="#0d1b2a"/>
+          <rect x="62" y="4" width="44" height="12" rx="2" fill="#0d1b2a"/>
+          <rect x="118" y="4" width="22" height="12" rx="2" fill="#0d1b2a"/>
+        </svg>
+        <p>Varredura por janelas que agrupa endereços contíguos em blocos e respeita as lacunas do dispositivo — o mapa sai fiel ao que existe no barramento, não ao que se assume.</p>
+      </div>
+      <div class="fn">
+        <div class="code">XCL·04 · Cobertura</div>
+        <h3>Prova do catálogo</h3>
+        <svg class="x1-mini" style="width:58px" viewBox="0 0 60 60" role="img" aria-label="Anel de cobertura: 100 por cento no ensaio de bancada">
+          <circle cx="30" cy="30" r="24" fill="none" stroke="#d6dee8" stroke-width="5.5"/>
+          <circle cx="30" cy="30" r="24" fill="none" stroke="#1f8a4c" stroke-width="5.5" transform="rotate(-90 30 30)"/>
+          <text x="30" y="34" text-anchor="middle" style="font:800 10.5px 'IBM Plex Mono',monospace" fill="#12233a">100%</text>
+        </svg>
+        <p>Cruza o mapa descoberto com o catálogo de pontos da engenharia e responde, em porcentagem, o que está e o que ficou de fora — a diferença entre conectar e enxergar.</p>
+      </div>
+      <div class="fn">
+        <div class="code">XCL·05 · Coleta cíclica</div>
+        <h3>CSV diário, sozinho</h3>
+        <svg class="x1-mini" viewBox="0 0 260 30" role="img" aria-label="Coleta do dia de 08:00 a 17:00, ciclo de 1 segundo por ponto">
+          <line x1="8" y1="14" x2="252" y2="14" stroke="#9fb3c8" stroke-width="2"/>
+          <line x1="8" y1="9" x2="8" y2="19" stroke="#e8820c" stroke-width="2"/>
+          <line x1="35" y1="11" x2="35" y2="17" stroke="#9fb3c8" stroke-width="1.4"/>
+          <line x1="62" y1="11" x2="62" y2="17" stroke="#9fb3c8" stroke-width="1.4"/>
+          <line x1="89" y1="11" x2="89" y2="17" stroke="#9fb3c8" stroke-width="1.4"/>
+          <line x1="116" y1="11" x2="116" y2="17" stroke="#9fb3c8" stroke-width="1.4"/>
+          <line x1="143" y1="11" x2="143" y2="17" stroke="#9fb3c8" stroke-width="1.4"/>
+          <line x1="170" y1="11" x2="170" y2="17" stroke="#9fb3c8" stroke-width="1.4"/>
+          <line x1="197" y1="11" x2="197" y2="17" stroke="#9fb3c8" stroke-width="1.4"/>
+          <line x1="224" y1="11" x2="224" y2="17" stroke="#9fb3c8" stroke-width="1.4"/>
+          <line x1="252" y1="9" x2="252" y2="19" stroke="#e8820c" stroke-width="2"/>
+          <text x="8" y="28" style="font:8.5px 'IBM Plex Mono',monospace" fill="#4a5d73">08:00</text>
+          <text x="252" y="28" text-anchor="end" style="font:8.5px 'IBM Plex Mono',monospace" fill="#4a5d73">17:00</text>
+        </svg>
+        <p>Ciclo configurável (padrão 1 s) com duração programada e parada automática: o valor cru, o valor escalado e a hora de cada ponto no CSV diário, sem ninguém segurando o teclado.</p>
+      </div>
+      <div class="fn">
+        <div class="code">XCL·06 · Fingerprint</div>
+        <h3>Como o dispositivo se comporta</h3>
+        <svg class="x1-mini" style="width:120px" viewBox="0 0 120 20" role="img" aria-label="Três sondas de diagnóstico: duas respondem, uma é negada">
+          <line x1="4" y1="6" x2="12" y2="14" stroke="#1f8a4c" stroke-width="2"/>
+          <line x1="12" y1="6" x2="4" y2="14" stroke="#1f8a4c" stroke-width="2"/>
+          <line x1="48" y1="6" x2="56" y2="14" stroke="#1f8a4c" stroke-width="2"/>
+          <line x1="56" y1="6" x2="48" y2="14" stroke="#1f8a4c" stroke-width="2"/>
+          <line x1="96" y1="6" x2="104" y2="14" stroke="#c0392b" stroke-width="2"/>
+          <line x1="104" y1="6" x2="96" y2="14" stroke="#c0392b" stroke-width="2"/>
+        </svg>
+        <p>Sonda as funções de diagnóstico de fábrica e registra quem responde e quem é negada — a "assinatura" humana honesta do dispositivo, útil em comissionamento e auditoria.</p>
+      </div>
+      <div class="fn">
+        <div class="code">XCL·07 · Mesa de operação</div>
+        <h3>Uma tela, todo o circuito</h3>
+        <svg class="x1-mini" style="width:140px" viewBox="0 0 140 38" role="img" aria-label="Mesa compacta: barra de conexão, linhas de leitura e série ao vivo">
+          <rect x="0" y="0" width="140" height="9" rx="2" fill="#0d1b2a"/>
+          <line x1="5" y1="4.5" x2="25" y2="4.5" stroke="#56d364" stroke-width="2"/>
+          <rect x="0" y="13" width="140" height="25" rx="2" fill="#fff" stroke="#d6dee8"/>
+          <line x1="7" y1="20" x2="64" y2="20" stroke="#d6dee8" stroke-width="1.2"/>
+          <polyline points="7,32 29,30 51,31 73,27 95,28 117,24 133,26" fill="none" stroke="#e8820c" stroke-width="2" stroke-linejoin="round"/>
+        </svg>
+        <p>Conexão, sondagem, varredura e coleta em uma única mesa gráfica, com estatísticas ao vivo, resumo de alarmes do dia e catálogo carregado do arquivo — o operador acompanha o circuito inteiro sem linha de comando.</p>
+      </div>
+      <div class="fn">
+        <div class="code">XCL·08 · Módulo X·1 <em>na bancada</em></div>
+        <h3>X·1: a análise que aprende o normal da máquina</h3>
+        <div class="x1-pillrow" aria-label="Estados por ponto, na ordem BOM, ATENÇÃO e AÇÃO">
+          <span class="x1-pill ok">BOM</span>
+          <span class="x1-pill al">ATENÇÃO</span>
+          <span class="x1-pill nok">AÇÃO</span>
+        </div>
+        <p>Estado por ponto — BOM, ATENÇÃO, AÇÃO — com a severidade de 1 a 4 de cada ocorrência, alteração de percentual com a régua das quatro anteriores, minitendências e marcadores de rolamento com geometria e fonte citadas. Cada virada de nível vira um evento de alarme com reconhecimento do operador, e o X·1 guarda a assinatura saudável de cada ponto — o desvio do normal acende antes de qualquer limite. Resumo por área, resumo de alarmes, rota de várias máquinas, análise ao vivo na mesa e laudo automático. Prévia na demonstração.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="ferramentas">
+  <div class="grid-bg"></div>
+  <div class="c">
+    <div class="eyebrow">Módulo X·1 · análise de condição</div>
+    <h2 class="h2">O diário do dia vira <span>régua de máquina</span></h2>
+    <p>O CSV do dia entra, a leitura de condição sai: cada ponto passa por uma régua de ferramentas
+    destilada das práticas clássicas de monitoramento de máquina — cor por limite com severidade de 1 a 4,
+    eventos de alarme a cada virada de nível, desvio do próprio normal, memória de mudança, tendência por
+    hora e marcadores de rolamento. A mesma régua roda no laudo automático do fim do dia e na mesa, ao
+    vivo, durante a coleta.</p>
+    <div class="fns">
+      <div class="fn">
+        <div class="code">X·1 · limite</div>
+        <h3>Cor na hora, limite por ponto</h3>
+        <div class="x1-medida">
+          <svg viewBox="0 0 300 56" role="img" aria-label="Barra de limites com zonas de verde, âmbar e vermelho">
+            <rect x="0" y="20" width="210" height="14" rx="7" fill="#9dd6ae"/>
+            <rect x="210" y="20" width="56" height="14" fill="#f3c268"/>
+            <rect x="266" y="20" width="34" height="14" rx="7" fill="#eb9f9a"/>
+            <line x1="210" y1="14" x2="210" y2="40" stroke="#12233a" stroke-width="1.4"/>
+            <line x1="266" y1="14" x2="266" y2="40" stroke="#12233a" stroke-width="1.4"/>
+            <line x1="179" y1="12" x2="179" y2="32" stroke="#12233a" stroke-width="2.2" stroke-dasharray="3 2"/>
+            <text x="179" y="9" text-anchor="middle" style="font:700 10px 'IBM Plex Mono',monospace" fill="#12233a">4,82</text>
+            <text x="210" y="50" text-anchor="middle" style="font:9.5px 'IBM Plex Mono',monospace" fill="#4a5d73">5,6</text>
+            <text x="266" y="50" text-anchor="middle" style="font:9.5px 'IBM Plex Mono',monospace" fill="#4a5d73">7,1</text>
+            <text x="32" y="31" style="font:9.5px 'IBM Plex Mono',monospace" fill="#1f5c38">ok</text>
+            <text x="238" y="31" text-anchor="middle" style="font:9.5px 'IBM Plex Mono',monospace" fill="#7a4e06">atenção</text>
+          </svg>
+        </div>
+        <p class="x1-leg">mm/s · alerta <b>5,6</b> · alarme <b>7,1</b> — severidade 1 a 4, limiar por ponto</p>
+        <p>Leitura entra, severidade responde: três estados de cor (BOM, ATENÇÃO, AÇÃO) e severidade 1 a 4 da ocorrência — limiares do arquivo da engenharia, sem interpretação no meio do caminho.</p>
+      </div>
+      <div class="fn">
+        <div class="code">X·1 · normal</div>
+        <h3>Desvio do próprio normal (z)</h3>
+        <div class="x1-medida">
+          <svg viewBox="0 0 300 56" role="img" aria-label="Régua z com zonas das duas e três variações e o ponto de hoje em desvio alto">
+            <rect x="53" y="20" width="34" height="12" fill="#fdf0d9"/>
+            <rect x="19" y="20" width="34" height="12" fill="#f9e0dd"/>
+            <rect x="223" y="20" width="34" height="12" fill="#fdf0d9"/>
+            <rect x="257" y="20" width="34" height="12" fill="#f9e0dd"/>
+            <line x1="19" y1="26" x2="291" y2="26" stroke="#9fb3c8" stroke-width="1.5"/>
+            <text x="87" y="15" text-anchor="middle" style="font:9px 'IBM Plex Mono',monospace" fill="#9fb3c8">-2σ</text>
+            <text x="223" y="15" text-anchor="middle" style="font:9px 'IBM Plex Mono',monospace" fill="#9fb3c8">+2σ</text>
+            <text x="257" y="15" text-anchor="middle" style="font:9px 'IBM Plex Mono',monospace" fill="#9fb3c8">+3σ</text>
+            <circle cx="155" cy="26" r="4.5" fill="#1f8a4c"/>
+            <circle cx="291" cy="26" r="5" fill="#c0392b"/>
+            <text x="155" y="50" text-anchor="middle" style="font:700 10px 'IBM Plex Mono',monospace" fill="#1f8a4c">normal</text>
+            <text x="291" y="50" text-anchor="end" style="font:700 10px 'IBM Plex Mono',monospace" fill="#c0392b">hoje z +4,0</text>
+          </svg>
+        </div>
+        <p class="x1-leg">normal aprendido <b>2,90 ± 0,32</b> — amarelo em |z| ≥ 2, vermelho em |z| ≥ 3</p>
+        <p>A média e a variação de cada ponto ficam congeladas como o normal do dia. O desvio dele acende antes de qualquer limite reagir — degradação precoce tem lugar à mesa.</p>
+      </div>
+      <div class="fn">
+        <div class="code">X·1 · mudança</div>
+        <h3>Mudança com memória</h3>
+        <div class="x1-medida">
+          <svg viewBox="0 0 300 56" role="img" aria-label="Cinco barras ascendentes, a última em laranja">
+            <rect x="20" y="34" width="40" height="8" rx="2" fill="#9fb3c8"/>
+            <rect x="74" y="30" width="40" height="12" rx="2" fill="#9fb3c8"/>
+            <rect x="128" y="27" width="40" height="15" rx="2" fill="#9fb3c8"/>
+            <rect x="182" y="23" width="40" height="19" rx="2" fill="#9fb3c8"/>
+            <rect x="236" y="18" width="40" height="24" rx="2" fill="#e8820c"/>
+            <text x="40" y="53" text-anchor="middle" style="font:9px 'IBM Plex Mono',monospace" fill="#9fb3c8">-4</text>
+            <text x="94" y="53" text-anchor="middle" style="font:9px 'IBM Plex Mono',monospace" fill="#9fb3c8">-3</text>
+            <text x="148" y="53" text-anchor="middle" style="font:9px 'IBM Plex Mono',monospace" fill="#9fb3c8">-2</text>
+            <text x="202" y="53" text-anchor="middle" style="font:9px 'IBM Plex Mono',monospace" fill="#9fb3c8">-1</text>
+            <text x="256" y="53" text-anchor="middle" style="font:9px 'IBM Plex Mono',monospace" fill="#e8820c">hoje</text>
+          </svg>
+        </div>
+        <p class="x1-leg">hoje <b>+19,1 %</b> contra a régua das 4 amostras anteriores</p>
+        <p>A mudança nunca é medida contra uma leitura só: é contra a média das quatro anteriores. Sobrepico que engana uma régua simples não engana a memória.</p>
+      </div>
+      <div class="fn">
+        <div class="code">X·1 · minitendência</div>
+        <h3>Direção por hora</h3>
+        <div class="x1-medida">
+          <svg viewBox="0 0 300 56" role="img" aria-label="Série subindo com linha de tendência pontilhada">
+            <line x1="12" y1="44" x2="288" y2="16" stroke="#9fb3c8" stroke-dasharray="4 4" stroke-width="1.4"/>
+            <polyline fill="none" stroke="#e8820c" stroke-width="2.5" stroke-linejoin="round" points="12,42 40,40 68,39 96,36 124,35 152,32 180,31 208,26 236,25 264,20 288,18"/>
+          </svg>
+        </div>
+        <p class="x1-leg">janela de 60 min · declive <b>+0,6 mm/s por hora</b></p>
+        <p>A degradação tem direção antes de ter tamanho: o declive por hora entra no laudo enquanto a máquina ainda está verde na régua de limites.</p>
+      </div>
+      <div class="fn">
+        <div class="code">X·1 · marcadores</div>
+        <h3>Frequências de rolamento</h3>
+        <div class="x1-medida">
+          <svg viewBox="0 0 300 56" role="img" aria-label="Espectro com picos nas frequências de rolamento catalogadas">
+            <line x1="10" y1="46" x2="290" y2="46" stroke="#9fb3c8" stroke-width="1.5"/>
+            <rect x="21" y="30" width="5" height="16" fill="#e8820c"/>
+            <rect x="52" y="24" width="5" height="22" fill="#e8820c"/>
+            <rect x="62" y="34" width="5" height="12" fill="#e8820c"/>
+            <rect x="95" y="16" width="5" height="30" fill="#e8820c"/>
+            <rect x="125" y="12" width="5" height="34" fill="#c0392b"/>
+            <rect x="281" y="24" width="5" height="22" fill="#e8820c"/>
+            <text x="23" y="26" style="font:9px 'IBM Plex Mono',monospace" fill="#4a5d73">FTF</text>
+            <text x="54" y="20" style="font:9px 'IBM Plex Mono',monospace" fill="#4a5d73">1×</text>
+            <text x="68" y="31" style="font:9px 'IBM Plex Mono',monospace" fill="#4a5d73">BSF</text>
+            <text x="97" y="12" style="font:9px 'IBM Plex Mono',monospace" fill="#4a5d73">2×</text>
+            <text x="127" y="8" style="font:9px 'IBM Plex Mono',monospace" fill="#c0392b">BPFO</text>
+            <text x="283" y="20" text-anchor="middle" style="font:9px 'IBM Plex Mono',monospace" fill="#4a5d73">BPFI</text>
+            <text x="23" y="54" text-anchor="middle" style="font:8px 'IBM Plex Mono',monospace" fill="#9fb3c8">14,9</text>
+            <text x="54" y="54" text-anchor="middle" style="font:8px 'IBM Plex Mono',monospace" fill="#9fb3c8">49,8</text>
+            <text x="97" y="54" text-anchor="middle" style="font:8px 'IBM Plex Mono',monospace" fill="#9fb3c8">99,6</text>
+            <text x="127" y="54" text-anchor="middle" style="font:8px 'IBM Plex Mono',monospace" fill="#9fb3c8">134,5</text>
+            <text x="281" y="54" text-anchor="middle" style="font:8px 'IBM Plex Mono',monospace" fill="#9fb3c8">313,7</text>
+          </svg>
+        </div>
+        <p class="x1-leg">geometria catalogada e <b>fonte citada</b> no laudo — frequência errada manda manutenção pro lugar errado</p>
+        <p>Gaiola (FTF), corpo rolante (BSF), pista externa (BPFO) e pista interna (BPFI) sobrepostas ao espectro: pico alto no marcador aponta o endereço do problema.</p>
+      </div>
+      <div class="fn">
+        <div class="code">X·1 · máquina</div>
+        <h3>Confirmação e vista da máquina</h3>
+        <div class="x1-medida mini">
+          <div class="x1-area"><span>Mancal A</span><span class="x1-pill ok" style="margin:0">BOM</span></div>
+          <div class="x1-area"><span>Mancal B</span><span class="x1-pill nok" style="margin:0">AÇÃO</span></div>
+          <div class="x1-area"><span>Óleo e lubrificação</span><span class="x1-pill al" style="margin:0">ATENÇÃO</span></div>
+        </div>
+        <p class="x1-leg">confirmação <b>3/3 ciclos</b> — estado não escala com uma leitura, escala com ciclos seguidos</p>
+        <div class="x1-evtl" aria-label="Eventos de alarme do dia, com reconhecimento do operador">
+          <div class="x1-evb"><i class="ev-nok">▲</i> Mancal B entrou em <b>AÇÃO</b> · <em style="font-style:normal">14:32</em> <span class="ev-ack">reconhecido</span></div>
+          <div class="x1-evb"><i class="ev-al">↑</i> Óleo subiu a <b>ATENÇÃO</b> · <em style="font-style:normal">10:05</em> <span class="ev-ack">reconhecido</span></div>
+          <div class="x1-evb"><i class="ev-ok">▼</i> Mancal A voltou ao <b>BOM</b> · <em style="font-style:normal">08:17</em> <span class="ev-ack">reconhecido</span></div>
+        </div>
+        <p>Nada vira alarme por sobressalto: a régua confirma em ciclos seguidos antes de escalar, e a histerese pede o mesmo passo calmo no retorno — o alarme fecha só com o valor estabilizado, sem pisca-alarme. Cada virada de nível vira um evento — ▲ entrou, ↑ agravou, ↓ atenuou, ▼ retornou —, cada evento aceita o reconhecimento do operador, e a janela de supressão mantém o alarme crônico de engolir o novo. A máquina aparece inteira, área por área, no laudo e no resumo de alarmes do dia.</p>
+      </div>
+      <div class="fn fn-w" style="grid-column:1/-1">
+        <div class="code">XCL·09 · Laudo automático</div>
+        <h3>O laudo nasce pronto ao fim do dia</h3>
+        <p>Estado, normal aprendido, desvio e motivo de cada ponto — o trecho abaixo é a cara do item do relatório:</p>
+        <table class="x1-laudo">
+          <tr><th>Ponto</th><th>Hoje</th><th>Normal (± σ)</th><th>Desvio</th><th>Estado</th><th>Motivo</th></tr>
+          <tr class="hl-ok"><td>VT-01 · mancal A</td><td>4,82 mm/s</td><td>4,60 ± 0,55</td><td>+0,22 · z +0,4</td><td><span class="x1-pill ok">BOM</span></td><td class="okc">dentro da assinatura aprendida</td></tr>
+          <tr class="hl-nok"><td>VT-03 · mancal B</td><td>4,18 mm/s</td><td>2,90 ± 0,32</td><td>+1,28 · z +4,0</td><td><span class="x1-pill nok">AÇÃO</span></td><td class="nok">desviando do próprio normal, subindo — sem tocar o alarme 5,6</td></tr>
+          <tr class="hl-ok"><td>TT-01 · mancal A</td><td>58,4 °C</td><td>60,2 ± 1,8</td><td>-1,8 · z -1,0</td><td><span class="x1-pill ok">BOM</span></td><td class="okc">estável dentro da banda da própria máquina</td></tr>
+        </table>
+        <div class="x1-strip" aria-label="Resumo de alarmes do dia">
+          <span class="ttl">Resumo de alarmes</span>
+          <span><b>13</b> contagens</span>
+          <span class="nok"><b>2</b> não reconhecidos</span>
+          <span class="al"><b>1</b> excluído na janela</span>
+          <span class="okr"><b>4</b> alarmes novos</span>
+        </div>
+        <div class="x1-rota" aria-label="Rota multi-máquina do dia">
+          <div class="x1-rm is-ok"><i class="ok"></i><em class="ok">BOM</em><b>Máquina 01</b><span>42 pontos coletados</span></div>
+          <div class="x1-rm is-acao"><i class="nok"></i><em class="nok">AÇÃO</em><b>Máquina 02</b><span>78 pontos coletados</span><span class="falta">⌀ 1 ponto não chegou</span></div>
+          <div class="x1-rm"><i class="al"></i><em class="al">ATENÇÃO</em><b>Máquina 03</b><span>55 pontos coletados</span></div>
+        </div>
+        <p>Ao fim do dia de coleta o relatório sai sozinho: estado e motivo de cada ponto, resumo de alarmes (não reconhecidos, excluídos e com alarme novo, por nível), notas de caso anexadas ao ponto e a rota de várias máquinas — resumo por máquina e de coleta, com os pontos que não chegaram declarados, nunca escondidos. Método, fonte de geometria e linhagem declarados o tempo todo.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="visao">
+  <div class="grid-bg"></div>
+  <div class="c">
+    <div class="eyebrow">A planta em movimento</div>
+    <h2 class="h2">A máquina, <span>em movimento</span></h2>
+    <p>Cara de sistema: pistões de dois estágios alternados, virabrequim girando e 8 pontos lendo a
+    máquina — velocidade no acoplamento (ST), vibração (VT), temperatura (TT) e deslocamento, com a
+    queda de haste dentro (XT): axial, radial e rod drop — até a mesa do XcoInit receber cada leitura.
+    Diagrama animado com dados ilustrativos — uma das visões planejadas para o módulo X·1 de análise
+    de condição: a planta colorida pelo estado do dia, severidade por ponto.</p>
+    <div class="visao-moldura">
+      <svg viewBox="0 0 860 320" role="img" aria-label="Diagrama animado do trem: motor de indução + compressor alternativo de dois estágios, com sensores ST, VT, TT, XT e rod drop, e a mesa do XcoInit coletando">
+        <!-- skid -->
+        <rect x="40" y="262" width="640" height="9" rx="4" fill="#141f2b"/>
+        <!-- motor -->
+        <rect x="60" y="132" width="180" height="108" rx="14" fill="#fff" stroke="#d6dee8" stroke-width="1.5"/>
+        <line x1="72" y1="144" x2="228" y2="144" stroke="#e6ecf3" stroke-width="2.5"/>
+        <line x1="72" y1="156" x2="228" y2="156" stroke="#e6ecf3" stroke-width="2.5"/>
+        <line x1="72" y1="208" x2="228" y2="208" stroke="#e6ecf3" stroke-width="2.5"/>
+        <line x1="72" y1="220" x2="228" y2="220" stroke="#e6ecf3" stroke-width="2.5"/>
+        <text x="150" y="186" text-anchor="middle" class="visao-txt">MOTOR</text>
+        <rect x="120" y="110" width="60" height="22" rx="4" fill="#fff" stroke="#d6dee8"/>
+        <circle cx="126" cy="121" r="1.5" fill="#9fb3c8"/><circle cx="174" cy="121" r="1.5" fill="#9fb3c8"/>
+        <rect x="64" y="240" width="26" height="22" fill="#fff" stroke="#d6dee8"/>
+        <rect x="206" y="240" width="26" height="22" fill="#fff" stroke="#d6dee8"/>
+        <rect x="240" y="182" width="32" height="8" rx="4" fill="#4a5d73"/>
+        <!-- acoplamento + ST velocidade -->
+        <rect x="272" y="169" width="10" height="34" rx="2" fill="#4a5d73"/>
+        <rect x="308" y="169" width="10" height="34" rx="2" fill="#4a5d73"/>
+        <rect x="282" y="179" width="26" height="14" fill="#9fb3c8"/>
+        <rect x="291" y="158" width="8" height="12" rx="2" fill="#e8820c"/>
+        <circle cx="295" cy="154" r="4" fill="#e8820c"/><circle cx="295" cy="154" r="4" class="visao-pulso"/>
+        <line x1="295" y1="150" x2="295" y2="120" class="visao-fio"/>
+        <rect x="250" y="104" width="104" height="16" rx="8" class="visao-bolha"/>
+        <text x="302" y="116" text-anchor="middle" style="font:9.5px 'IBM Plex Mono',monospace" fill="#ffd9a0">ST-01 · 2.985 rpm</text>
+        <!-- compressor: bloco, virabrequim e pés -->
+        <rect x="330" y="172" width="190" height="66" rx="10" fill="#fff" stroke="#d6dee8" stroke-width="1.5"/>
+        <line x1="336" y1="220" x2="514" y2="220" stroke="#d6dee8" stroke-dasharray="4 3"/>
+        <circle cx="396" cy="205" r="24" fill="#eef2f7" stroke="#d6dee8"/>
+        <g class="visao-gira">
+          <rect x="394" y="185" width="4" height="20" rx="2" fill="#e8820c"/>
+          <rect x="386" y="203" width="20" height="4" rx="2" fill="#e8820c"/>
+        </g>
+        <circle cx="396" cy="205" r="3" fill="#4a5d73"/>
+        <text x="430" y="234" text-anchor="middle" class="visao-txt">COMPRESSOR</text>
+        <rect x="346" y="238" width="20" height="24" fill="#fff" stroke="#d6dee8"/>
+        <rect x="486" y="238" width="20" height="24" fill="#fff" stroke="#d6dee8"/>
+        <text x="376" y="254" text-anchor="middle" style="font:8.5px 'IBM Plex Mono',monospace" fill="#9fb3c8">est. 1</text>
+        <text x="468" y="254" text-anchor="middle" style="font:8.5px 'IBM Plex Mono',monospace" fill="#9fb3c8">est. 2</text>
+        <!-- cilindros e pistões (dois estágios, alternados) -->
+        <rect x="360" y="100" width="52" height="72" rx="4" fill="#eef2f7" stroke="#d6dee8"/>
+        <rect x="440" y="100" width="36" height="72" rx="4" fill="#eef2f7" stroke="#d6dee8"/>
+        <g class="visao-pistao">
+          <rect x="364" y="112" width="44" height="18" rx="3" fill="#cbd5e2" stroke="#98a8b8"/>
+          <rect x="382" y="130" width="10" height="48" fill="#7a8fa3"/>
+        </g>
+        <g class="visao-pistao p2">
+          <rect x="446" y="114" width="24" height="16" rx="3" fill="#cbd5e2" stroke="#98a8b8"/>
+          <rect x="455" y="130" width="8" height="48" fill="#7a8fa3"/>
+        </g>
+        <rect x="356" y="86" width="60" height="14" rx="3" fill="#fff" stroke="#d6dee8"/>
+        <rect x="436" y="86" width="44" height="14" rx="3" fill="#fff" stroke="#d6dee8"/>
+        <!-- tubos: admissão, intercooler entre estágios, descarga -->
+        <rect x="330" y="94" width="26" height="8" fill="#eef2f7" stroke="#d6dee8"/>
+        <line x1="332" y1="98" x2="354" y2="98" class="visao-fluxo"/>
+        <rect x="414" y="92" width="20" height="10" fill="#eef2f7" stroke="#d6dee8"/>
+        <line x1="418" y1="93" x2="418" y2="101" stroke="#d6dee8"/><line x1="423" y1="93" x2="423" y2="101" stroke="#d6dee8"/><line x1="428" y1="93" x2="428" y2="101" stroke="#d6dee8"/><line x1="433" y1="93" x2="433" y2="101" stroke="#d6dee8"/>
+        <line x1="416" y1="97" x2="434" y2="97" class="visao-fluxo"/>
+        <rect x="480" y="94" width="26" height="8" fill="#eef2f7" stroke="#d6dee8"/>
+        <line x1="484" y1="98" x2="504" y2="98" class="visao-fluxo"/>
+        <polygon points="506,94 514,98 506,102" fill="#1f8a4c"/>
+        <!-- TT: temperatura nas cabeças -->
+        <circle cx="386" cy="84" r="4" fill="#1f8a4c"/><circle cx="386" cy="84" r="4" class="visao-pulso d3"/>
+        <line x1="386" y1="80" x2="386" y2="62" class="visao-fio"/>
+        <rect x="346" y="44" width="92" height="16" rx="8" class="visao-bolha"/>
+        <text x="392" y="56" text-anchor="middle" style="font:9.5px 'IBM Plex Mono',monospace" fill="#ffd9a0">TT-01 · 58,4 °C</text>
+        <circle cx="458" cy="84" r="4" fill="#1f8a4c"/><circle cx="458" cy="84" r="4" class="visao-pulso d4"/>
+        <line x1="458" y1="82" x2="492" y2="58" class="visao-fio"/>
+        <rect x="486" y="44" width="92" height="16" rx="8" class="visao-bolha"/>
+        <text x="532" y="56" text-anchor="middle" style="font:9.5px 'IBM Plex Mono',monospace" fill="#ffd9a0">TT-02 · 64,1 °C</text>
+        <!-- VT: vibração nos blocos -->
+        <circle cx="354" cy="142" r="4" fill="#e8820c"/><circle cx="354" cy="142" r="4" class="visao-pulso"/>
+        <rect x="246" y="130" width="104" height="16" rx="8" class="visao-bolha"/>
+        <text x="298" y="142" text-anchor="middle" style="font:9.5px 'IBM Plex Mono',monospace" fill="#ffd9a0">VT-01 · 4,82 mm/s</text>
+        <circle cx="480" cy="142" r="4" fill="#e8820c"/><circle cx="480" cy="142" r="4" class="visao-pulso d2"/>
+        <line x1="482" y1="142" x2="494" y2="142" class="visao-fio"/>
+        <rect x="496" y="130" width="104" height="16" rx="8" class="visao-bolha"/>
+        <text x="548" y="142" text-anchor="middle" style="font:9.5px 'IBM Plex Mono',monospace" fill="#ffd9a0">VT-02 · 4,18 mm/s</text>
+        <!-- XT e RD: deslocamento e queda de haste -->
+        <circle cx="459" cy="174" r="4" fill="#e8820c"/><circle cx="459" cy="174" r="4" class="visao-pulso d3"/>
+        <polyline points="459,178 459,266 375,266 375,278" class="visao-fio"/>
+        <rect x="330" y="280" width="90" height="16" rx="8" class="visao-bolha"/>
+        <text x="375" y="292" text-anchor="middle" style="font:9.5px 'IBM Plex Mono',monospace" fill="#f3c268">XT-03 · 0,42 mm</text>
+        <circle cx="522" cy="205" r="4" fill="#e8820c"/><circle cx="522" cy="205" r="4" class="visao-pulso d2"/>
+        <polyline points="522,209 522,270 479,270 479,278" class="visao-fio"/>
+        <rect x="428" y="280" width="102" height="16" rx="8" class="visao-bolha"/>
+        <text x="479" y="292" text-anchor="middle" style="font:9.5px 'IBM Plex Mono',monospace" fill="#ffd9a0">XT-01 ax · 0,20 mm</text>
+        <circle cx="432" cy="214" r="4" fill="#e8820c"/><circle cx="432" cy="214" r="4" class="visao-pulso d4"/>
+        <polyline points="432,218 432,276 586,276 586,278" class="visao-fio"/>
+        <rect x="538" y="280" width="96" height="16" rx="8" class="visao-bolha"/>
+        <text x="586" y="292" text-anchor="middle" style="font:9.5px 'IBM Plex Mono',monospace" fill="#ffd9a0">XT-02 · 0,15 mm</text>
+        <!-- fios para a mesa -->
+        <polyline points="458,86 692,150" class="visao-fio"/>
+        <polyline points="480,142 692,188" class="visao-fio"/>
+        <polyline points="522,208 692,224" class="visao-fio"/>
+        <!-- mesa -->
+        <rect x="692" y="140" width="140" height="112" rx="12" fill="#0d1b2a" stroke="#26364a"/>
+        <text x="704" y="168" fill="#fff" style="font:700 13px 'IBM Plex Mono',monospace">FRV XCOINIT</text>
+        <text x="704" y="186" fill="#e8820c" style="font:600 10.5px 'IBM Plex Mono',monospace">MODBUS/TCP · X·1</text>
+        <polyline id="spX" class="visao-spark" points="706,206 716,204 726,207 736,202 746,204 756,198 766,201 776,196 786,199 796,194 806,197 816,192 826,195 830,193"/>
+        <circle cx="706" cy="240" r="3.5" fill="#56d364"/>
+        <text x="716" y="244" fill="#9fb3c8" style="font:10px 'IBM Plex Mono',monospace">ligado · coletando</text>
+        <text x="40" y="308" style="font:10px 'IBM Plex Mono',monospace" fill="#9aa9b8">8 pontos · trem motor + compressor de dois estágios · diagrama ilustrativo, valores fictícios</text>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<section class="sec plate" id="validacao">
+  <div class="plate-grid"></div>
+  <div class="c">
+    <div class="eyebrow">Validação, em números</div>
+    <h2 class="h2">Bancada própria · <span>ensaio integral</span></h2>
+    <div class="about">
+      <div class="about-txt">
+        <p>
+          Todo caminho do software foi ensaiado numa bancada com um simulador de dispositivo Modbus/TCP:
+          conexão e sondagem, assinatura de funções, varredura com detecção de lacuna, cobertura
+          100&nbsp;% do catálogo e coleta cíclica com fim automático — sem uma falha de leitura.
+          A mesma sequência executa em campo com um único comando. Próximo passo, no mesmo espírito:
+          bancada real com um dispositivo de monitoramento de campo conectado, marcada para 13/11/2026 —
+          a mesma régua de ensaios, agora contra o device de verdade.
+        </p>
+      </div>
+      <div class="inst">
+        <div class="inst-top"><span class="led"></span>Ensaio de bancada · versão de campo</div>
+        <div class="vals">
+          <div><div class="v">0</div><div class="k">dependências de runtime (núcleo MBAP/PDU próprio)</div></div>
+          <div><div class="v">100&nbsp;%</div><div class="k">cobertura do catálogo no ensaio (270/270 pontos)</div></div>
+          <div><div class="v">0</div><div class="k">falhas de leitura na coleta cíclica ensaiada</div></div>
+          <div><div class="v">1</div><div class="k">comando — do probe ao CSV, com evidência integral em diário</div></div>
+        </div>
+      </div>
+    </div>
+    <svg class="v-trilha" viewBox="0 0 560 46" role="img" aria-label="Trilha do ensaio: conexão, assinatura, varredura e coleta concluídas na bancada; próximo passo device real em 13/11">
+      <line x1="16" y1="20" x2="544" y2="20" stroke="#9fb3c8" stroke-width="1.5"/>
+      <circle cx="40" cy="20" r="9" fill="#1f8a4c"/>
+      <text x="40" y="24" text-anchor="middle" style="font:700 10px 'IBM Plex Mono',monospace" fill="#fff">✓</text>
+      <circle cx="160" cy="20" r="9" fill="#1f8a4c"/>
+      <text x="160" y="24" text-anchor="middle" style="font:700 10px 'IBM Plex Mono',monospace" fill="#fff">✓</text>
+      <circle cx="280" cy="20" r="9" fill="#1f8a4c"/>
+      <text x="280" y="24" text-anchor="middle" style="font:700 10px 'IBM Plex Mono',monospace" fill="#fff">✓</text>
+      <circle cx="400" cy="20" r="9" fill="#1f8a4c"/>
+      <text x="400" y="24" text-anchor="middle" style="font:700 10px 'IBM Plex Mono',monospace" fill="#fff">✓</text>
+      <circle cx="520" cy="20" r="9" fill="none" stroke="#e8820c" stroke-width="2" stroke-dasharray="3 2"/>
+      <text x="520" y="24" text-anchor="middle" style="font:700 7px 'IBM Plex Mono',monospace" fill="#e8820c">13/11</text>
+      <text x="40" y="42" text-anchor="middle" style="font:9px 'IBM Plex Mono',monospace" fill="#4a5d73">conexão</text>
+      <text x="160" y="42" text-anchor="middle" style="font:9px 'IBM Plex Mono',monospace" fill="#4a5d73">assinatura</text>
+      <text x="280" y="42" text-anchor="middle" style="font:9px 'IBM Plex Mono',monospace" fill="#4a5d73">varredura</text>
+      <text x="400" y="42" text-anchor="middle" style="font:9px 'IBM Plex Mono',monospace" fill="#4a5d73">coleta</text>
+      <text x="520" y="42" text-anchor="middle" style="font:700 9px 'IBM Plex Mono',monospace" fill="#e8820c">device real</text>
+    </svg>
+  </div>
+</section>
+
+<section class="sec" id="quem">
+  <div class="grid-bg"></div>
+  <div class="c">
+    <div class="eyebrow">Quem está por trás</div>
+    <h2 class="h2">Nasce da prática <span>de confiabilidade</span></h2>
+    <div class="about">
+      <div class="about-txt">
+        <p>
+          O XcoInit nasce da rotina de confiabilidade de máquinas: coletar os dados de condição
+          direto do barramento, na hora e no formato que a engenharia precisa — sem intermediários
+          e sem perder rastreabilidade. Cada leitura sai com endereço, função Modbus e escala,
+          pronta para alimentar laudos e acompanhamentos.
+        </p>
+        <p>O software transforma essa rotina em laudo verificável, dia após dia.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec plate" id="contato">
+  <div class="plate-grid"></div>
+  <div class="c">
+    <div class="eyebrow">Fale com a gente</div>
+    <h2 class="h2">Quer enxergar os dados <span>da sua planta?</span></h2>
+    <div class="ct">
+      <div>
+        <h3>E-mail</h3>
+        <a class="val" href="mailto:assistente@frv.eng.br">assistente@frv.eng.br</a>
+        <a class="btn" href="mailto:assistente@frv.eng.br?subject=Contato%20via%20site%20-%20FRV%20XcoInit&body=Ol%C3%A1%2C%20Roberto!%20Vim%20atrav%C3%A9s%20do%20site%20e%20gostaria%20de%20saber%20mais%20sobre%20o%20FRV%20XcoInit.">Enviar e-mail</a>
+      </div>
+      <div>
+        <h3>Telefone / WhatsApp</h3>
+        <a class="val" href="tel:+5581993657878">(81) 99365-7878</a>
+        <a class="btn ghost" href="https://wa.me/5581993657878?text=Ol%C3%A1!%20Vim%20atrav%C3%A9s%20do%20site%20e%20gostaria%20de%20saber%20mais%20sobre%20o%20FRV%20XcoInit." target="_blank" rel="noopener">Chamar no WhatsApp</a>
+      </div>
+      <div>
+        <h3>Demonstração</h3>
+        <a class="val" href="/xcoinit/demo/" target="_blank" rel="noopener">Mesa de leitura</a>
+        <a class="btn ghost" href="/xcoinit/demo/xcoinit_demo_pontos.csv" download>Baixar o catálogo de exemplo</a>
+        <p class="demo-note">Demonstração com dados ilustrativos de pontos típicos de monitoramento. O catálogo de exemplo mostra como os pontos do dispositivo são descritos para a validação de cobertura.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="ft">
+  <div class="c">
+    <img loading="lazy" src="/assets/img/logo-frv-white.png" alt="FRV Engenharia">
+    <div>
+      <p><strong>FRV Engenharia</strong> — Montagem Eletromecânica, Manutenção, Energias Renováveis e Tecnologia.</p>
+      <p>© 2026 FRV Engenharia. Todos os direitos reservados.</p>
+    </div>
+    <span class="mono">Do projeto ao comissionamento</span>
+  </div>
+</footer>
+
+<div class="ck" id="cookie-banner" hidden>
+  <div class="c">
+    <p>Usamos cookies de análise para entender como os visitantes usam este site. Seus dados não são vendidos nem compartilhados.</p>
+    <div class="ck-act"><button type="button" class="btn ghost" id="cookie-decline">Recusar</button><button type="button" class="btn" id="cookie-accept">Aceitar</button></div>
+  </div>
+</div>
+
+<script src="/xcoinit/xco-page.js" defer></script>
+</body>
+</html>
