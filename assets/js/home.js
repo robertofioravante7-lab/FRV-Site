@@ -126,7 +126,7 @@
       return '<article class="fp nw" id="n-' + n.id + '">' +
         '<header class="nw-hd"><span class="tag sm" data-node="evt">' + led() + '<time datetime="' + n.quando + '">' + esc(n.data) + '</time></span>' +
           '<span class="mod-top">' + esc(n.k) + (n.em ? '<em>' + esc(n.em) + '</em>' : '') + '</span></header>' +
-        '<div class="nw-g"><div class="nw-t"><h3>' + esc(n.h3) + '</h3><p class="nw-sub">' + esc(n.sub) + '</p></div>' +
+        '<div class="nw-g"><div class="nw-t"><h3>' + esc(n.h3) + '</h3><p class="nw-sub">' + esc(n.sub) + '</p>' + (n.img ? '<img class="nw-logo" src="' + IMG + n.img + '" alt="' + esc(n.imgAlt || 'Logo do FRV XcoInit') + '" loading="lazy">' : '') + '</div>' +
           '<div class="nw-p">' + n.p.map(function(t){ return Array.isArray(t) ? '<ul class="nw-ls">' + t.map(function(x){ return '<li>' + esc(x) + '</li>'; }).join('') + '</ul>' : '<p>' + esc(t) + '</p>'; }).join('') +
           '<div class="nw-lk">' + n.links.map(function(l, i){ return '<a class="btn sm' + (i ? ' ghost' : '') + '" href="' + esc(l[1]) + '">' + esc(l[0]) + '</a>'; }).join('') + '</div></div>' +
         '</div></article>';

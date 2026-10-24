@@ -138,7 +138,7 @@ window.FRV = {
   noticias: {
     eyebrow: 'Notícias', h2a: 'Últimas da', h2b: 'FRV',
     itens: [
-      { id: 'xcoinit-trl5', data: '20/10/2026', quando: '2026-10-20', k: 'Lançamento · ', em: 'TRL 5',
+      { id: 'xcoinit-trl5', data: '20/10/2026', quando: '2026-10-20', k: 'Lançamento · ', em: 'TRL 5', img: 'xcoinit-logo.svg',
         h3: 'FRV lança o XcoInit, sistema próprio de monitoramento de condição de máquinas, em TRL 5',
         sub: 'Ele lê vibração, temperatura e deslocamento direto do barramento da planta e entrega, no fim do dia, o laudo de condição de cada ponto.',
         p: ['Em 20 de outubro de 2026, a FRV Engenharia lançou o FRV XcoInit, um sistema próprio de monitoramento de condição de máquinas. Ele se conecta ao barramento Modbus/TCP da planta e descobre sozinho o mapa de dados do dispositivo. Depois prova, em porcentagem, que cobriu o catálogo de pontos da engenharia. A partir daí, coleta cada ponto de vibração, temperatura, velocidade e deslocamento num diário de coleta.',

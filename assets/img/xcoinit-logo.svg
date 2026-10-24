@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 340 96" role="img" aria-label="Logo do FRV XcoInit: dial de leitura com quatro marcações e o wordmark XcoInit">
+  <!-- símbolo: dial de instrumento — o ponto de leitura com as quatro marcações cardeais (ST·TT·VT·XT) -->
+  <circle cx="38" cy="36" r="22" fill="none" stroke="#e8820c" stroke-width="3"/>
+  <g stroke="#e8820c" stroke-width="5" stroke-linecap="round">
+    <line x1="38" y1="8" x2="38" y2="16"/>
+    <line x1="38" y1="56" x2="38" y2="64"/>
+    <line x1="10" y1="36" x2="18" y2="36"/>
+    <line x1="58" y1="36" x2="66" y2="36"/>
+  </g>
+  <circle cx="38" cy="36" r="6" fill="#fff"/>
+  <!-- wordmark em caixa mista, como o nome é escrito no site -->
+  <text x="80" y="47" style="font:800 29px 'Archivo','Segoe UI',sans-serif;letter-spacing:.5px"><tspan fill="#e8820c">X</tspan><tspan fill="#fff">coInit</tspan></text>
+  <!-- assinatura -->
+  <text x="81" y="67" style="font:500 10px 'IBM Plex Mono',monospace;letter-spacing:1.4px" fill="#9fb3c8">CONDIÇÃO DE MÁQUINA · MODBUS/TCP</text>
+</svg>

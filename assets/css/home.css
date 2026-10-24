@@ -311,6 +311,9 @@ a.mod:hover .mod-lk{color:var(--amb2)}
 .nw-t{padding:26px 28px 28px;border-right:1px solid var(--p3)}
 .nw h3{font-family:var(--f-d);font-weight:700;font-size:26px;line-height:1.2;text-wrap:balance}
 .nw-sub{font-size:17px;color:var(--tx2);margin-top:12px}
+/* logo do produto na abertura da notícia (a notícia que declara img) */
+.nw-logo{display:block;width:min(300px,100%);height:auto;margin-top:26px}
+@media(max-width:760px){.nw-logo{margin-top:20px;width:min(240px,100%)}}
 .nw-p{padding:26px 28px 28px}
 .nw-p p{font-size:16px;color:var(--tx2)}
 .nw-p p+p,.nw-p .nw-ls+p{margin-top:12px}
