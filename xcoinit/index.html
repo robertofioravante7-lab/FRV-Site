@@ -15,14 +15,14 @@
     .xco-mesa-mock{background:#fff;border-radius:10px;overflow:hidden;color:#12233a;font:13px/1.45 'IBM Plex Mono',monospace}
     .xco-barra{display:flex;gap:14px;justify-content:space-between;background:#0d1b2a;color:#9fb3c8;padding:8px 12px;font-size:11.5px}
     .xco-barra .xco-ok{color:#56d364}
-    .xco-linha{display:flex;align-items:baseline;gap:8px;padding:7px 12px;border-bottom:1px solid #e5ebf2}
+    .xco-linha{display:flex;align-items:baseline;gap:8px;padding:7px 12px;border-bottom:1px solid #d6dee8}
     .xco-linha b{color:#e8820c;min-width:52px}
     .xco-linha em{margin-left:auto;font-style:normal;font-weight:700;font-variant-numeric:tabular-nums}
     .xco-linha em.xco-roda{color:#1f8a4c;font-size:12px}
     .xco-spark{display:block;width:100%;height:44px;padding:2px 6px 0}
     .xco-spark polyline{fill:none;stroke:#e8820c;stroke-width:2;stroke-linejoin:round}
     /* Diagrama animado do trem compressor (a planta em movimento) */
-    .visao-moldura{background:#fff;border:1px solid #e5ebf2;border-radius:14px;padding:20px 20px 10px;margin:16px 0 6px;box-shadow:0 10px 30px rgba(13,27,42,.06)}
+    .visao-moldura{background:#fff;border:1px solid #d6dee8;border-radius:14px;padding:20px 20px 10px;margin:16px 0 6px;box-shadow:0 10px 30px rgba(13,27,42,.06)}
     .visao-moldura svg{display:block;width:100%;height:auto}
     .visao-fio{stroke:#9fb3c8;stroke-width:1.2;stroke-dasharray:3 3;fill:none;opacity:.8}
     .visao-fluxo{stroke:#1f8a4c;stroke-width:3;stroke-linecap:round;stroke-dasharray:7 6;animation:visao-fluxo 1.1s linear infinite}
@@ -40,35 +40,35 @@
     @keyframes visao-pistao{from{transform:translateY(-5px)}to{transform:translateY(5px)}}
     .visao-bolha{fill:#0a1522;stroke:#26364a;stroke-width:1}
     /* Régua X·1 — visual das ferramentas de análise */
-    .x1-medida{background:#fff;border:1px solid #e5ebf2;border-radius:10px;padding:12px 14px 4px;margin:12px 0 4px}
+    .x1-medida{background:#fff;border:1px solid #d6dee8;border-radius:10px;padding:12px 14px 4px;margin:12px 0 4px}
     .x1-medida svg{display:block;width:100%;height:auto}
     .x1-leg{font:11.5px/1.5 'IBM Plex Mono',monospace;color:#4a5d73;margin:2px 0 10px}
     .x1-leg b{color:#12233a}
     .x1-chip{display:inline-block;background:#0d1b2a;color:#ffd9a0;border-radius:999px;padding:3px 11px;font:700 12px 'IBM Plex Mono',monospace;margin:0 6px 6px 0}
     .x1-pill{display:inline-block;border-radius:999px;padding:2px 11px;font-weight:800;font-size:11.5px;margin:0 5px 8px 0}
     .x1-pill.ok{background:#e2f2e6;color:#1f8a4c}.x1-pill.al{background:#fdf0d9;color:#b9770e}.x1-pill.nok{background:#f9e0dd;color:#c0392b}
-    .x1-area{display:flex;justify-content:space-between;align-items:center;padding:5px 2px;border-bottom:1px dashed #e5ebf2;font:12.5px 'IBM Plex Mono',monospace;color:#12233a}
+    .x1-area{display:flex;justify-content:space-between;align-items:center;padding:5px 2px;border-bottom:1px dashed #d6dee8;font:12.5px 'IBM Plex Mono',monospace;color:#12233a}
     .x1-area:last-child{border-bottom:none}
     .x1-medida.mini{padding:7px 14px;display:flex;flex-direction:column;justify-content:center}
     .x1-medida.mini .x1-area{padding:4px 2px;font:11px 'IBM Plex Mono',monospace}
     .x1-laudo{width:100%;border-collapse:collapse;font:12.5px/1.5 'IBM Plex Mono',monospace;margin:6px 0 4px}
-    .x1-laudo th{text-align:left;font-size:10.5px;text-transform:uppercase;letter-spacing:.05em;color:#9fb3c8;border-bottom:2px solid #e5ebf2;padding:4px 8px 6px 0}
-    .x1-laudo td{border-bottom:1px solid #e5ebf2;padding:7px 8px 7px 0;vertical-align:top}
+    .x1-laudo th{text-align:left;font-size:10.5px;text-transform:uppercase;letter-spacing:.05em;color:#9fb3c8;border-bottom:2px solid #d6dee8;padding:4px 8px 6px 0}
+    .x1-laudo td{border-bottom:1px solid #d6dee8;padding:7px 8px 7px 0;vertical-align:top}
     .x1-laudo td:first-child,.x1-laudo th:first-child{font-weight:700;color:#e8820c}
     .x1-laudo .nok{color:#c0392b;font-weight:700}.x1-laudo .okc{color:#1f8a4c}.x1-laudo .alc{color:#b9770e}
     /* Leva X·1 — visuais da régua (escopo desta página; sem seletor global) */
-    .x1-evtl{margin:8px 0 2px;border-top:2px solid #e5ebf2;padding-top:8px}
+    .x1-evtl{margin:8px 0 2px;border-top:2px solid #d6dee8;padding-top:8px}
     .x1-evb{font:11.5px/1.7 'IBM Plex Mono',monospace;color:#4a5d73;padding:2px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
     .x1-evb i{font-style:normal;font-weight:800;display:inline-block;width:15px;text-align:center}
     .x1-evb b{color:#12233a}
     .x1-evb .ev-nok{color:#c0392b}.x1-evb .ev-al{color:#b9770e}.x1-evb .ev-ok{color:#1f8a4c}
     .x1-evb .ev-ack{color:#1f8a4c;font-size:10px}
-    .x1-strip{display:flex;flex-wrap:wrap;gap:4px 16px;align-items:baseline;background:#f6f9fb;border:1px solid #e5ebf2;border-left:3px solid #e8820c;border-radius:8px;padding:9px 14px;margin:10px 0 12px;font:11.5px 'IBM Plex Mono',monospace;color:#4a5d73}
+    .x1-strip{display:flex;flex-wrap:wrap;gap:4px 16px;align-items:baseline;background:#f5f7fa;border:1px solid #d6dee8;border-left:3px solid #e8820c;border-radius:8px;padding:9px 14px;margin:10px 0 12px;font:11.5px 'IBM Plex Mono',monospace;color:#4a5d73}
     .x1-strip b{font:800 12px 'IBM Plex Mono',monospace;color:#12233a}
     .x1-strip .ttl{font-weight:700;color:#12233a;letter-spacing:.3px}
     .x1-strip .nok b{color:#c0392b}.x1-strip .al b{color:#b9770e}.x1-strip .okr b{color:#1f8a4c}
     .x1-rota{display:grid;grid-template-columns:repeat(auto-fit,minmax(168px,1fr));gap:8px;margin:2px 0 12px}
-    .x1-rm{background:#fff;border:1px solid #e5ebf2;border-radius:8px;padding:10px 12px 11px;position:relative;overflow:hidden}
+    .x1-rm{background:#fff;border:1px solid #d6dee8;border-radius:8px;padding:10px 12px 11px;position:relative;overflow:hidden}
     .x1-rm i{position:absolute;top:0;left:0;right:0;height:3px}
     .x1-rm i.ok{background:#1f8a4c}.x1-rm i.nok{background:#c0392b}.x1-rm i.al{background:#b9770e}
     .x1-rm b{display:block;font:700 12.5px 'IBM Plex Mono',monospace;color:#12233a}
@@ -185,7 +185,7 @@
         <div class="code">XCL·04 · Cobertura</div>
         <h3>Prova do catálogo</h3>
         <svg class="x1-mini" style="width:58px" viewBox="0 0 60 60" role="img" aria-label="Anel de cobertura: 100 por cento no ensaio de bancada">
-          <circle cx="30" cy="30" r="24" fill="none" stroke="#e5ebf2" stroke-width="5.5"/>
+          <circle cx="30" cy="30" r="24" fill="none" stroke="#d6dee8" stroke-width="5.5"/>
           <circle cx="30" cy="30" r="24" fill="none" stroke="#1f8a4c" stroke-width="5.5" transform="rotate(-90 30 30)"/>
           <text x="30" y="34" text-anchor="middle" style="font:800 10.5px 'IBM Plex Mono',monospace" fill="#12233a">100%</text>
         </svg>

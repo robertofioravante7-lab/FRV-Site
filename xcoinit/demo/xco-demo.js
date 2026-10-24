@@ -24,12 +24,38 @@ function chk(lim, pai, i){ // TRUE ocasional quando o ponto pai passa do limite
   const v = 3.6+Math.abs(Math.sin(i/9))*2.4; // espelha VT-01 cru
   return Math.abs(v) >= lim || (i % 61 === 0);
 }
-function spark(arr, tgt){ // polyline dos últimos 40 valores
+// escala fixa por unidade (a mesma da régua): posição do valor contra os limites anunciados
+const ESCALA = {
+  'mm/s': { lo: 0,   hi: 8,   lims: [{ v: 5.6, c: 'lim-am' }, { v: 7.1, c: 'lim-vm' }] },
+  '°C':   { lo: 40,  hi: 90,  lims: [{ v: 75,  c: 'lim-vm' }] },
+  'm³/h': { lo: 140, hi: 220, lims: [] },
+  'kPa':  { lo: 40,  hi: 90,  lims: [] },
+  'bit':  { lo: 0,   hi: 1.5, lims: [] }
+};
+function spark(arr, tgt, un){ // polyline dos últimos 40 valores + linhas de limite
   const s = arr.slice(-40);
   if (!s.length) return;
-  const w = 150, h = 24, mn = Math.min(...s), mx = Math.max(...s), dx = (mx - mn) || 1;
-  const pts = s.map((v,k) => (k / (s.length - 1 || 1) * w).toFixed(1) + ',' + (h - ((v - mn) / dx * (h - 2) + 1)).toFixed(1)).join(' ');
+  const w = 150, h = 24;
+  const e = ESCALA[un] || (function(){ const mn = Math.min(...s), mx = Math.max(...s); return { lo: mn, hi: mx || 1, lims: [] }; })();
+  const dx = (e.hi - e.lo) || 1;
+  const pts = s.map((v,k) => {
+    const vc = Math.min(Math.max(v, e.lo), e.hi);
+    return (k / (s.length - 1 || 1) * w).toFixed(1) + ',' + (h - ((vc - e.lo) / dx * (h - 2) + 1)).toFixed(1);
+  }).join(' ');
   tgt.setAttribute('points', pts);
+  const svg = tgt.ownerSVGElement;
+  if (svg){
+    for (const el of Array.from(svg.querySelectorAll('line.lim'))) el.remove();
+    for (const L of e.lims){
+      const y = h - ((L.v - e.lo) / dx * (h - 2) + 1);
+      if (y < 1 || y > h - 1) continue;
+      const ln = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+      ln.setAttribute('x1', 0); ln.setAttribute('x2', w);
+      ln.setAttribute('y1', y.toFixed(1)); ln.setAttribute('y2', y.toFixed(1));
+      ln.setAttribute('class', 'lim ' + L.c);
+      svg.insertBefore(ln, tgt);
+    }
+  }
 }
 let t = 0, ok = 0;
 function tick(){
@@ -44,18 +70,19 @@ function tick(){
     let lin = document.getElementById('L' + p.tag);
     if (!lin){
       lin = document.createElement('tr'); lin.id = 'L' + p.tag;
-      lin.innerHTML = '<td><b>' + p.p + '</b></td><td>' + p.tag + '</td><td>' + p.d + '</td><td>FC' + p.fn +
-        '</td><td>' + p.doc + '</td><td class="n" id="V' + p.tag + '"></td><td>' + p.u +
-        '</td><td><svg viewBox="0 0 150 26" preserveAspectRatio="none"><polyline/></svg></td><td id="S' + p.tag + '"></td>';
+      lin.innerHTML = '<td id="S' + p.tag + '"></td><td><b>' + p.p + '</b></td><td>' + p.tag + '</td><td class="dsc">' + p.d + '</td><td>FC' + p.fn +
+        ' · ' + p.doc + '</td><td class="n" id="V' + p.tag + '"></td>' +
+        '<td><svg viewBox="0 0 150 26" preserveAspectRatio="none"><polyline/></svg></td>';
       document.getElementById('tabeto').appendChild(lin);
     }
     const fmt = (u) => u === 'bit' ? String(cru) : cru.toFixed(2).replace('.', ',');
-    document.getElementById('V' + p.tag).textContent = fmt(p.u) + ' → ' + (p.u === 'bit' ? esc : esc.toFixed(1).replace('.', ','));
+    document.getElementById('V' + p.tag).textContent = fmt(p.u) + ' → ' + (p.u === 'bit' ? esc : esc.toFixed(1).replace('.', ',')) + (p.u === 'bit' ? '' : ' ' + p.u);
     const alerta = (p.u === '°C' && cru > 66) || (p.u === 'mm/s' && cru > 5.6);
+    const cls = p.u === 'bit' ? (esc === 'ALERTA' ? 'al' : 'ok') : (alerta ? 'al' : 'ok');
+    lin.className = 'r-' + cls;
     const cel = document.getElementById('S' + p.tag);
-    cel.textContent = (p.u === 'bit') ? esc : (alerta ? 'ALERTA' : 'OK');
-    cel.className = (p.u === 'bit') ? (esc === 'ALERTA' ? 'al' : 'ok') : (alerta ? 'al' : 'ok');
-    spark(VALS[p.tag], lin.querySelector('polyline'));
+    cel.innerHTML = '<span class="pill-estado ' + cls + '">' + (p.u === 'bit' ? esc : (alerta ? 'ALERTA' : 'OK')) + '</span>';
+    spark(VALS[p.tag], lin.querySelector('polyline'), p.u);
   }
   document.getElementById('cOk').textContent = ok;
   const seq = [];
@@ -80,10 +107,10 @@ const FABRICA = [
 ];
 for (const m of FABRICA){
   const tr = document.createElement('tr');
-  tr.innerHTML = '<td>' + m.ordem + '</td><td><b>' + m.nome + '</b></td><td>' + m.b + '</td>' +
-    "<td class='n'>" + m.f.toFixed(1) + ' Hz</td>' +
+  tr.innerHTML = '<td><b>' + m.ordem + '</b></td><td><b>' + m.nome + '</b></td><td class="dsc">' + m.b + '</td>' +
+    "<td class='n'>" + m.f.toFixed(1).replace('.', ',') + ' Hz</td>' +
     "<td><div class='fbar'><div id='" + m.id + "'></div></div></td>" +
-    '<td>' + m.r + '</td>';
+    '<td class="dsc">' + m.r + '</td>';
   document.getElementById('tab-freq').appendChild(tr);
 }
 const ENER = { F1: 22, F2: 14, FTF: 8, BSF: 17, BPFO: 29, BPFI: 20 }; // frações ilustrativas
@@ -150,6 +177,9 @@ function analise(){
   desenhaHisto('plVT', histo.vt, 2.5, 8.5);
   desenhaHisto('plMT', histo.mt, 44, 82);
   const vt = histo.vt, mt = histo.mt;
+  const tvVT = document.getElementById('vTendVT'), tvMT = document.getElementById('vTendMT');
+  if (tvVT){ const u = vt[vt.length - 1]; tvVT.textContent = fmt2(u); tvVT.className = 'tb-val' + (u >= 7.1 ? ' nok' : u >= 5.6 ? ' al' : ''); }
+  if (tvMT){ const u = mt[mt.length - 1]; tvMT.textContent = fmt2(u); tvMT.className = 'tb-val' + (u >= 75 ? ' nok' : ''); }
   const rms = vt.length ? vt[vt.length - 1] : 4;
   const dc = (mt.length ? mt[mt.length - 1] : 52) - 52;
   const declive = vt.length > 12 ? (vt[vt.length - 1] - vt[0]) / 12 : 0;

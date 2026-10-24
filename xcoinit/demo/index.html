@@ -1,37 +1,52 @@
 <!doctype html><html lang='pt-BR'><head><meta charset='utf-8'>
 <meta name='viewport' content='width=device-width, initial-scale=1.0'>
 <link rel='icon' href='data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%2016%2016%22%3E%3Ccircle%20cx=%228%22%20cy=%228%22%20r=%226%22%20fill=%22%23e8820c%22/%3E%3C/svg%3E'>
+<link rel='preconnect' href='https://fonts.googleapis.com'>
+<link rel='preconnect' href='https://fonts.gstatic.com' crossorigin>
+<link rel='stylesheet' href='https://fonts.googleapis.com/css2?family=Archivo:wght@700;800&family=IBM+Plex+Mono:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap'>
 <title>XcoInit · mesa de leitura (demonstração)</title><style>
 :root{--tinta:#0d1b2a;--suave:#4a5d73;--linha:#d6dee8;--fundo:#f5f7fa;--cartao:#fff;--laranja:#e8820c;--ok:#1f8a4c;--nok:#c0392b;--alerta:#b9770e}
-*{box-sizing:border-box}body{margin:0;background:var(--fundo);color:var(--tinta);font:15px/1.5 'Segoe UI',Arial,sans-serif}
+*{box-sizing:border-box}body{margin:0;background:var(--fundo);color:var(--tinta);font:15px/1.5 'Manrope','Segoe UI',Arial,sans-serif}
 header{background:#0d1b2a;color:#fff;padding:22px 40px;display:flex;align-items:center;gap:24px;flex-wrap:wrap}
-header .marca{font-size:28px;font-weight:800;letter-spacing:.06em}header .marca span{color:var(--laranja)}
-header .sub{color:#9fb3c8;font-size:14px}header .ver{margin-left:auto;text-align:right;color:#9fb3c8;font-size:13px}
+header .marca{font-family:'Archivo','Segoe UI',sans-serif;font-size:28px;font-weight:800;letter-spacing:.06em}header .marca span{color:var(--laranja)}
+header .sub{color:#9fb3c8;font-size:14px}header .ver{margin-left:auto;text-align:right;color:#9fb3c8;font-size:13px;font-family:'IBM Plex Mono','Consolas',monospace}
 main{max-width:1240px;margin:0 auto;padding:24px 32px 60px}
-h2{font-size:20px;margin:34px 0 10px;border-bottom:2px solid var(--laranja);padding-bottom:6px}
+h2{font-family:'Archivo','Segoe UI',sans-serif;font-size:20px;font-weight:800;margin:34px 0 10px;border-bottom:2px solid var(--laranja);padding-bottom:6px}
 .nota{color:var(--suave);font-size:13px}
 .aviso-caso{background:#fff7e6;border:1px solid #f0c27b;border-radius:8px;padding:10px 14px;margin:14px 0}
 .cards{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:14px}
 .card{background:var(--cartao);border:1px solid var(--linha);border-radius:10px;padding:14px 16px}
-.card .v{font-size:26px;font-weight:800}.card .r{font-size:12px;color:var(--suave);text-transform:uppercase;letter-spacing:.06em}
-table{border-collapse:collapse;width:100%;background:#fff;font-size:13.5px;margin:6px 0 4px}
-th,td{border:1px solid var(--linha);padding:6px 8px;text-align:left;vertical-align:top}th{background:#eef2f7}
-td.n{text-align:right;font-variant-numeric:tabular-nums}
+.card .v{font-family:'IBM Plex Mono','Consolas',monospace;font-size:24px;font-weight:700;font-variant-numeric:tabular-nums}.card .r{font-size:12px;color:var(--suave);text-transform:uppercase;letter-spacing:.06em}
+table{border-collapse:collapse;width:100%;background:#fff;font-size:13.5px;margin:6px 0 4px;font-family:'IBM Plex Mono','Consolas',monospace}
+th,td{border:1px solid var(--linha);padding:6px 8px;text-align:left;vertical-align:top}
+th{background:#eef2f7;font-family:'IBM Plex Mono','Consolas',monospace;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--suave)}
+td.n{text-align:right;font-variant-numeric:tabular-nums;font-weight:700;color:var(--tinta);white-space:nowrap}
+td.dsc{font-family:'Manrope','Segoe UI',Arial,sans-serif;color:var(--tinta)}
+tr.r-ok td:first-child{box-shadow:inset 4px 0 0 var(--ok)}
+tr.r-al td:first-child{box-shadow:inset 4px 0 0 var(--alerta)}
+tr.r-nok td:first-child{box-shadow:inset 4px 0 0 var(--nok)}
+.est-dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;vertical-align:baseline}
+tr.r-ok .est-dot{background:var(--ok)}tr.r-al .est-dot{background:var(--alerta)}tr.r-nok .est-dot{background:var(--nok)}
 td svg{display:block;width:150px;height:26px}td svg polyline{fill:none;stroke:var(--laranja);stroke-width:2}
+td svg line.lim{stroke-width:1.2;stroke-dasharray:3 2.5;opacity:.75}
+.lim-am{stroke:var(--alerta)}.lim-vm{stroke:var(--nok)}
 .ok{color:var(--ok);font-weight:700}.al{color:var(--alerta)}.nok{color:var(--nok);font-weight:700}
-.lote{margin:8px 0;color:var(--suave);font-size:12.5px;font-family:'Consolas','IBM Plex Mono',monospace}
-.limite-al{stroke:#c0392b;stroke-width:1;stroke-dasharray:4 3;opacity:.55}
-.serie{fill:none;stroke:var(--laranja);stroke-width:2}.serie.vermelho{stroke:#c0392b}
+.lote{margin:8px 0;color:var(--suave);font-size:12.5px;font-family:'IBM Plex Mono','Consolas',monospace}
+.limite-al{stroke:var(--nok);stroke-width:1;stroke-dasharray:4 3;opacity:.55}
+.limite-al-am{stroke:var(--alerta);stroke-width:1;stroke-dasharray:4 3;opacity:.55}
+.serie{fill:none;stroke:var(--laranja);stroke-width:2}.serie.vermelho{stroke:var(--nok)}
 .tendiras{display:grid;grid-template-columns:1fr 1fr;gap:16px}
 .tendiras-box{background:var(--cartao);border:1px solid var(--linha);border-radius:10px;padding:10px 12px}
 .tb-hd{display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px}
-.tb-ft{display:flex;justify-content:space-between;font-size:11px;color:var(--suave)}
+.tb-val{font-family:'IBM Plex Mono','Consolas',monospace;font-weight:700;font-size:15px;font-variant-numeric:tabular-nums;color:var(--tinta);margin-left:auto;margin-right:6px;white-space:nowrap}
+.tb-val.al{color:var(--alerta)}.tb-val.nok{color:var(--nok)}
+.tb-ft{display:flex;justify-content:space-between;font-size:11px;color:var(--suave);font-family:'IBM Plex Mono','Consolas',monospace}
 .tb-ft .al0{color:var(--nok)}.tb-ft .al1{color:var(--alerta)}
 .tendiras-box svg{display:block;width:100%;height:90px}
 .saude{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
 .saude>div{background:var(--cartao);border:1px solid var(--linha);border-radius:10px;padding:14px 16px}
 .saude .r{font-size:12px;color:var(--suave);text-transform:uppercase;letter-spacing:.06em}
-.saude .v{font-size:26px;font-weight:800;margin:4px 0}
+.saude .v{font-family:'IBM Plex Mono','Consolas',monospace;font-size:26px;font-weight:700;margin:4px 0;font-variant-numeric:tabular-nums}
 .saude .nota{font-size:12px}
 .barra{background:#eef2f7;border-radius:6px;height:10px;overflow:hidden;margin:6px 0}
 .barra-fill{background:var(--ok);height:10px;width:0%;transition:width .6s}
@@ -44,6 +59,16 @@ footer a{color:var(--laranja);text-decoration:none}footer a:hover{text-decoratio
 .btn-demo:disabled{opacity:.4;cursor:default}
 .pill-estado{display:inline-block;padding:2px 10px;border-radius:999px;font-weight:800;font-size:12px}
 .pill-estado.ok{background:#e2f2e6;color:#1f8a4c}.pill-estado.al{background:#fdf0d9;color:#b9770e}.pill-estado.nok{background:#f9e0dd;color:#c0392b}
+@media(max-width:760px){
+main{padding:20px 14px 40px}
+header{padding:18px 16px;flex-direction:column;align-items:flex-start;gap:10px}
+header .ver{margin-left:0;text-align:left}
+.cards{grid-template-columns:1fr 1fr}
+.tendiras{grid-template-columns:1fr}
+.saude{grid-template-columns:1fr}
+table{display:block;overflow-x:auto;white-space:nowrap}
+.fbar{width:120px}
+}
 </style></head><body>
 <header>
   <div><div class='marca'>FRV <span>XCOINIT</span></div>
@@ -67,7 +92,7 @@ footer a{color:var(--laranja);text-decoration:none}footer a:hover{text-decoratio
   <h2>Pontos do dispositivo</h2>
   <div class='lote' id='lote'>(lote exibido no ciclo 0 — FC3 @0x006 · 7 registradores · FC1/FC2 @0x010)</div>
   <table id='tabeto'>
-    <tr><th>Ponto</th><th>Tag</th><th>Descrição</th><th>FC</th><th>Doc</th><th>Valor</th><th>Unidade</th><th>últimos 40 valores</th><th>Situação</th></tr>
+    <tr><th>Situação</th><th>Ponto</th><th>Tag</th><th>Descrição</th><th>Endereço</th><th>Valor · unidade</th><th>últimos 40 valores</th></tr>
   </table>
   <p class='nota'>Valor cru é o que o dispositivo envia (int/float/word); valor escalado aplica min/máx do catálogo. Bits de estado chegam por FC1/FC2; medições por FC3/FC4.</p>
 
@@ -75,16 +100,16 @@ footer a{color:var(--laranja);text-decoration:none}footer a:hover{text-decoratio
   <div class='aviso-caso'>Janela simulada: cada ciclo de 1 s da demo representa 1 min de dados. Linhas de limite como no leitor real: alerta <b>5,6 mm/s</b> e alarme <b>7,1 mm/s</b> (vibração), <b>75 °C</b> (temperatura).</div>
   <div class='tendiras'>
     <div class='tendiras-box'>
-      <div class='tb-hd'><b>VT-01 · vibração mancal A</b><span>mm/s</span></div>
+      <div class='tb-hd'><b>VT-01 · vibração mancal A</b><b class='tb-val' id='vTendVT'>−</b><span>mm/s</span></div>
       <svg id='sgVT' viewBox='0 0 560 90' preserveAspectRatio='none'>
         <line x1='0' y1='22' x2='560' y2='22' class='limite-al'/>
-        <line x1='0' y1='39' x2='560' y2='39' class='limite-al'/>
+        <line x1='0' y1='39' x2='560' y2='39' class='limite-al-am'/>
         <polyline id='plVT' class='serie' points=''/>
       </svg>
       <div class='tb-ft'><span>-59 min</span><span class='al0'>alarme 7,1</span><span class='al1'>alerta 5,6</span><span>agora</span></div>
     </div>
     <div class='tendiras-box'>
-      <div class='tb-hd'><b>TT-01 · temperatura mancal A</b><span>°C</span></div>
+      <div class='tb-hd'><b>TT-01 · temperatura mancal A</b><b class='tb-val' id='vTendMT'>−</b><span>°C</span></div>
       <svg id='sgMT' viewBox='0 0 560 90' preserveAspectRatio='none'>
         <line x1='0' y1='18' x2='560' y2='18' class='limite-al'/>
         <polyline id='plMT' class='serie vermelho' points=''/>
