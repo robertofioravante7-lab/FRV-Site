@@ -166,7 +166,20 @@
   tick();
 
   /* ---------- aviso de cookies: o Google Analytics so carrega depois de "Aceitar" (mesma regra do site anterior) ---------- */
-  var GA_ID = 'G-Z799Z17097';
+  var GA_ID = 'G-Z799Z17097', KEY_INT = 'frv_trafego_interno';
+  /* Trafego interno (02/11/2026): abrir o site uma vez com ?modo_teste=roberto marca este navegador,
+     e o GA4 passa a receber traffic_type=internal, que o filtro de trafego interno exclui dos relatorios.
+     ?modo_teste=sair desmarca. O marcador sai da barra de endereco para nao seguir num link copiado. */
+  function interno(){
+    var m = /[?&]modo_teste=([^&#]*)/.exec(location.search), v = null;
+    if (m){
+      try { if (m[1] === 'roberto') localStorage.setItem(KEY_INT, '1'); else if (m[1] === 'sair') localStorage.removeItem(KEY_INT); } catch(e){}
+      try { history.replaceState(null, '', location.pathname + location.search.replace(/([?&])modo_teste=[^&#]*&?/, '$1').replace(/[?&]$/, '') + location.hash); } catch(e){}
+    }
+    try { v = localStorage.getItem(KEY_INT); } catch(e){}
+    return v === '1' || !!(m && m[1] === 'roberto');
+  }
+  var INT = interno();
   function loadAnalytics(){
     var s = document.createElement('script'); s.async = true;
     s.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA_ID;
@@ -174,7 +187,8 @@
     window.dataLayer = window.dataLayer || [];
     window.gtag = function(){ window.dataLayer.push(arguments); };
     window.gtag('js', new Date());
-    window.gtag('config', GA_ID);
+    if (INT) window.gtag('config', GA_ID, { traffic_type: 'internal' });  /* acesso do dono: o filtro do GA4 exclui */
+    else window.gtag('config', GA_ID);  /* visitante: sem o parametro, como sempre */
   }
   var ck = $('ck');
   function getC(){ try { return localStorage.getItem(K.key); } catch(e){ return null; } }
