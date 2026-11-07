@@ -1,5 +1,7 @@
 /* Conteudo do site da FRV Engenharia, copiado palavra por palavra do index.html do site no ar (05/10/2026).
    Fonte unica da pagina inicial (assets/js/home.js). NAO editar texto aqui: conteudo so muda com autorizacao do Roberto.
+   07/11/2026: o aviso de cookies e o rodape ganharam o link da politica de privacidade, por ordem do Roberto
+   de 07/11/2026 (execucao do pedido de privacidade de 03/11/2026, aprovado por ele: "segue as recomendacoes").
    Uso: <script src="conteudo.js"></script> e depois window.FRV. */
 window.FRV = {
   img: 'assets/img/',
@@ -167,9 +169,11 @@ window.FRV = {
   rodape: {
     p1: [{ t: 'FRV Engenharia', b: 1 }, { t: ' — Montagem Eletromecânica, Manutenção, Energias Renováveis e Tecnologia.' }],
     p2: '© 2026 FRV Engenharia. Todos os direitos reservados.',
+    priv: ['Política de privacidade', 'privacidade/'],
     mono: 'Do projeto ao comissionamento'
   },
 
-  /* Aviso de cookies: mesmo texto e mesma chave do site. Nas propostas o Google Analytics NAO carrega. */
-  cookies: { key: 'frv_cookie_consent', text: 'Usamos cookies de análise para entender como os visitantes usam este site. Seus dados não são vendidos nem compartilhados.', decline: 'Recusar', accept: 'Aceitar' }
+  /* Aviso de cookies: mesmo texto e mesma chave das paginas /atalaia/, /xcoinit/ e /privacidade/.
+     07/11/2026: nomeia o Google Analytics e leva a politica de privacidade (LGPD, art. 9.º). */
+  cookies: { key: 'frv_cookie_consent', text: 'Usamos cookies de análise, do Google Analytics, para entender como os visitantes usam este site. Eles só entram depois do seu aceite, e seus dados não são vendidos.', link: 'Política de privacidade', linkHref: 'privacidade/', decline: 'Recusar', accept: 'Aceitar' }
 };

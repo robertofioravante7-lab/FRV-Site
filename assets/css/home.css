@@ -347,6 +347,9 @@ a.val:hover{color:var(--amb)}
 .ck-c{display:flex;align-items:center;gap:18px;padding-top:14px;padding-bottom:14px}
 .ck p{flex:1;font-size:16px;line-height:1.5;color:var(--tx2)}
 .ck-a{display:flex;gap:10px;flex:none}
+/* link da politica de privacidade no aviso e no rodape (07/11/2026) */
+.ck p a,.ft a{color:var(--amb);text-decoration:underline;text-underline-offset:3px}
+.ck p a:hover,.ft a:hover{color:var(--amb2)}
 
 /* ---------- larguras menores ---------- */
 @media (max-width:1180px){

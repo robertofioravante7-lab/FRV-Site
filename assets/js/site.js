@@ -33,6 +33,22 @@
   else if (c !== 'declined') ck.hidden = false;
   document.getElementById('cookie-accept').addEventListener('click', function(){ setC('accepted'); ck.hidden = true; loadAnalytics(); });
   document.getElementById('cookie-decline').addEventListener('click', function(){ setC('declined'); ck.hidden = true; });
+  /* Gerenciar cookies (07/11/2026): o botao da pagina de privacidade apaga a escolha e os cookies do
+     Google Analytics (_ga e _ga_*) e recarrega; o aviso volta e o Analytics nao carrega ate novo aceite. */
+  var rs = document.getElementById('cookie-reset');
+  if (rs) rs.addEventListener('click', function(){
+    try { localStorage.removeItem(KEY); } catch(e){}
+    try {
+      document.cookie.split(';').forEach(function(c){
+        var n = c.split('=')[0].replace(/^\s+/, '');
+        if (/^_ga/.test(n)){
+          document.cookie = n + '=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; domain=.' + location.hostname.replace(/^www\./, '');
+          document.cookie = n + '=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/';
+        }
+      });
+    } catch(e){}
+    location.reload();
+  });
 })();
 
 /* Cabecalho, instrumento do topo (diagrama fasorial) e unifilar dos pilares. */

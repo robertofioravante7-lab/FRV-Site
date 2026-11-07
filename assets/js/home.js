@@ -143,10 +143,12 @@
     '</div></div></section>';
 
   /* ---------- Rodape e aviso de cookies ---------- */
+  /* 07/11/2026: link da politica de privacidade no rodape (Ft.priv) e no aviso (K.link). Os dois sao testados antes
+     de usar: um conteudo.js antigo, preso ate 4 h no navegador pela Cloudflare, nao pode quebrar a pagina. */
   var Ft = F.rodape, K = F.cookies;
   html += '<footer class="ft"><div class="c ft-c"><img loading="lazy" src="' + IMG + F.logo.full + '" alt="' + esc(F.logo.altFull) + '">' +
-    '<div class="ft-t"><p>' + rich(Ft.p1) + '</p><p>' + esc(Ft.p2) + '</p></div><span class="mono">' + esc(Ft.mono) + '</span></div></footer>' +
-    '<div class="ck" id="ck" hidden><div class="c ck-c">' + led('amb blink') + '<p>' + esc(K.text) + '</p>' +
+    '<div class="ft-t"><p>' + rich(Ft.p1) + '</p><p>' + esc(Ft.p2) + '</p>' + (Ft.priv ? '<p><a href="' + esc(Ft.priv[1]) + '">' + esc(Ft.priv[0]) + '</a></p>' : '') + '</div><span class="mono">' + esc(Ft.mono) + '</span></div></footer>' +
+    '<div class="ck" id="ck" hidden><div class="c ck-c">' + led('amb blink') + '<p>' + esc(K.text) + (K.link ? ' <a href="' + esc(K.linkHref) + '">' + esc(K.link) + '</a>' : '') + '</p>' +
     '<div class="ck-a"><button type="button" class="btn ghost" id="ckN">' + esc(K.decline) + '</button><button type="button" class="btn" id="ckY">' + esc(K.accept) + '</button></div></div></div>';
 
   document.getElementById('app').outerHTML = '<svg id="wire" aria-hidden="true" focusable="false"></svg>' + html;
