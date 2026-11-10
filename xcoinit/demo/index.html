@@ -2,62 +2,93 @@
 <meta name='viewport' content='width=device-width, initial-scale=1.0'>
 <link rel='icon' href='data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%2016%2016%22%3E%3Ccircle%20cx=%228%22%20cy=%228%22%20r=%226%22%20fill=%22%23e8820c%22/%3E%3C/svg%3E'>
 <link rel='stylesheet' href='/assets/css/fontes.css'>
+<link rel='stylesheet' href='/xcoinit/supervisorio/supervisorio.css'>
 <title>XcoInit · mesa de leitura (demonstração)</title><style>
-:root{--tinta:#0d1b2a;--suave:#4a5d73;--linha:#d6dee8;--fundo:#f5f7fa;--cartao:#fff;--laranja:#e8820c;--ok:#1f8a4c;--nok:#c0392b;--alerta:#b9770e}
+:root{--tinta:#e2e8f0;--suave:#94a3b8;--linha:#1d2b38;--linha2:#2b4054;--fundo:#0b1219;--cartao:#0d1720;--laranja:#f7941e;--ambar:#fbbf24;--ciano:#22d3ee;--ok:#22c55e;--nok:#ef4444;--alerta:#fbbf24}
+/* 10/11/2026: a demonstração inteira no escuro do supervisório (painel #0d1720 sobre #0b1219, grade milimetrada, número âmbar). Só a forma mudou. */
 *{box-sizing:border-box}/* peso 500 (07/11/2026): e o peso em que o texto saia quando as fontes vinham do Google, que so entregava Manrope 500 a 800 a esta demo */
 body{margin:0;background:var(--fundo);color:var(--tinta);font:500 15px/1.5 'Manrope','Segoe UI',Arial,sans-serif}
-header{background:#0d1b2a;color:#fff;padding:22px 40px;display:flex;align-items:center;gap:24px;flex-wrap:wrap}
+a{color:var(--ambar)}
+code{font-family:'IBM Plex Mono','Consolas',monospace;font-size:.88em;color:#67e8f9;background:rgba(34,211,238,.07);border:1px solid rgba(34,211,238,.25);border-radius:2px;padding:0 4px}
+header{background:#09111a;color:#fff;padding:22px 40px;display:flex;align-items:center;gap:24px;flex-wrap:wrap;border-bottom:1px solid var(--linha);background-image:linear-gradient(rgba(56,189,248,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(56,189,248,.05) 1px,transparent 1px);background-size:10px 10px}
 header .marca{font-family:'Archivo','Segoe UI',sans-serif;font-size:28px;font-weight:800;letter-spacing:.06em}header .marca span{color:var(--laranja)}
-header .sub{color:#9fb3c8;font-size:14px}header .ver{margin-left:auto;text-align:right;color:#9fb3c8;font-size:13px;font-family:'IBM Plex Mono','Consolas',monospace}
+header .sub{color:var(--suave);font-size:14px}header .ver{margin-left:auto;text-align:right;color:var(--suave);font-size:13px;font-family:'IBM Plex Mono','Consolas',monospace}
+header .ver b{color:#67e8f9}#clock{color:var(--ambar)}
 main{max-width:1240px;margin:0 auto;padding:24px 32px 60px}
-h2{font-family:'Archivo','Segoe UI',sans-serif;font-size:20px;font-weight:800;margin:34px 0 10px;border-bottom:2px solid var(--laranja);padding-bottom:6px}
+h2{font-family:'Archivo','Segoe UI',sans-serif;font-size:20px;font-weight:800;margin:38px 0 12px;border-bottom:1px solid var(--linha2);padding-bottom:8px;position:relative}
+h2::after{content:"";position:absolute;left:0;bottom:-1px;width:64px;height:2px;background:var(--ambar)}
 .nota{color:var(--suave);font-size:13px}
-.aviso-caso{background:#fff7e6;border:1px solid #f0c27b;border-radius:8px;padding:10px 14px;margin:14px 0}
+.ref{color:#c3d0de}
+.ref b,.nota b{color:var(--tinta)}
+.aviso-caso{background:rgba(251,191,36,.06);border:1px solid #3a2f12;border-left:3px solid var(--ambar);border-radius:3px;padding:10px 14px;margin:14px 0;color:#d6dde7}
+.aviso-caso b{color:var(--ambar)}
 .cards{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:14px}
-.card{background:var(--cartao);border:1px solid var(--linha);border-radius:10px;padding:14px 16px}
-.card .v{font-family:'IBM Plex Mono','Consolas',monospace;font-size:24px;font-weight:700;font-variant-numeric:tabular-nums}.card .r{font-size:12px;color:var(--suave);text-transform:uppercase;letter-spacing:.06em}
-table{border-collapse:collapse;width:100%;background:#fff;font-size:13.5px;margin:6px 0 4px;font-family:'IBM Plex Mono','Consolas',monospace}
+.card{background:var(--cartao);border:1px solid var(--linha);border-radius:4px;padding:14px 16px;position:relative;overflow:hidden}
+.card::before{content:"";position:absolute;left:0;top:0;right:0;height:2px;background:var(--linha2)}
+.card .v{font-family:'IBM Plex Mono','Consolas',monospace;font-size:24px;font-weight:600;font-variant-numeric:tabular-nums;color:var(--ambar)}.card .r{font-size:11.5px;color:var(--suave);text-transform:uppercase;letter-spacing:.08em;font-family:'IBM Plex Mono','Consolas',monospace}
+.card .v.ok{color:var(--ok)}
+table{border-collapse:collapse;width:100%;background:var(--cartao);font-size:13.5px;margin:6px 0 4px;font-family:'IBM Plex Mono','Consolas',monospace;border:1px solid var(--linha)}
 th,td{border:1px solid var(--linha);padding:6px 8px;text-align:left;vertical-align:top}
-th{background:#eef2f7;font-family:'IBM Plex Mono','Consolas',monospace;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--suave)}
-td.n{text-align:right;font-variant-numeric:tabular-nums;font-weight:700;color:var(--tinta);white-space:nowrap}
-td.dsc{font-family:'Manrope','Segoe UI',Arial,sans-serif;color:var(--tinta)}
-tr.r-ok td:first-child{box-shadow:inset 4px 0 0 var(--ok)}
-tr.r-al td:first-child{box-shadow:inset 4px 0 0 var(--alerta)}
-tr.r-nok td:first-child{box-shadow:inset 4px 0 0 var(--nok)}
+th{background:#0a131c;font-family:'IBM Plex Mono','Consolas',monospace;font-size:10.5px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:#64748b}
+td{color:#cbd5e1}
+td b{color:var(--ambar)}
+td.n{text-align:right;font-variant-numeric:tabular-nums;font-weight:600;color:#f8fafc;white-space:nowrap}
+td.dsc{font-family:'Manrope','Segoe UI',Arial,sans-serif;color:#cbd5e1}
+tr.r-ok td:first-child{box-shadow:inset 3px 0 0 var(--ok)}
+tr.r-al td:first-child{box-shadow:inset 3px 0 0 var(--alerta)}
+tr.r-al{background:rgba(251,191,36,.05)}
+tr.r-nok td:first-child{box-shadow:inset 3px 0 0 var(--nok)}
 .est-dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;vertical-align:baseline}
 tr.r-ok .est-dot{background:var(--ok)}tr.r-al .est-dot{background:var(--alerta)}tr.r-nok .est-dot{background:var(--nok)}
-td svg{display:block;width:150px;height:26px}td svg polyline{fill:none;stroke:var(--laranja);stroke-width:2}
-td svg line.lim{stroke-width:1.2;stroke-dasharray:3 2.5;opacity:.75}
+td svg{display:block;width:150px;height:26px;background:#0a131c;background-image:linear-gradient(rgba(56,189,248,.07) 1px,transparent 1px),linear-gradient(90deg,rgba(56,189,248,.07) 1px,transparent 1px);background-size:6px 6px;border:1px solid var(--linha)}td svg polyline{fill:none;stroke:var(--ciano);stroke-width:1.6}
+td svg line.lim{stroke-width:1.2;stroke-dasharray:3 2.5;opacity:.85}
 .lim-am{stroke:var(--alerta)}.lim-vm{stroke:var(--nok)}
 .ok{color:var(--ok);font-weight:700}.al{color:var(--alerta)}.nok{color:var(--nok);font-weight:700}
-.lote{margin:8px 0;color:var(--suave);font-size:12.5px;font-family:'IBM Plex Mono','Consolas',monospace}
-.limite-al{stroke:var(--nok);stroke-width:1;stroke-dasharray:4 3;opacity:.55}
-.limite-al-am{stroke:var(--alerta);stroke-width:1;stroke-dasharray:4 3;opacity:.55}
-.serie{fill:none;stroke:var(--laranja);stroke-width:2}.serie.vermelho{stroke:var(--nok)}
+.lote{margin:8px 0;color:var(--suave);font-size:12.5px;font-family:'IBM Plex Mono','Consolas',monospace;padding:7px 10px;background:#09111a;border:1px solid var(--linha);border-left:3px solid var(--ciano);border-radius:2px}
+.limite-al{stroke:var(--nok);stroke-width:1;stroke-dasharray:4 3;opacity:.8}
+.limite-al-am{stroke:var(--alerta);stroke-width:1;stroke-dasharray:4 3;opacity:.8}
+.serie{fill:none;stroke:var(--ciano);stroke-width:1.8}.serie.vermelho{stroke:var(--laranja)}
 .tendiras{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-.tendiras-box{background:var(--cartao);border:1px solid var(--linha);border-radius:10px;padding:10px 12px}
-.tb-hd{display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px}
-.tb-val{font-family:'IBM Plex Mono','Consolas',monospace;font-weight:700;font-size:15px;font-variant-numeric:tabular-nums;color:var(--tinta);margin-left:auto;margin-right:6px;white-space:nowrap}
-.tb-val.al{color:var(--alerta)}.tb-val.nok{color:var(--nok)}
+.tendiras-box{background:var(--cartao);border:1px solid var(--linha);border-radius:4px;padding:10px 12px}
+.tb-hd{display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px;color:#cbd5e1}
+.tb-hd b{color:var(--tinta)}
+.tb-val{font-family:'IBM Plex Mono','Consolas',monospace;font-weight:600;font-size:15px;font-variant-numeric:tabular-nums;color:#f8fafc!important;margin-left:auto;margin-right:6px;white-space:nowrap}
+.tb-val.al{color:var(--alerta)!important}.tb-val.nok{color:var(--nok)!important}
 .tb-ft{display:flex;justify-content:space-between;font-size:11px;color:var(--suave);font-family:'IBM Plex Mono','Consolas',monospace}
 .tb-ft .al0{color:var(--nok)}.tb-ft .al1{color:var(--alerta)}
-.tendiras-box svg{display:block;width:100%;height:90px}
+.tendiras-box svg{display:block;width:100%;height:90px;background:#0b141d;background-image:linear-gradient(rgba(56,189,248,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(56,189,248,.05) 1px,transparent 1px),linear-gradient(rgba(56,189,248,.1) 1px,transparent 1px),linear-gradient(90deg,rgba(56,189,248,.1) 1px,transparent 1px);background-size:9px 9px,9px 9px,45px 45px,45px 45px;border:1px solid var(--linha)}
 .saude{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
-.saude>div{background:var(--cartao);border:1px solid var(--linha);border-radius:10px;padding:14px 16px}
-.saude .r{font-size:12px;color:var(--suave);text-transform:uppercase;letter-spacing:.06em}
-.saude .v{font-family:'IBM Plex Mono','Consolas',monospace;font-size:26px;font-weight:700;margin:4px 0;font-variant-numeric:tabular-nums}
+.saude>div{background:var(--cartao);border:1px solid var(--linha);border-radius:4px;padding:14px 16px}
+.saude .r{font-size:11.5px;color:var(--suave);text-transform:uppercase;letter-spacing:.08em;font-family:'IBM Plex Mono','Consolas',monospace}
+.saude .v{font-family:'IBM Plex Mono','Consolas',monospace;font-size:26px;font-weight:600;margin:4px 0;font-variant-numeric:tabular-nums;color:#f8fafc}
+.saude .v.ok{color:var(--ok)}.saude .v.al{color:var(--alerta)}.saude .v.nok{color:var(--nok)}
 .saude .nota{font-size:12px}
-.barra{background:#eef2f7;border-radius:6px;height:10px;overflow:hidden;margin:6px 0}
+.barra{background:#1d2b38;border-radius:2px;height:10px;overflow:hidden;margin:6px 0}
 .barra-fill{background:var(--ok);height:10px;width:0%;transition:width .6s}
-.tab-freq td:first-child{font-weight:700;color:var(--laranja)}
-.fbar{background:#eef2f7;border-radius:5px;height:9px;overflow:hidden;width:180px}
-.fbar div{background:var(--laranja);height:9px}
+.tab-freq td:first-child{font-weight:700;color:var(--ambar)}
+.fbar{background:#1d2b38;border-radius:2px;height:9px;overflow:hidden;width:180px}
+.fbar div{background:var(--ciano);height:9px}
+#BPFO{background:var(--nok)}
 footer{color:var(--suave);font-size:12px;margin-top:40px;border-top:1px solid var(--linha);padding-top:10px}
-footer a{color:var(--laranja);text-decoration:none}footer a:hover{text-decoration:underline}
-.btn-demo{background:var(--laranja);color:#fff;border:none;border-radius:8px;padding:9px 16px;font:inherit;font-weight:700;cursor:pointer;margin:10px 8px 0 0}
-.btn-demo:disabled{opacity:.4;cursor:default}
-.pill-estado{display:inline-block;padding:2px 10px;border-radius:999px;font-weight:800;font-size:12px}
-.pill-estado.ok{background:#e2f2e6;color:#1f8a4c}.pill-estado.al{background:#fdf0d9;color:#b9770e}.pill-estado.nok{background:#f9e0dd;color:#c0392b}
+footer a{color:var(--ambar);text-decoration:none}footer a:hover{text-decoration:underline}
+.btn-demo{background:rgba(251,191,36,.12);color:var(--ambar);border:1px solid var(--ambar);border-radius:3px;padding:9px 16px;font:600 13px 'IBM Plex Mono','Consolas',monospace;letter-spacing:.02em;cursor:pointer;margin:10px 8px 0 0}
+.btn-demo:hover{background:rgba(251,191,36,.2)}
+.btn-demo:disabled{opacity:.35;cursor:default}
+.btn-demo:focus-visible{outline:2px solid var(--ambar);outline-offset:2px}
+.pill-estado{display:inline-block;padding:1px 9px;border-radius:2px;font-weight:700;font-size:11.5px;font-family:'IBM Plex Mono','Consolas',monospace;letter-spacing:.04em;border:1px solid}
+.pill-estado.ok{color:#86efac;border-color:rgba(34,197,94,.55);background:rgba(34,197,94,.1)}.pill-estado.al{color:#fde68a;border-color:rgba(251,191,36,.6);background:rgba(251,191,36,.1)}.pill-estado.nok{color:#fecaca;border-color:rgba(239,68,68,.65);background:rgba(239,68,68,.15)}
+/* selos no fim do título da seção, agora sobre fundo escuro (antes eram claros) */
+.xco-h2-selo .xco-selo.xcl{color:#f7941e;border-color:rgba(247,148,30,.55);background:rgba(247,148,30,.08)}
+.xco-h2-selo .xco-selo.x1{color:#67e8f9;border-color:rgba(34,211,238,.55);background:rgba(34,211,238,.08)}
+.xco-h2-selo.xcl,.xco-h2-selo.x1{color:#22d3ee}
+.sv-demo{margin:16px 0 0;padding:18px 0 22px;background:#0a1017;border:1px solid var(--linha);border-radius:4px}
+.casos{display:flex;flex-wrap:wrap;gap:10px;margin:4px 0 6px}
+.casos a{font:600 12px 'IBM Plex Mono','Consolas',monospace;color:#67e8f9;text-decoration:none;border:1px solid rgba(34,211,238,.5);background:rgba(34,211,238,.07);border-radius:2px;padding:7px 12px}
+.casos a:hover{border-color:var(--ambar);color:#fff}
+h2[id]{scroll-margin-top:16px}
+#tabeto tr.clic{cursor:pointer}#tabeto tr.clic:hover td{background:rgba(34,211,238,.05)}
+#tabeto tr.sel td{background:rgba(34,211,238,.09)}#tabeto tr.sel td:nth-child(2) b{color:#67e8f9}
+#tabeto tr.clic:focus-visible{outline:2px solid var(--ambar);outline-offset:-2px}
 @media(max-width:760px){
 main{padding:20px 14px 40px}
 header{padding:18px 16px;flex-direction:column;align-items:flex-start;gap:10px}
@@ -67,6 +98,7 @@ header .ver{margin-left:0;text-align:left}
 .saude{grid-template-columns:1fr}
 table{display:block;overflow-x:auto;white-space:nowrap}
 .fbar{width:120px}
+.sv-demo{margin:16px -6px 0}
 }
 </style></head><body>
 <header>
@@ -75,7 +107,8 @@ table{display:block;overflow-x:auto;white-space:nowrap}
   <div class='ver'>Mesa de leitura<br>demonstração · dados ilustrativos · <b>X·1</b><br><span id='clock'>—</span></div>
 </header>
 <main>
-  <h2>Caso</h2>
+  <nav class='casos' aria-label='Casos desta demonstração'><a href='#caso-1'>Caso 1 · compressor, 10 pontos</a><a href='#caso-2'>Caso 2 · Trem A, supervisório</a></nav>
+  <h2 id='caso-1'>Caso</h2>
   <div><b>Caso demonstrativo — pontos típicos de monitoramento de um compressor (dados ilustrativos)</b></div>
   <div class='aviso-caso'>Dados ilustrativos: pontos de vibração, temperatura, vazão e estado plausíveis de
   um compressor de planta industrial, montados para demonstrar o software. Nenhum dispositivo é conectado
@@ -88,18 +121,18 @@ table{display:block;overflow-x:auto;white-space:nowrap}
   </div>
   <p class='nota'>Abaixo, a visão ponto a ponto que o XcoInit grava no CSV diário: valor cru, valor escalado e histórico.</p>
 
-  <h2>Pontos do dispositivo</h2>
-  <div class='lote' id='lote'>(lote exibido no ciclo 0 — FC3 @0x006 · 7 registradores · FC1/FC2 @0x010)</div>
+  <h2>Pontos do dispositivo<span class="xco-h2-selo xcl" aria-hidden="true"><svg class="xco-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="1.5"/><path d="M3 9.3h18M3 14.6h18M9 4v16M15 4v16"/><rect x="15" y="9.3" width="6" height="5.3" fill="currentColor" stroke="none"/></svg><span class="xco-selo xcl">XCL</span></span></h2>
+  <div class='lote' id='lote'>(lote exibido no ciclo 0 — FC3 @0x000 · 7 registradores · FC1/FC2 @0x000)</div>
   <table id='tabeto'>
     <tr><th>Situação</th><th>Ponto</th><th>Tag</th><th>Descrição</th><th>Endereço</th><th>Valor · unidade</th><th>últimos 40 valores</th></tr>
   </table>
   <p class='nota'>Valor cru é o que o dispositivo envia (int/float/word); valor escalado aplica min/máx do catálogo. Bits de estado chegam por FC1/FC2; medições por FC3/FC4.</p>
 
-  <h2>X·1 · Tendências — janela deslizante (simulação)</h2>
-  <div class='aviso-caso'>Janela simulada: cada ciclo de 1 s da demo representa 1 min de dados. Linhas de limite como no leitor real: alerta <b>5,6 mm/s</b> e alarme <b>7,1 mm/s</b> (vibração), <b>75 °C</b> (temperatura).</div>
+  <h2>X·1 · Tendências — janela deslizante (simulação)<span class="xco-h2-selo x1" aria-hidden="true"><svg class="xco-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18l5-4 4 2 8-9"/><path d="M15 7h5v5"/></svg><span class="xco-selo x1">X·1</span></span></h2>
+  <div class='aviso-caso'>Janela simulada: cada ciclo de 1 s da demo representa 1 min de dados. Linhas de limite como no leitor real: alerta <b>5,6 mm/s</b> e alarme <b>7,1 mm/s</b> (vibração), alerta <b>80 °C</b> e alarme <b>90 °C</b> (temperatura).</div>
   <div class='tendiras'>
     <div class='tendiras-box'>
-      <div class='tb-hd'><b>VT-01 · vibração mancal A</b><b class='tb-val' id='vTendVT'>−</b><span>mm/s</span></div>
+      <div class='tb-hd'><b id='nTendVT'>VT-01 · vibração mancal A</b><b class='tb-val' id='vTendVT'>−</b><span>mm/s</span></div>
       <svg id='sgVT' viewBox='0 0 560 90' preserveAspectRatio='none'>
         <line x1='0' y1='22' x2='560' y2='22' class='limite-al'/>
         <line x1='0' y1='39' x2='560' y2='39' class='limite-al-am'/>
@@ -108,16 +141,18 @@ table{display:block;overflow-x:auto;white-space:nowrap}
       <div class='tb-ft'><span>-59 min</span><span class='al0'>alarme 7,1</span><span class='al1'>alerta 5,6</span><span>agora</span></div>
     </div>
     <div class='tendiras-box'>
-      <div class='tb-hd'><b>TT-01 · temperatura mancal A</b><b class='tb-val' id='vTendMT'>−</b><span>°C</span></div>
+      <div class='tb-hd'><b id='nTendMT'>TT-01 · temperatura mancal A</b><b class='tb-val' id='vTendMT'>−</b><span>°C</span></div>
       <svg id='sgMT' viewBox='0 0 560 90' preserveAspectRatio='none'>
-        <line x1='0' y1='18' x2='560' y2='18' class='limite-al'/>
+        <line x1='0' y1='13.8' x2='560' y2='13.8' class='limite-al'/>
+        <line x1='0' y1='26.9' x2='560' y2='26.9' class='limite-al-am'/>
         <polyline id='plMT' class='serie vermelho' points=''/>
       </svg>
-      <div class='tb-ft'><span>-59 min</span><span class='al0'>alarme 75</span><span></span><span>agora</span></div>
+      <div class='tb-ft'><span>-59 min</span><span class='al0'>alarme 90</span><span class='al1'>alerta 80</span><span>agora</span></div>
     </div>
   </div>
+  <p class='nota'>Clique numa linha de vibração ou de temperatura da tabela para ver a tendência daquele ponto.</p>
 
-  <h2>X·1 · Saúde do rolamento · mancal A (VT-01 + TT-01)</h2>
+  <h2>X·1 · Saúde do rolamento · mancal A (VT-01 + TT-01)<span class="xco-h2-selo x1" aria-hidden="true"><svg class="xco-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="3.5"/><circle cx="12" cy="5.9" r="1.3" fill="currentColor"/><circle cx="17.3" cy="15" r="1.3" fill="currentColor"/><circle cx="6.7" cy="15" r="1.3" fill="currentColor"/></svg><span class="xco-selo x1">X·1</span></span></h2>
   <div class='saude'>
     <div class='saude-esq'>
       <div class='r'>Índice de desgaste</div>
@@ -137,7 +172,7 @@ table{display:block;overflow-x:auto;white-space:nowrap}
     </div>
   </div>
 
-  <h2>X·1 · Normal × agora — o desvio que os limites não veem (simulação)</h2>
+  <h2>X·1 · Normal × agora — o desvio que os limites não veem (simulação)<span class="xco-h2-selo x1" aria-hidden="true"><svg class="xco-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9h18M3 15h18" stroke-dasharray="2 2"/><path d="M3 12l3-1 3 1.5 3-1 3 .5"/><circle cx="19" cy="5.5" r="2" fill="currentColor"/></svg><span class="xco-selo x1">X·1</span></span></h2>
   <p class='ref'>Nos primeiros 60 ciclos o X·1 <b>aprende</b> o comportamento de cada ponto (média ± σ) e congela esse estado como o <b>normal</b>. Daí em diante a comparação é dia contra dia: se o ponto desvia do próprio normal, vira atenção — <b>mesmo sem nunca cruzar um limite de alarme</b>.</p>
   <table class='tab-freq' id='tabNormal'>
     <tr><th>Ponto</th><th>Normal (congelado no ciclo 60)</th><th>Agora</th><th>Desvio</th><th>z</th><th>Estado</th></tr>
@@ -147,19 +182,102 @@ table{display:block;overflow-x:auto;white-space:nowrap}
   <button class='btn-demo' id='btnFalha' disabled>▶ simular desgaste lento no mancal B</button>
   <span class='nota' id='notaFalha'>o botão destrava depois do aprendizado — 60 ciclos em velocidade rápida, ~6 s, e depois o tempo volta ao real: o desgaste simulado soma +1,2 mm/s por minuto de máquina, sem passar de nenhum limite · recarregar a página zera tudo</span>
 
-  <h2>X·1 · Frequências do rolamento · marcadores (geometria ilustrativa)</h2>
-  <p class='ref'>Rolamento ilustrativo: 9 corpos · razão d/D = 0,40 · anel externo fixo · eixo @2.985 rpm (f_r = 49,8 Hz). Marcadores com a nomenclatura usual de manutenção:</p>
+  <h2>X·1 · Frequências do rolamento · marcadores (geometria ilustrativa)<span class="xco-h2-selo x1" aria-hidden="true"><svg class="xco-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 20h18"/><path d="M5.5 20v-5M9.5 20V8M13.5 20v-3M17.5 20V5"/><path d="M17.5 2.5v1.2M9.5 5.5v1"/></svg><span class="xco-selo x1">X·1</span></span></h2>
+  <p class='ref'>Rolamento ilustrativo: 9 corpos · razão d/D = 0,40 · anel externo fixo · eixo @3.560 rpm (f_r = 59,3 Hz). Marcadores com a nomenclatura usual de manutenção:</p>
   <table class='tab-freq' id='tab-freq'>
     <tr><th>Ordem</th><th>Nome</th><th>Explicação curta</th><th>Frequência (Hz)</th><th>Energia na banda (ilustrativa)</th><th>Relação com</th></tr>
   </table>
-  <p class='nota'>O módulo de análise do XcoInit marcará essas bandas sobre as tendências e faixas do dispositivo — sem espectro, mas com as amplitudes que o canal Modbus entrega.</p>
+  <p class='nota'>Pelo Modbus, o canal entrega valores globais: o X·1 marca as frequências calculadas, com a fonte da geometria, e acompanha o estado e o desvio do ponto. Quando a fonte entrega forma de onda, pelo X·U ou pelo FC20, o X·FFT põe esses marcadores sobre o espectro.</p>
 
 
-  <h2>O que estaria no CSV</h2>
+  <h2>O que estaria no CSV<span class="xco-h2-selo xcl" aria-hidden="true"><svg class="xco-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h9l4 4v14H6z"/><path d="M15 3v4h4"/><path d="M9 12h7M9 15.5h7M9 19h4"/></svg><span class="xco-selo xcl">XCL</span></span></h2>
   <p>Um arquivo <code>pontos-AAAA-MM-DD.csv</code> por dia, com uma linha por ponto coletado:
   <code>ts, ponto, doc, fn, addr0, valor_cru, valor_escala, unidade</code> — e, ao lado, o
   <code>xcoinit-AAAA-MM-DD.csv</code> de lotes e o <code>xcoinit-bits-…csv</code> dos bits.
   A validação de cobertura cruza o mapa descoberto com este catálogo e responde 100 % (10/10).</p>
+
+  <h2 id='caso-2'>Supervisório do trem · módulos de diagnóstico (simulação)</h2>
+  <div class='aviso-caso'>Outro caso ilustrativo: um turbocompressor fictício (Trem A). Escolha um cenário e veja o sinótico e as seis
+  telas reagirem juntos. Os módulos de diagnóstico estão na bancada; o X·670 só audita a votação — quem desarma é a
+  proteção. Nenhum dispositivo conectado: tudo é simulação no navegador.</div>
+  <div class='sv-demo'>
+  <div class="sv" data-sv>
+    <div class="sv-barra" role="group" aria-label="Cenários da simulação">
+      <div class="sv-cenarios">
+        <button type="button" class="sv-bt" data-sv-cenario="1" aria-pressed="true">01 · REGIME NOMINAL</button>
+        <button type="button" class="sv-bt" data-sv-cenario="2" aria-pressed="false">02 · PARTIDA · CRÍTICA 3.082 RPM</button>
+        <button type="button" class="sv-bt" data-sv-cenario="3" aria-pressed="false">03 · OIL WHIRL 0,48× · PROCESSO ESTÁVEL</button>
+        <button type="button" class="sv-bt" data-sv-cenario="4" aria-pressed="false">04 · SURGE + TRIP 2oo3</button>
+      </div>
+      <div class="sv-ctrl">
+        <button type="button" class="sv-bt sv-bt-sec" data-sv-pausa aria-pressed="false">pausar</button>
+        <span class="sv-modo" role="group" aria-label="Modo de animação">animação: <button type="button" data-sv-modo="fluida" aria-pressed="true">fluida</button> | <button type="button" data-sv-modo="1hz" aria-pressed="false">1 Hz</button></span>
+      </div>
+    </div>
+    <p class="sv-legenda" data-sv-legenda aria-live="polite">3.600 rpm, carga normal. Órbita 1× limpa, ηp 77,4 %, margem de surge 22 %, todos os canais OK.</p>
+    <div class="sv-anun" data-sv-anun>
+      <div class="sv-anun-cab">
+        <div class="sv-cab-l"><span class="sv-selo">X·1</span><h3 class="sv-tit">Anunciadores · sequência de alarme</h3></div>
+        <button type="button" class="sv-bt sv-bt-sec" data-sv-reconhecer>reconhecer</button>
+        <p class="sv-anun-rod">Janela piscando = alarme novo; o first-out pisca mais rápido. Reconhecer fixa a luz; o próximo cenário apaga.</p>
+      </div>
+      <div class="sv-anun-grade">
+        <div class="sv-jan" data-sv-jan="vtA" data-e="off">VT-301A · ALERTA/PERIGO</div>
+        <div class="sv-jan" data-sv-jan="vtB" data-e="off">VT-301B · ALERTA/PERIGO</div>
+        <div class="sv-jan" data-sv-jan="vtC" data-e="off">VT-301C · NOT-OK</div>
+        <div class="sv-jan" data-sv-jan="xt" data-e="off">XT-301X/Y · ALERTA</div>
+        <div class="sv-jan" data-sv-jan="sub" data-e="off">SUBSÍNCRONO 0,48×</div>
+        <div class="sv-jan" data-sv-jan="trip" data-e="off">TRIP 2oo3 · PROTEÇÃO</div>
+        <div class="sv-jan" data-sv-jan="m20" data-e="off">MARGEM DE SURGE &lt; 20 %</div>
+        <div class="sv-jan" data-sv-jan="m10" data-e="off">MARGEM DE SURGE &lt; 10 %</div>
+        <div class="sv-jan" data-sv-jan="surge" data-e="off">SURGE</div>
+        <div class="sv-jan" data-sv-jan="fv" data-e="off">FV-201 TRAVADA</div>
+        <div class="sv-jan" data-sv-jan="tt202" data-e="off">TT-202 ALTA</div>
+        <div class="sv-jan" data-sv-jan="hip" data-e="off">HIPÓTESE CRUZADA</div>
+      </div>
+    </div>
+    <div class="sv-parede sv-parede-proc">
+      <article class="sv-tela" aria-labelledby="sv-q5" data-sv-alvo="COMPRESSOR">
+        <div class="sv-cab"><span class="sv-num" aria-hidden="true">1</span><span class="sv-selo">X·THERMO</span><svg class="sv-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 21V3M3 21h18" stroke="currentColor" stroke-width="1.2"/><path d="M7 8c4-2 8-1 13 6M7 12c4-1.5 7-1 11 5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M5 18L9 5" stroke="currentColor" stroke-width="1.2" stroke-dasharray="2 2"/><circle cx="13" cy="9.2" r="1.8" fill="currentColor"/></svg><h3 id="sv-q5">Mapa do compressor · head politrópico × vazão</h3></div>
+        <canvas data-sv-desenha="q5" role="img" aria-label="Mapa do compressor: head politrópico contra vazão, linhas de rotação, ilhas de eficiência, linhas de surge e de controle, ponto de operação e perda em kW e R$/h."></canvas>
+        <p class="sv-rod">Mapa da engenharia com o ponto calculado: ηp, head politrópico, margem de surge e perda (Δη × tarifa). Sem mapa, sem número.</p>
+      </article>
+      <article class="sv-tela" aria-labelledby="sv-q6" data-sv-alvo="FT-201,XT-301X">
+        <div class="sv-cab"><span class="sv-num" aria-hidden="true">2</span><span class="sv-selo">X·U</span><span class="sv-selo">X·THERMO</span><svg class="sv-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 21h18" stroke="currentColor" stroke-width="1"/><path d="M3 16l4-3 4 2 4-6 6 3" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M3 9l4 2 4-1 4 5 6-2" fill="none" stroke="currentColor" stroke-width="1.2" opacity=".6"/></svg><h3 id="sv-q6">Vibração × processo no mesmo segundo</h3></div>
+        <canvas data-sv-desenha="q6" role="img" aria-label="Vibração de XT-301X e vazão de FT-201 na mesma linha do tempo, com o r de Pearson e a hipótese cruzada, quando houver."></canvas>
+        <p class="sv-rod">Vibração e processo no mesmo eixo de tempo do banco unificado; Pearson com r ≤ −0,8 levanta hipótese, com o que validar. Hipótese, nunca veredito.</p>
+      </article>
+      <article class="sv-tela" aria-labelledby="sv-q3" data-sv-alvo="XT-301X">
+        <div class="sv-cab"><span class="sv-num" aria-hidden="true">3</span><span class="sv-selo">X·RAMPA</span><svg class="sv-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 19c5 0 6-1 8-8 1-4 2-4 3 0 1.5 6 3 7 7 7" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M3 6h7c2 0 2 5 4 5h7" fill="none" stroke="currentColor" stroke-width="1.2" opacity=".6"/></svg><h3 id="sv-q3">Bode e polar · 1× de XT-301X</h3></div>
+        <canvas data-sv-desenha="q3" role="img" aria-label="Diagrama de Bode, com fase e amplitude 1× contra a rotação, e diagrama polar, com a crítica em 3.082 rpm."></canvas>
+        <p class="sv-rod">Vetores 1× ao longo da rampa, compensados pelo slow roll; crítica declarada só com pico e inversão de fase ≥ 120°.</p>
+      </article>
+    </div>
+    <div class="sv-sin">
+      <div class="sv-cab"><span class="sv-selo sv-selo-xcl">XCL</span><svg class="sv-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 15h4l2-4h6l2 4h6" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="11" cy="15" r="2.2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M2 19h20" stroke="currentColor" stroke-width="1.2"/><path d="M14 11V6h4" fill="none" stroke="currentColor" stroke-width="1.4"/></svg><h3 class="sv-tit">Trem A · turbina → redutora → compressor centrífugo · corte esquemático</h3><span class="sv-q">SINÓTICO</span></div>
+      <div class="sv-sin-area" data-sv-sinotico role="img" aria-label="Sinótico animado do Trem A em corte esquemático: turbina, redutora 41/83 e compressor centrífugo de 6 estágios, com os sensores de vibração e de processo e os valores da simulação."></div>
+      <div class="sv-leds"><span><i class="ok"></i>OK</span><span><i class="al"></i>ALERTA</span><span><i class="tr"></i>PERIGO/TRIP</span><span><i class="no"></i>NOT-OK</span></div>
+    </div>
+    <div class="sv-parede sv-parede-maq">
+      <article class="sv-tela" aria-labelledby="sv-q1" data-sv-alvo="b:VT-301A">
+        <div class="sv-cab"><span class="sv-num" aria-hidden="true">4</span><span class="sv-selo">X·FFT</span><svg class="sv-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 20h18M4 17l3-6 2 4 2-9 2 11 2-5 2 3 3-2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M8 6l3-3 2 2 3-2 3 2" fill="none" stroke="currentColor" stroke-width="1.2" opacity=".6"/></svg><h3 id="sv-q1">Cascata espectral · VT-301A</h3></div>
+        <canvas data-sv-desenha="q1" role="img" aria-label="Cascata espectral de VT-301A: fatias do espectro empilhadas no tempo, com as ordens 1×, 2× e 3× e a janela do engrenamento."></canvas>
+        <p class="sv-rod">FFT própria com janelas e correção coerente; ordens 1×, 2× e 3× marcadas.</p>
+      </article>
+      <article class="sv-tela" aria-labelledby="sv-q2" data-sv-alvo="b:XT-301X,b:XT-301Y">
+        <div class="sv-cab"><span class="sv-num" aria-hidden="true">5</span><span class="sv-selo">X·ORBIT</span><span class="sv-selo">X·RAMPA</span><svg class="sv-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v18M3 12h18" stroke="currentColor" stroke-width=".8" opacity=".5"/><ellipse cx="12" cy="12" rx="8.5" ry="5.5" transform="rotate(-30 12 12)" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="17.6" cy="8.6" r="1.8" fill="currentColor"/></svg><h3 id="sv-q2">Órbita, forma de onda e centro do eixo · XT-301X/Y</h3></div>
+        <canvas data-sv-desenha="q2" role="img" aria-label="Órbita filtrada do eixo pelo par XT-301X e XT-301Y, formas de onda X e Y e centro do eixo dentro da folga do mancal."></canvas>
+        <p class="sv-rod">Órbita filtrada 1× + 2× do par X–Y a 90°, com referência de fase e sentido de precessão; centro do eixo acompanhando a rotação.</p>
+      </article>
+      <article class="sv-tela" aria-labelledby="sv-q4" data-sv-alvo="b:VT-301A,b:VT-301B,b:VT-301C">
+        <div class="sv-cab"><span class="sv-num" aria-hidden="true">6</span><span class="sv-selo">X·670</span><svg class="sv-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 6h6a6 6 0 0 1 0 12H5z" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M1 9h4M1 15h4M17 12h6" stroke="currentColor" stroke-width="1.6"/></svg><h3 id="sv-q4">Votação de proteção API 670 · 2oo3</h3></div>
+        <canvas data-sv-desenha="q4" role="img" aria-label="Votação 2oo3 de VT-301A, B e C: barras com ALERTA e PERIGO, portas lógicas, gap das sondas de proximidade, first-out e sequência de eventos."></canvas>
+        <p class="sv-rod">Votação de 1oo1 a 2oo3 com retardo por canal, veto por Not-OK e por gap fora de −2…−18 Vcc, first-out e sequência de eventos. Só leitura: nada é escrito em relé.</p>
+      </article>
+    </div>
+    <p class="sv-nota">Simulação no navegador, com dados ilustrativos de um trem fictício. Os módulos de diagnóstico estão na bancada, ensaiados contra dados sintéticos; o ensaio com dispositivo real está marcado para 13/11/2026. Cascata e órbita pedem forma de onda na fonte: onde o dispositivo entrega só valores globais, o XcoInit mostra o que o canal tem e declara o que falta. O X·670 audita a votação a partir dos dados; quem desarma a máquina é o sistema de proteção.</p>
+  </div>
+  </div>
 
   <footer>
     FRV XcoInit · software de engenharia da <a href='/'>FRV Engenharia</a> ·
@@ -168,5 +286,7 @@ table{display:block;overflow-x:auto;white-space:nowrap}
     · <a href='/privacidade/'>política de privacidade</a>
   </footer>
 </main>
-<script src='xco-demo.js' defer></script>
+<script src='xco-demo-2.js' defer></script>
+<script src='/xcoinit/supervisorio/modelo.js' defer></script>
+<script src='/xcoinit/supervisorio/telas.js' defer></script>
 </body></html>

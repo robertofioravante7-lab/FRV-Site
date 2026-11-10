@@ -4,14 +4,14 @@
 
 // PONTOS ilustrativos (cruzam FC1/FC2 bits + FC3/FC4 registradores)
 const P = [
-  {p:'VT-01', tag:'VT-0101', d:'vibração eixo X · mancal A',   fn:3, doc:30001, cru:i=>3.6+Math.abs(Math.sin(i/9))*2.4,  esc:v=>v,  u:'mm/s'},
-  {p:'VT-02', tag:'VT-0102', d:'vibração eixo Y · mancal A',   fn:3, doc:30002, cru:i=>4.4+Math.abs(Math.cos(i/11))*2.2, esc:v=>v,  u:'mm/s'},
-  {p:'VT-03', tag:'VT-0103', d:'vibração axial · mancal B',    fn:3, doc:30003, cru:i=>2.1+Math.abs(Math.sin(i/7))*1.3,  esc:v=>v,  u:'mm/s'},
-  {p:'TT-01', tag:'TT-0110', d:'temperatura mancal A',         fn:4, doc:40001, cru:i=>58+Math.sin(i/23)*4+ (i%97===0?9:0), esc:v=>v, u:'°C'},
-  {p:'TT-02', tag:'TT-0111', d:'temperatura óleo lubrificante',fn:4, doc:40002, cru:i=>52+Math.sin(i/31)*3,              esc:v=>v,  u:'°C'},
-  {p:'FS-01', tag:'FS-0120', d:'vazão de processo',            fn:3, doc:30007, cru:i=>184+Math.sin(i/17)*12,            esc:v=>v,  u:'m³/h'},
-  {p:'PD-01', tag:'PD-0121', d:'pressão diferencial',          fn:4, doc:40005, cru:i=>64+Math.sin(i/13)*5,              esc:v=>v,  u:'kPa'},
-  {p:'CS-01', tag:'CS-0101', d:'estado · em operação',         fn:1, doc:10001, cru:()=>1,                               esc:v=>v?'rotando':'parado', u:'bit'},
+  {p:'VT-01', tag:'VT-0101', d:'vibração eixo X · mancal A',   fn:3, doc:40001, cru:i=>3.6+Math.abs(Math.sin(i/9))*2.4,  esc:v=>v,  u:'mm/s'},
+  {p:'VT-02', tag:'VT-0102', d:'vibração eixo Y · mancal A',   fn:3, doc:40002, cru:i=>4.4+Math.abs(Math.cos(i/11))*2.2, esc:v=>v,  u:'mm/s'},
+  {p:'VT-03', tag:'VT-0103', d:'vibração axial · mancal B',    fn:3, doc:40003, cru:i=>2.1+Math.abs(Math.sin(i/7))*1.3,  esc:v=>v,  u:'mm/s'},
+  {p:'TT-01', tag:'TT-0110', d:'temperatura mancal A',         fn:4, doc:30001, cru:i=>58+Math.sin(i/23)*4+ (i%97===0?9:0), esc:v=>v, u:'°C'},
+  {p:'TT-02', tag:'TT-0111', d:'temperatura óleo lubrificante',fn:4, doc:30002, cru:i=>52+Math.sin(i/31)*3,              esc:v=>v,  u:'°C'},
+  {p:'FT-01', tag:'FT-0120', d:'vazão de processo',            fn:3, doc:40007, cru:i=>184+Math.sin(i/17)*12,            esc:v=>v,  u:'m³/h'},
+  {p:'PDT-01', tag:'PDT-0121', d:'pressão diferencial',          fn:4, doc:30005, cru:i=>64+Math.sin(i/13)*5,              esc:v=>v,  u:'kPa'},
+  {p:'CS-01', tag:'CS-0101', d:'estado · em operação',         fn:1, doc:'00001', cru:()=>1,                               esc:v=>v?'rotando':'parado', u:'bit'},
   {p:'AL-01', tag:'AL-0102', d:'alarme de vibração alto',      fn:2, doc:10002, cru:i=>chk(38.0,'VT-01',i)?1:0,          esc:v=>v?'ALERTA':'normal', u:'bit'},
   {p:'AL-02', tag:'AL-0103', d:'alarme de temperatura alta',   fn:2, doc:10003, cru:i=>chk(70,'TT-01',i)?1:0,            esc:v=>v?'ALERTA':'normal', u:'bit'},
 ];
@@ -27,7 +27,7 @@ function chk(lim, pai, i){ // TRUE ocasional quando o ponto pai passa do limite
 // escala fixa por unidade (a mesma da régua): posição do valor contra os limites anunciados
 const ESCALA = {
   'mm/s': { lo: 0,   hi: 8,   lims: [{ v: 5.6, c: 'lim-am' }, { v: 7.1, c: 'lim-vm' }] },
-  '°C':   { lo: 40,  hi: 90,  lims: [{ v: 75,  c: 'lim-vm' }] },
+  '°C':   { lo: 40,  hi: 95,  lims: [{ v: 80,  c: 'lim-am' }, { v: 90, c: 'lim-vm' }] },
   'm³/h': { lo: 140, hi: 220, lims: [] },
   'kPa':  { lo: 40,  hi: 90,  lims: [] },
   'bit':  { lo: 0,   hi: 1.5, lims: [] }
@@ -57,6 +57,15 @@ function spark(arr, tgt, un){ // polyline dos últimos 40 valores + linhas de li
     }
   }
 }
+// tendência: o ponto escolhido na tabela (clique numa linha de vibração ou de temperatura), por unidade
+const TEND = { 'mm/s': 'VT-0101', '°C': 'TT-0110' };
+const NOME_TEND = { 'VT-0101': 'VT-01 · vibração mancal A', 'TT-0110': 'TT-01 · temperatura mancal A' };
+function escolher(p){
+  TEND[p.u] = p.tag;
+  const e = document.getElementById(p.u === 'mm/s' ? 'nTendVT' : 'nTendMT');
+  if (e) e.textContent = NOME_TEND[p.tag] || (p.p + ' · ' + p.d);
+  desenhaTend();
+}
 let t = 0, ok = 0;
 function tick(){
   t++;
@@ -74,22 +83,28 @@ function tick(){
         ' · ' + p.doc + '</td><td class="n" id="V' + p.tag + '"></td>' +
         '<td><svg viewBox="0 0 150 26" preserveAspectRatio="none"><polyline/></svg></td>';
       document.getElementById('tabeto').appendChild(lin);
+      if (p.u === 'mm/s' || p.u === '°C'){
+        lin.tabIndex = 0;
+        lin.title = 'clique para ver a tendência deste ponto';
+        lin.addEventListener('click', () => escolher(p));
+        lin.addEventListener('keydown', (ev) => { if (ev.key === 'Enter' || ev.key === ' '){ ev.preventDefault(); escolher(p); } });
+      }
     }
     const fmt = (u) => u === 'bit' ? String(cru) : cru.toFixed(2).replace('.', ',');
     document.getElementById('V' + p.tag).textContent = fmt(p.u) + ' → ' + (p.u === 'bit' ? esc : esc.toFixed(1).replace('.', ',')) + (p.u === 'bit' ? '' : ' ' + p.u);
-    const alerta = (p.u === '°C' && cru > 66) || (p.u === 'mm/s' && cru > 5.6);
+    const alerta = (p.u === '°C' && cru > 80) || (p.u === 'mm/s' && cru > 5.6);
     const cls = p.u === 'bit' ? (esc === 'ALERTA' ? 'al' : 'ok') : (alerta ? 'al' : 'ok');
-    lin.className = 'r-' + cls;
+    lin.className = 'r-' + cls + (p.u === 'mm/s' || p.u === '°C' ? ' clic' : '') + (TEND[p.u] === p.tag ? ' sel' : '');
     const cel = document.getElementById('S' + p.tag);
     cel.innerHTML = '<span class="pill-estado ' + cls + '">' + (p.u === 'bit' ? esc : (alerta ? 'ALERTA' : 'OK')) + '</span>';
     spark(VALS[p.tag], lin.querySelector('polyline'), p.u);
   }
   document.getElementById('cOk').textContent = ok;
   const seq = [];
-  if (t % 5 === 1) seq.push('FC3 lote @0x006 ×7 ok');
+  if (t % 5 === 1) seq.push('FC3 lote @0x000 ×7 ok');
   if (t % 5 === 2) seq.push('FC4 lote @0x000 ×5 ok');
-  if (t % 5 === 3) seq.push('FC1 bits @0x010 ×3 ok');
-  if (t % 5 === 4) seq.push('FC2 bits @0x010 ×3 ok');
+  if (t % 5 === 3) seq.push('FC1 bits @0x000 ×1 ok');
+  if (t % 5 === 4) seq.push('FC2 bits @0x000 ×3 ok');
   if (t % 5 === 0) seq.push('cobertura re-verificada: 10/10 (100 %)');
   document.getElementById('lote').textContent = 'ciclo ' + t + ' · ' + (seq[0] || 'sem lotes pendentes') + ' · latência ~2 ms';
   document.getElementById('clock').textContent = new Date().toLocaleTimeString('pt-BR');
@@ -98,12 +113,12 @@ document.getElementById('clock').textContent = new Date().toLocaleTimeString('pt
 
 // ===== módulo de análise (prévia · dados ilustrativos) =====
 const FABRICA = [
-  { id: 'F1',   ordem: '1×',   nome: 'f_r (gira do eixo)',    b: 'frequência fundamental do eixo',            f: 49.8,  r: 'desequilíbrio / alinhamento' },
-  { id: 'F2',   ordem: '2×',   nome: '2× f_r',                b: 'segundo harmônico do eixo',                 f: 99.6,  r: 'desalinhamento / soltura' },
-  { id: 'FTF',  ordem: 'FTF',  nome: 'gaiola',                b: 'frequência fundamental da gaiola',          f: 14.9,  r: 'jaula / lubrificação' },
-  { id: 'BSF',  ordem: 'BSF',  nome: 'giro da bola',          b: 'giro do corpo rolante',                     f: 52.3,  r: 'defeito no corpo rolante' },
-  { id: 'BPFO', ordem: 'BPFO', nome: 'anel externo',          b: 'passagem da bola na pista externa',         f: 134.5, r: 'defeito na pista externa' },
-  { id: 'BPFI', ordem: 'BPFI', nome: 'anel interno',          b: 'passagem da bola na pista interna',         f: 313.7, r: 'defeito na pista interna' },
+  { id: 'F1',   ordem: '1×',   nome: 'f_r (gira do eixo)',    b: 'frequência fundamental do eixo',            f: 59.3,  r: 'desequilíbrio / alinhamento' },
+  { id: 'F2',   ordem: '2×',   nome: '2× f_r',                b: 'segundo harmônico do eixo',                 f: 118.7, r: 'desalinhamento / soltura' },
+  { id: 'FTF',  ordem: 'FTF',  nome: 'gaiola',                b: 'frequência fundamental da gaiola',          f: 17.8,  r: 'jaula / lubrificação' },
+  { id: 'BSF',  ordem: 'BSF',  nome: 'giro da bola',          b: 'giro do corpo rolante',                     f: 62.3,  r: 'defeito no corpo rolante' },
+  { id: 'BPFO', ordem: 'BPFO', nome: 'anel externo',          b: 'passagem da bola na pista externa',         f: 160.2, r: 'defeito na pista externa' },
+  { id: 'BPFI', ordem: 'BPFI', nome: 'anel interno',          b: 'passagem da bola na pista interna',         f: 373.8, r: 'defeito na pista interna' },
 ];
 for (const m of FABRICA){
   const tr = document.createElement('tr');
@@ -174,12 +189,8 @@ function analise(){
   }
   marcaNormal('VT', normal.vt, histo.vt[histo.vt.length - 1]);
   marcaNormal('B', normal.b, histo.vt03[histo.vt03.length - 1]);
-  desenhaHisto('plVT', histo.vt, 2.5, 8.5);
-  desenhaHisto('plMT', histo.mt, 44, 82);
+  desenhaTend();
   const vt = histo.vt, mt = histo.mt;
-  const tvVT = document.getElementById('vTendVT'), tvMT = document.getElementById('vTendMT');
-  if (tvVT){ const u = vt[vt.length - 1]; tvVT.textContent = fmt2(u); tvVT.className = 'tb-val' + (u >= 7.1 ? ' nok' : u >= 5.6 ? ' al' : ''); }
-  if (tvMT){ const u = mt[mt.length - 1]; tvMT.textContent = fmt2(u); tvMT.className = 'tb-val' + (u >= 75 ? ' nok' : ''); }
   const rms = vt.length ? vt[vt.length - 1] : 4;
   const dc = (mt.length ? mt[mt.length - 1] : 52) - 52;
   const declive = vt.length > 12 ? (vt[vt.length - 1] - vt[0]) / 12 : 0;
@@ -188,7 +199,7 @@ function analise(){
   document.getElementById('sIdx').textContent = idx.toFixed(0) + ' / 100';
   const bar = document.getElementById('sBar');
   bar.style.width = idx + '%';
-  bar.style.background = idx < 40 ? '#1f8a4c' : idx < 70 ? '#b9770e' : '#c0392b';
+  bar.style.background = idx < 40 ? '#22c55e' : idx < 70 ? '#fbbf24' : '#ef4444'; // cores do supervisório (10/11/2026)
   const est = document.getElementById('sEstado');
   const msg = document.getElementById('sMsg');
   const jan = document.getElementById('sJanela');
@@ -200,6 +211,15 @@ function analise(){
     const el = document.getElementById(k);
     if (el) el.style.width = Math.min(100, frac * (0.9 + Math.random() * 0.25)) + '%';
   }
+}
+// as duas janelas de tendência: o ponto escolhido de cada unidade, nos últimos 60 ciclos
+function desenhaTend(){
+  const sv = VALS[TEND['mm/s']].slice(-60), sm = VALS[TEND['°C']].slice(-60);
+  if (sv.length) desenhaHisto('plVT', sv, 2.5, 8.5);
+  if (sm.length) desenhaHisto('plMT', sm, 44, 96);
+  const tvVT = document.getElementById('vTendVT'), tvMT = document.getElementById('vTendMT');
+  if (tvVT && sv.length){ const u = sv[sv.length - 1]; tvVT.textContent = fmt2(u); tvVT.className = 'tb-val' + (u >= 7.1 ? ' nok' : u >= 5.6 ? ' al' : ''); }
+  if (tvMT && sm.length){ const u = sm[sm.length - 1]; tvMT.textContent = fmt2(u); tvMT.className = 'tb-val' + (u >= 90 ? ' nok' : u >= 80 ? ' al' : ''); }
 }
 // agendador: aprendizado em velocidade rápida (60 ciclos em ~6 s); após o congelamento
 // do normal, o cronômetro volta ao ritmo real de 1 ciclo por segundo.
