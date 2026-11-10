@@ -140,6 +140,14 @@ window.FRV = {
   noticias: {
     eyebrow: 'Notícias', h2a: 'Últimas da', h2b: 'FRV',
     itens: [
+      { id: 'xcoinit-supervisorio', data: '10/11/2026', quando: '2026-11-10', k: 'Atualização · ', em: 'Supervisório', img: 'xcoinit-logo.svg',
+        h3: 'FRV XcoInit ganha supervisório com módulos de diagnóstico de máquina',
+        sub: 'Espectro, órbita, partida e parada, auditoria da votação de proteção e desempenho do compressor, no mesmo eixo de tempo e num visual de sala de controle.',
+        p: ['Em 10 de novembro de 2026, a página do FRV XcoInit passou a mostrar o supervisório do sistema. É uma simulação no navegador de um trem com turbina e compressor centrífugo, com o sinótico em corte, os anunciadores com first-out e seis telas que reagem juntas a quatro cenários: regime nominal, partida pela velocidade crítica, instabilidade no mancal e surge com desarme da proteção.',
+            'Por trás das telas estão os módulos de diagnóstico do XcoInit:',
+            ['X·FFT e X·ORBIT: espectro e órbita do eixo, quando há forma de onda na fonte;', 'X·RAMPA: partida e parada, com Bode, polar e centro do eixo;', 'X·670: auditoria da votação de proteção, só leitura;', 'X·THERMO: eficiência politrópica e margem de surge pelo mapa da engenharia;', 'X·U: o banco unificado, que põe vibração e processo no mesmo segundo.'],
+            'Os módulos passaram em 129 de 129 verificações automáticas na bancada sintética, em 9 de novembro, e o ensaio com um dispositivo real está marcado para 13 de novembro. A página inteira e a demonstração ganharam o mesmo visual de sala de controle, sempre com dados ilustrativos.'],
+        links: [['Ver o supervisório →', 'xcoinit/#supervisorio'], ['Ver a demonstração', 'xcoinit/demo/']] },
       { id: 'xcoinit-trl5', data: '20/10/2026', quando: '2026-10-20', k: 'Lançamento · ', em: 'TRL 5', img: 'xcoinit-logo.svg',
         h3: 'FRV lança o XcoInit, sistema próprio de monitoramento de condição de máquinas, em TRL 5',
         sub: 'Ele lê vibração, temperatura e deslocamento direto do barramento da planta e entrega, no fim do dia, o laudo de condição de cada ponto.',
