@@ -1,5 +1,9 @@
 .claude/
 
+# Config de MCP escopada ao projeto (caminho local da maquina; nao vai ao repo publico)
+.mcp.json
+.mcp/
+
 # Imagens originais, guardadas so para eventual reversao; nao vao ao ar.
 assets/img/_originais/
 
