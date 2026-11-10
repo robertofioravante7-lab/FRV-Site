@@ -146,8 +146,10 @@
   /* 07/11/2026: link da politica de privacidade no rodape (Ft.priv) e no aviso (K.link). Os dois sao testados antes
      de usar: um conteudo.js antigo, preso ate 4 h no navegador pela Cloudflare, nao pode quebrar a pagina. */
   var Ft = F.rodape, K = F.cookies;
+  /* 10/11/2026: o rodape ganhou o link "Trabalhe conosco" (Ft.rh), testado do mesmo jeito. */
+  var ftLk = [Ft.priv, Ft.rh].filter(Boolean).map(function(l){ return '<a href="' + esc(l[1]) + '">' + esc(l[0]) + '</a>'; }).join(' · ');
   html += '<footer class="ft"><div class="c ft-c"><img loading="lazy" src="' + IMG + F.logo.full + '" alt="' + esc(F.logo.altFull) + '">' +
-    '<div class="ft-t"><p>' + rich(Ft.p1) + '</p><p>' + esc(Ft.p2) + '</p>' + (Ft.priv ? '<p><a href="' + esc(Ft.priv[1]) + '">' + esc(Ft.priv[0]) + '</a></p>' : '') + '</div><span class="mono">' + esc(Ft.mono) + '</span></div></footer>' +
+    '<div class="ft-t"><p>' + rich(Ft.p1) + '</p><p>' + esc(Ft.p2) + '</p>' + (ftLk ? '<p>' + ftLk + '</p>' : '') + '</div><span class="mono">' + esc(Ft.mono) + '</span></div></footer>' +
     '<div class="ck" id="ck" hidden><div class="c ck-c">' + led('amb blink') + '<p>' + esc(K.text) + (K.link ? ' <a href="' + esc(K.linkHref) + '">' + esc(K.link) + '</a>' : '') + '</p>' +
     '<div class="ck-a"><button type="button" class="btn ghost" id="ckN">' + esc(K.decline) + '</button><button type="button" class="btn" id="ckY">' + esc(K.accept) + '</button></div></div></div>';
 

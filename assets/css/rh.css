@@ -1,0 +1,77 @@
+/* Pagina de vagas e curriculos (/rh/ e /rh/obrigado/), 10/11/2026.
+   Arquivo proprio, com nome novo: a Cloudflare guarda .css por ate 4 h no navegador de quem ja visitou,
+   e um site.css antigo preso no cache nao pode deixar o formulario sem estilo. Usa as cores do site.css. */
+
+.rh-top{padding-bottom:84px}
+.rh-top h1.h2{font-size:clamp(34px,5vw,58px);max-width:none}
+.rh-top .lead a{color:var(--amber);text-decoration:underline;text-underline-offset:3px}
+
+/* vagas */
+.vgs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:40px}
+@media(max-width:1000px){.vgs{grid-template-columns:1fr 1fr}}
+@media(max-width:640px){.vgs{grid-template-columns:1fr}}
+.vg{border:1px solid var(--line2);background:rgba(6,10,16,.55);display:flex;flex-direction:column;transition:border-color .25s}
+.vg:hover{border-color:rgba(247,148,30,.6)}
+.vg-top{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:10px 16px;border-bottom:1px solid var(--line2);font-family:var(--f-mono);font-size:10px;letter-spacing:1.6px;text-transform:uppercase;color:var(--dim2)}
+.vg-top b{color:var(--amber);font-weight:500}
+.vg-b{padding:20px 18px 22px;display:flex;flex-direction:column;flex:1}
+.vg h2{font-family:var(--f-disp);font-weight:800;font-size:clamp(20px,2vw,23px);line-height:1.15;letter-spacing:-.015em;text-wrap:balance}
+.vg .vg-meta{font-family:var(--f-mono);font-size:12px;letter-spacing:.5px;color:var(--sky);margin-top:8px}
+.vg h3{font-family:var(--f-mono);font-size:10.5px;letter-spacing:2px;text-transform:uppercase;color:var(--amber);font-weight:500;margin-top:20px}
+.vg .ul{margin-top:8px}
+.vg .ul li{font-size:14px;padding:8px 0 8px 22px}
+.vg-b > ul:last-of-type{margin-bottom:24px}
+.vg .btn{margin-top:auto;align-self:flex-start}  /* botoes alinhados no pe dos cartoes */
+/* banco de talentos: faixa inteira embaixo das vagas, com o botao a direita no computador */
+.vg-bt{grid-column:1/-1;border-style:dashed;background:rgba(247,148,30,.04)}
+.vg-bt .vg-b > p{color:#c3d0de;font-size:15px;margin-top:12px;margin-bottom:24px;max-width:70ch}
+@media(min-width:861px){
+  .vg-bt .vg-b{display:grid;grid-template-columns:minmax(0,1fr) auto;column-gap:40px;align-items:center}
+  .vg-bt .vg-b > p{margin-bottom:0}
+  .vg-bt .btn{grid-column:2;grid-row:1/span 2;margin-top:0}
+}
+
+/* formulario */
+.rh-fm{scroll-margin-top:64px}
+.fm{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px 24px;margin-top:40px;max-width:900px}
+.fm .w{grid-column:1/-1}
+@media(max-width:640px){.fm{grid-template-columns:1fr}}
+.fm label,.fm legend{display:block;font-family:var(--f-mono);font-size:10.5px;letter-spacing:1.8px;text-transform:uppercase;color:var(--amber);font-weight:500}
+.fm label em{font-style:normal;color:var(--dim);letter-spacing:.6px;text-transform:none;margin-left:6px}
+.fm input[type=text],.fm input[type=email],.fm input[type=tel],.fm select,.fm textarea{display:block;width:100%;margin-top:8px;background:rgba(6,10,16,.6);border:1px solid var(--line2);border-radius:2px;color:var(--text);font-family:var(--f-body);font-size:15.5px;line-height:1.4;padding:12px 14px;transition:border-color .2s}
+.fm ::placeholder{color:var(--dim2);opacity:1}
+.fm :is(input,select,textarea):hover{border-color:rgba(140,190,235,.4)}
+.fm :is(input,select,textarea):focus{outline:none;border-color:var(--amber);box-shadow:0 0 0 1px var(--amber)}
+.fm :is(input,select,textarea):user-invalid{border-color:var(--ember)}
+.fm select{appearance:none;-webkit-appearance:none;padding-right:40px;cursor:pointer;color-scheme:dark;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%23f7941e' stroke-width='1.6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 15px center}
+.fm select option{background:#0d2138;color:var(--text)}
+.fm textarea{min-height:120px;resize:vertical}
+.fm input[type=file]{display:block;width:100%;margin-top:8px;padding:12px 14px;border:1px dashed var(--line2);border-radius:2px;background:rgba(6,10,16,.6);color:#c3d0de;font-family:var(--f-body);font-size:14.5px;cursor:pointer}
+.fm input[type=file]:hover{border-color:var(--amber)}
+.fm input[type=file]::file-selector-button{font-family:var(--f-mono);font-size:11px;letter-spacing:1.6px;text-transform:uppercase;font-weight:600;padding:9px 14px;margin-right:14px;border:1px solid var(--line2);border-radius:2px;background:transparent;color:var(--text);cursor:pointer}
+.fm input[type=file]:hover::file-selector-button{border-color:var(--amber)}
+.fm .dica{font-size:13.5px;color:var(--dim);margin-top:8px;max-width:70ch}
+.fm .err{font-size:14px;color:#ffb08f;margin-top:8px}
+.fm-ok{border:0;padding:18px 0 0;border-top:1px solid var(--line2)}
+.fm-ok legend{padding:0;margin-bottom:6px;float:left;width:100%}
+.fm .ck-l{clear:both}  /* a legenda flutua (truque para ela ficar fora da borda); a caixa vem abaixo dela */
+.fm .ck-l{display:flex;gap:12px;align-items:flex-start;margin-top:12px;font-family:var(--f-body);font-size:15px;font-weight:400;letter-spacing:0;text-transform:none;color:#c3d0de;cursor:pointer}
+.fm .ck-l input{width:18px;height:18px;margin-top:3px;flex:none;accent-color:var(--amber);cursor:pointer}
+.fm .ck-l a{color:var(--amber);text-decoration:underline;text-underline-offset:3px}
+.fm .ck-l em{font-style:normal;color:var(--dim);font-size:13.5px;margin-left:4px;text-transform:none;letter-spacing:0}
+.fm-env{display:flex;align-items:center;gap:18px 24px;flex-wrap:wrap;padding-top:6px}
+.fm-env .btn{border:0;cursor:pointer;font-size:12.5px;padding:15px 28px}
+.fm-env .dica{flex:1 1 300px;margin-top:0}
+
+/* campo-isca contra robo: fora da tela, ninguem ve; robo preenche e a Netlify descarta o envio */
+.hp{position:absolute;left:-10000px;top:auto;width:1px;height:1px;overflow:hidden}
+
+/* cabecalho no celular: o botao "Mandar curriculo" cabe numa linha so */
+.hd .btn{white-space:nowrap}
+@media(max-width:480px){.hd .logo small{display:none}}
+
+/* pagina de confirmacao */
+.rh-ok{min-height:62vh}
+.rh-ok-act{display:flex;gap:12px;flex-wrap:wrap;margin-top:30px}
+
+@media(prefers-reduced-motion:reduce){.vg,.fm :is(input,select,textarea){transition:none}}

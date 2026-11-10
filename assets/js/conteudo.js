@@ -178,6 +178,7 @@ window.FRV = {
     p1: [{ t: 'FRV Engenharia', b: 1 }, { t: ' — Montagem Eletromecânica, Manutenção, Energias Renováveis e Tecnologia.' }],
     p2: '© 2026 FRV Engenharia. Todos os direitos reservados.',
     priv: ['Política de privacidade', 'privacidade/'],
+    rh: ['Trabalhe conosco', 'rh/'],  /* 10/11/2026: pagina de vagas e curriculos */
     mono: 'Do projeto ao comissionamento'
   },
 

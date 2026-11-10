@@ -263,6 +263,7 @@ figure.shot img,.figs.one figure.shot img{height:auto;object-fit:contain;filter:
 .pv h2{font-family:var(--f-disp);font-weight:700;font-size:clamp(21px,2.3vw,26px);line-height:1.2;letter-spacing:-.01em;margin-top:58px;padding-top:24px;border-top:1px solid var(--line2);scroll-margin-top:84px}
 .pv h2 b{font-family:var(--f-mono);font-weight:500;font-size:12px;letter-spacing:2px;color:var(--ember);margin-right:14px;vertical-align:.3em}
 .pv h3{font-family:var(--f-mono);font-size:11.5px;letter-spacing:2px;text-transform:uppercase;color:var(--amber);font-weight:500;margin-top:32px}
+.pv h3[id]{scroll-margin-top:84px}  /* 10/11/2026: o formulario do /rh/ leva a #candidaturas */
 .pv p{color:#c3d0de;font-size:16px;margin-top:14px}
 .pv ul{list-style:none;margin-top:12px}
 .pv li{position:relative;padding:6px 0 6px 24px;color:#c3d0de;font-size:16px;line-height:1.55}
