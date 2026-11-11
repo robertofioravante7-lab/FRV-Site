@@ -17,3 +17,7 @@ dist/
 # raiz e quase ficou exposta no repositorio publico. Nenhum .env sobe, em pasta nenhuma.
 *.env
 .env
+
+# Demo do Apice (27/10/2026). Motivo: o repositorio e publico e a demo so sai pelo
+# link pessoal da Etapa 2 do portao. Nem por engano ela entra aqui.
+apice/demo/

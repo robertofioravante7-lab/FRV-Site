@@ -8,8 +8,9 @@
 # A pasta xcoinit/ (pagina do produto e demo) entrou na lista em 19/10/2026.
 # A pasta privacidade/ (politica de privacidade, LGPD) entrou na lista em 07/11/2026.
 # A pasta rh/ (vagas e curriculos, formulario do Netlify Forms) entrou na lista em 10/11/2026.
+# A pasta apice/ (so a pagina do produto, as fotos das telas em apice/telas e as duas paginas do pedido em apice/demonstracao; a demo NAO entra) entrou na lista em 11/11/2026.
 [build]
-  command = "rm -rf dist && mkdir dist && cp index.html dist/ && cp -r assets atalaia xcoinit privacidade rh dist/ && rm -rf dist/assets/img/_originais && rm -f dist/xcoinit/index-v*.html"
+  command = "rm -rf dist && mkdir dist && cp index.html dist/ && cp -r assets atalaia xcoinit privacidade rh dist/ && mkdir -p dist/apice/telas dist/apice/demonstracao/recebido && cp apice/index.html apice/apice.css dist/apice/ && cp apice/telas/*.jpg dist/apice/telas/ && cp apice/demonstracao/index.html dist/apice/demonstracao/ && cp apice/demonstracao/recebido/index.html dist/apice/demonstracao/recebido/ && rm -rf dist/assets/img/_originais && rm -f dist/xcoinit/index-v*.html"
   publish = "dist"
 
 # Repasse do painel da dieta (projeto Dieta, PLANO-SITE-DIETA.md, 27/09/2026).

@@ -1,0 +1,247 @@
+/* Página do produto Ápice no site da FRV (20/10/2026).
+   Complementa /assets/css/site.css e carrega depois dele. Fica em arquivo separado, e não num <style>
+   dentro da página, pela mesma regra das páginas do Atalaia (CSP do netlify.toml e verificar.py).
+   Tudo aqui começa com "apc-" ou vale só dentro de body.apc, para não mexer nas outras páginas. */
+
+/* faixa "O que ele cobre": cada item numa linha só no computador. Abaixo de 1200 px tira o vão de 48 px
+   que o ".hero .c" do site.css vaza para a faixa (senão o último item é cortado em 1024 px); no celular
+   (900 px ou menos) os rótulos voltam a quebrar linha. */
+.apc .setor span,.apc .setor small{white-space:nowrap}
+@media(max-width:1200px){.apc .setores .c{column-gap:0}}
+@media(max-width:900px){.apc .setor span,.apc .setor small{white-space:normal}}
+
+/* quadros ao lado do texto: ficam no tamanho do conteúdo, sem esticar até a altura do texto */
+.apc .about > .inst{align-self:start}
+
+/* caixa de números com três quadros (10/11/2026: a da Nuvem segura e a de "O que o edital pede" perderam o quadro da
+   contagem de editais, pedido do Vendedor de 10/11, seção 2, 3b e 3f). A grade .vals do site.css tem duas colunas, o
+   quadro ímpar leva borda à direita e os dois últimos ficam sem a de baixo: com três, o 3.º ocupa a linha inteira, sem
+   a borda da direita, e o 2.º ganha a borda de baixo, como os outros. No celular (460 px ou menos), uma coluna, como
+   antes. A caixa de quatro quadros (Entregas) não muda. */
+body.apc .vals > div:nth-child(3):last-child{grid-column:1/-1;border-right:0}
+body.apc .vals > div:nth-child(2):nth-last-child(2){border-bottom:1px solid var(--line)}
+
+/* selo do topo: quebra linha no celular em vez de vazar */
+.apc .seal{max-width:100%;line-height:1.5}
+
+/* a linha de apoio da mensagem de 07/11, logo abaixo da frase do produto (09/11/2026): um tom mais claro que o resto
+   do texto do topo, porque completa a frase */
+.apc .hero .apc-apoio{margin-top:10px;color:#b3c1d1}
+
+/* ===== a galeria das telas (09/11/2026) =====
+   As 10 telas aprovadas pelo Roberto (seção 5 do RESPOSTA_INVENTARIO_TELAS_SITE_2026-11-07.md), fotos do build
+   entregue feitas pelo site/ferramentas/galeria_site.py: 1600 × 1000 no computador e 780 × 1688 no celular. Duas
+   colunas no computador, com o Painel na largura inteira (abre a galeria) e o celular em duas linhas, para a foto
+   em pé caber sem deixar buraco na grade; uma coluna abaixo de 900 px, como as outras grades da página. A legenda
+   fica em letra comum, e não no rótulo em caixa alta do figcaption do site.css, porque é uma frase; o nome da tela
+   vai em cima, no rótulo. */
+.apc-gal{margin-top:46px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:28px;align-items:start}
+.apc-gal .apc-gal-largo{grid-column:1/-1}
+.apc-gal .apc-gal-cel{grid-row:span 2}
+.apc-gal .apc-gal-cel img{width:58%;margin:0 auto}
+.apc-gal figcaption{font-family:var(--f-body);font-size:13.5px;letter-spacing:0;text-transform:none;color:#c3d0de;line-height:1.5;padding:11px 4px 3px}
+.apc-gal figcaption b{display:block;font-family:var(--f-mono);font-size:10px;letter-spacing:1.6px;text-transform:uppercase;color:var(--sky);font-weight:500;margin-bottom:3px}
+.apc-gal-iso{margin-top:22px}
+@media(max-width:900px){.apc-gal{grid-template-columns:minmax(0,1fr);gap:22px}.apc-gal .apc-gal-largo{grid-column:auto}.apc-gal .apc-gal-cel{grid-row:auto}.apc-gal .apc-gal-cel img{width:min(100%,320px)}}
+
+/* citações do edital */
+.apc-q{font-style:italic;color:var(--text)}
+
+/* ===== a base e os módulos (27/10/2026, com 6; 7 desde 03/11/2026, com o Ápice Entregas; 9 desde 09/11/2026, com
+   a Pré-folha e o Ápice SMS) =====
+   Uma linha por pacote, com o resumo de app/src/nucleo/pacotes.ts; a Nuvem segura e, logo abaixo dela, o Entregas
+   em destaque, no mesmo desenho texto + quadro (.about + .inst + .vals) da seção "O que o edital pede". Com 9
+   módulos, o M·09 fica sozinho na última linha da grade de duas colunas, de propósito: na linha inteira, ele
+   pareceria a base. 09/11/2026: os cartões M·08 e M·09 levam a origem numa linha embaixo (.apc-mod-orig, no desenho
+   do .code do site.css), porque são os únicos módulos sem bloco de detalhe que a diga; o texto da linha do M·09 é o
+   da seção 7.4 do DESENHO_MODULO_SMS_2026-11-03.md. */
+.apc-mods{list-style:none;margin-top:46px;display:grid;grid-template-columns:1fr 1fr;gap:0 48px;border-top:1px solid var(--line2)}
+.apc-mod{display:grid;grid-template-columns:44px minmax(0,1fr);gap:12px;padding:20px 0 22px;border-bottom:1px solid var(--line2)}
+.apc-mod.base{grid-column:1/-1}
+.apc-mod > b{font-family:var(--f-mono);font-size:11px;letter-spacing:1px;color:var(--amber);font-weight:500;padding-top:4px}
+.apc-mod h3{font-family:var(--f-disp);font-weight:700;font-size:19px;line-height:1.15;letter-spacing:-.015em;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.apc-mod h3 small{font-family:var(--f-mono);font-size:9.5px;letter-spacing:1.4px;text-transform:uppercase;font-weight:500;color:var(--dim);border:1px solid var(--line2);border-radius:999px;padding:3px 9px;line-height:1.4}
+.apc-mod h3 small.on{color:var(--amber);border-color:rgba(247,148,30,.55);background:rgba(247,148,30,.08)}
+.apc-mod p{color:#c3d0de;font-size:14.5px;margin-top:7px;line-height:1.5;max-width:54ch}
+.apc-mod p.apc-mod-orig{font-family:var(--f-mono);font-size:10.5px;letter-spacing:1.2px;text-transform:uppercase;color:var(--ember);margin-top:10px;line-height:1.6;max-width:62ch}
+.apc-nuvem,.apc-entregas{margin-top:56px}
+.apc-nuvem .about-txt h3,.apc-entregas .about-txt h3{font-family:var(--f-disp);font-weight:700;font-size:26px;line-height:1.1;letter-spacing:-.02em;margin-top:12px}
+.apc-nuvem .about-txt p,.apc-entregas .about-txt p{margin-top:16px}
+.apc-nuvem .vals .v,.apc-entregas .vals .v{font-size:26px}
+@media(max-width:900px){.apc-mods{grid-template-columns:1fr}.apc-mod.base{grid-column:auto}}
+
+/* ===== quadro do topo: ocupação de hoje =====
+   Maquete com os números da demonstração (contrato fictício, terça 20/10/2026 às 09:40):
+   120 postos = 108 com evidência + 5 sem evidência + 7 em mobilização ou saldo. */
+.apc-tela{background:#f5f7fa;color:#0b1826;padding:16px 16px 16px;font-family:var(--f-body)}
+.apc-cab{display:flex;justify-content:space-between;align-items:center;gap:6px 14px;flex-wrap:wrap}
+.apc-cab b{font-family:var(--f-disp);font-weight:700;font-size:16px;letter-spacing:-.01em;display:flex;align-items:center;gap:9px}
+.apc-cab b svg{width:22px;height:22px;flex:none}
+.apc-cab span{font-family:var(--f-mono);font-size:10.5px;color:#56677a;letter-spacing:.3px;display:inline-flex;align-items:center;gap:6px}
+.apc-cab span::before{content:"";width:6px;height:6px;border-radius:50%;background:#1f9d6b}
+.apc-leit{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));margin-top:12px;border:1px solid #dfe5ec;border-radius:6px;background:#fff}
+.apc-leit > div{padding:8px 11px 9px;border-right:1px solid #dfe5ec;font-size:11px;color:#56677a;line-height:1.3}
+.apc-leit > div:last-child{border-right:0}
+.apc-leit b{display:block;font-family:var(--f-mono);font-size:18px;font-weight:600;color:#0b1826;margin-top:4px;font-variant-numeric:tabular-nums}
+.apc-leit b small{font-size:11px;font-weight:500;color:#56677a}
+.apc-sw{display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:6px;vertical-align:0;background:#86cfb6}
+.apc-sw.s{background:#e8590c}
+.apc-sw.m{background:transparent;border:1px dashed #8e9cad}
+.apc-grade{margin-top:12px;display:grid;gap:5px}
+.apc-ln{display:grid;grid-template-columns:36px minmax(0,1fr);align-items:center;gap:8px}
+.apc-ln b{font-family:var(--f-mono);font-size:9.5px;font-weight:600;color:#56677a;letter-spacing:.6px}
+.apc-ln span{display:grid;grid-template-columns:repeat(28,minmax(0,1fr));gap:3px}
+.apc-ln i{display:block;aspect-ratio:1;border-radius:2px;background:#86cfb6}
+.apc-ln i.s{background:#e8590c;box-shadow:0 0 0 2px rgba(232,89,12,.22)}
+.apc-ln i.m{background:transparent;border:1px dashed #8e9cad}
+.apc-risco{margin-top:14px;display:flex;align-items:center;justify-content:space-between;gap:10px 16px;flex-wrap:wrap;background:#fff;border:1px solid #dfe5ec;border-left:3px solid #d9480f;border-radius:6px;padding:11px 14px}
+.apc-risco small{display:block;font-size:11.5px;color:#b5400c;font-weight:600}
+.apc-risco strong{display:block;font-family:var(--f-disp);font-weight:800;font-size:25px;letter-spacing:-.02em;line-height:1.15}
+.apc-risco p{font-size:11.5px;color:#56677a;line-height:1.35}
+.apc-risco em{font-style:normal;font-family:var(--f-mono);font-size:10.5px;letter-spacing:1px;text-transform:uppercase;font-weight:600;color:#b5400c;white-space:nowrap}
+@media(max-width:560px){
+  .apc-tela{padding:13px 12px 13px}
+  .apc-ln{grid-template-columns:32px minmax(0,1fr);gap:6px}
+  .apc-ln span{gap:2px}
+  .apc-leit > div{padding:7px 8px 8px;font-size:10px}
+  .apc-leit b{font-size:15px}
+  .apc-risco strong{font-size:22px}
+}
+
+/* ===== dois apps no celular ===== */
+.apc-cel{display:flex;justify-content:center;align-items:center}
+.apc-fone{width:262px;max-width:100%;border-radius:36px;padding:10px;background:#0a0f16;border:1px solid var(--line2);box-shadow:0 30px 70px rgba(0,0,0,.45)}
+.apc-fone-t{border-radius:28px;background:radial-gradient(ellipse 90% 60% at 50% 0%,rgba(247,148,30,.18),transparent 70%),linear-gradient(175deg,#132c47,#0b1826 62%);min-height:404px;padding:12px 16px 18px;display:flex;flex-direction:column}
+.apc-barra{display:flex;justify-content:space-between;font-family:var(--f-mono);font-size:10.5px;color:#c9d6e3;padding:0 4px}
+.apc-apps{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:30px}
+.apc-app{display:flex;flex-direction:column;align-items:center;gap:7px;text-align:center}
+.apc-ico{width:64px;height:64px;border-radius:17px;display:grid;place-items:center;box-shadow:0 8px 22px rgba(0,0,0,.35)}
+.apc-ico svg{width:64px;height:64px;display:block}
+.apc-app b{font-family:var(--f-body);font-size:13px;color:#fff;font-weight:700;line-height:1.2}
+.apc-app small{font-size:10.5px;color:#9fb3c8;line-height:1.35;text-wrap:balance}
+.apc-wid{margin-top:auto;background:rgba(255,255,255,.96);border-radius:16px;padding:13px 14px 14px;color:#0b1826}
+.apc-wid-t{display:flex;justify-content:space-between;align-items:center;font-family:var(--f-mono);font-size:9.5px;letter-spacing:1.2px;text-transform:uppercase;color:#56677a}
+.apc-wid-t b{color:#b5400c;font-weight:600}
+.apc-wid p{font-size:11.5px;color:#56677a;margin-top:7px;line-height:1.35}
+.apc-wid-b{display:block;margin-top:10px;text-align:center;background:#f7941e;color:#0b1826;font-weight:700;font-size:13.5px;border-radius:10px;padding:10px 8px}
+.apc-leg-cel{margin-top:16px;font-family:var(--f-mono);font-size:10.5px;letter-spacing:.4px;color:var(--dim2);text-align:center;line-height:1.6}
+
+/* ===== as 18 exigências ===== */
+.apc-placar{padding:22px 22px 22px}
+.apc-placar .v{font-family:var(--f-mono);font-size:56px;font-weight:500;color:var(--amber);line-height:1;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.apc-placar .k{color:#c3d0de;font-size:15px;margin-top:10px}
+.apc-18{display:grid;grid-template-columns:repeat(9,minmax(0,1fr));gap:6px;margin-top:20px}
+.apc-18 i{display:block;height:20px;border-radius:2px;background:rgba(247,148,30,.88);box-shadow:0 0 10px rgba(247,148,30,.28)}
+.apc-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}
+.apc-chip{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.3px;border:1px solid var(--line2);border-radius:999px;padding:4px 11px;color:#c5d2e0;line-height:1.4}
+.apc-chip.sim{border-style:dashed;color:var(--sky)}
+.apc-placar .nota{font-size:13px;color:var(--dim);margin-top:14px;line-height:1.55}
+.apc-ol{counter-reset:ex;margin-top:46px}
+.apc-ol li{counter-increment:ex;padding-left:38px}
+.apc-ol li::before{content:counter(ex,decimal-leading-zero);width:auto;height:auto;background:none;top:11px;font-family:var(--f-mono);font-size:11px;letter-spacing:1px;color:var(--amber)}
+/* 10/11/2026 (pedido do Vendedor de 10/11, seção 3): as 2 exigências com simulação (a 15.ª, a compatibilidade com a TI
+   da contratante, e a 17.ª, a assinatura eletrônica) levam a etiqueta "simulação" na lista, e os dois quadradinhos delas
+   no placar, o desenho da etiqueta (tracejado, azul-claro). A etiqueta não quebra no meio: se não couber na linha, desce
+   inteira, sem rolagem lateral em 390 px. */
+.apc-18 i.sim{background:rgba(159,208,245,.12);border:1px dashed var(--sky);box-shadow:none}
+.apc-ol .apc-chip{display:inline-block;white-space:nowrap;margin-left:4px;padding:1px 9px;font-size:10px;vertical-align:1px}
+
+/* ===== a demonstração ===== */
+.apc-demo{margin-top:46px;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);border:1px solid var(--line2);border-top:2px solid var(--amber);background:rgba(6,10,16,.55)}
+.apc-demo-l{padding:32px 34px 34px;border-right:1px solid var(--line2)}
+.apc-demo-r{padding:32px 34px 34px}
+.apc-demo h3{font-family:var(--f-disp);font-weight:700;font-size:22px;line-height:1.15;letter-spacing:-.015em}
+.apc-demo p{color:#c3d0de;font-size:15px;margin-top:12px;max-width:58ch}
+.apc-demo h4{font-family:var(--f-mono);font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--amber);font-weight:500;margin-top:26px}
+.apc-demo .ul{margin-top:10px}
+.apc-demo .ul li{font-size:14px;padding:8px 0 8px 22px}
+.apc-passos{list-style:none;margin-top:22px;border-top:1px solid var(--line)}
+.apc-passos li{display:grid;grid-template-columns:34px minmax(0,1fr);gap:10px;padding:13px 0;border-bottom:1px solid var(--line)}
+.apc-passos li > b{font-family:var(--f-mono);font-size:11px;letter-spacing:1px;color:var(--amber);font-weight:500;padding-top:3px}
+.apc-passos strong{display:block;font-family:var(--f-disp);font-weight:700;font-size:16px;letter-spacing:-.01em}
+.apc-passos span{display:block;color:var(--dim);font-size:14px;margin-top:3px;line-height:1.5}
+.apc-cta{display:flex;gap:14px 18px;flex-wrap:wrap;align-items:center;margin-top:28px}
+/* 09/11/2026: a linha da mensagem de 07/11 acima do botão "Pedir uma demonstração" (seção 5 da mensagem). O seletor
+   leva o .apc-demo para passar na frente do ".apc-demo p" de cima. */
+.apc-demo p.apc-cta-linha{margin-top:28px;font-family:var(--f-disp);font-weight:700;font-size:17px;line-height:1.35;letter-spacing:-.01em;color:var(--text);max-width:46ch}
+.apc-cta-linha + .apc-cta{margin-top:14px}
+.btn.apc-grande{padding:17px 30px;font-size:12.5px;letter-spacing:2px}
+.apc-demo .apc-cta .demo-note{margin-top:0;font-size:11px;color:var(--dim2);max-width:40ch}
+@media(max-width:900px){.apc-demo{grid-template-columns:1fr}.apc-demo-l{border-right:0;border-bottom:1px solid var(--line2)}}
+@media(max-width:560px){.apc-demo-l,.apc-demo-r{padding:24px 18px 26px}.btn.apc-grande{width:100%;justify-content:center}}
+
+/* contato: a frase de escala embaixo do título */
+.apc-escala{margin-top:16px;color:var(--dim);font-size:15.5px;max-width:62ch}
+/* 11/11/2026 (pedido do Vendedor de 11/11, C3; decisão do Roberto na peça 1): no bloco final, o botão laranja é "Pedir
+   uma demonstração" (antes, texto grande, sem cara de botão), e "Enviar e-mail" vira botão de contorno. A margem do
+   botão do pedido (12 px em cima, 4 px embaixo) o põe na altura do endereço da coluna E-mail, em 1440 px, e deixa a
+   nota logo abaixo dele. */
+body.apc .ct > div > .btn[data-pedido-demo]{margin:12px 0 4px}
+
+/* aviso de isenção no rodapé */
+.ft .apc-iso{font-family:var(--f-mono);font-size:10.5px;letter-spacing:0;color:var(--dim2);margin-top:6px;line-height:1.6}
+
+/* ===== o pedido de demonstração: /apice/demonstracao/ e /apice/demonstracao/recebido/ (10/11/2026) =====
+   Pedido do Vendedor de 10/11 (seções 4 e 5), com o plano aprovado pelo Roberto: o formulário da Netlify no lugar do
+   e-mail pronto. No desenho do formulário do RH do site (assets/css/rh.css, .fm), sem carregar o rh.css: um campo por
+   linha, em todas as larguras, na ordem da tabulação; a letra dos campos com 16 px (abaixo disso o iPhone dá zoom ao
+   tocar); o foco com a borda e o anel laranja; o campo inválido com a borda de alerta (:user-invalid), só depois que a
+   pessoa mexe nele ou tenta enviar. A mensagem de erro é a do navegador; a dica embaixo do campo explica. */
+.apc-form{display:grid;grid-template-columns:minmax(0,1fr);gap:22px;margin-top:36px;max-width:620px}
+.apc-campo{min-width:0}
+.apc-form label{display:block;font-family:var(--f-mono);font-size:10.5px;letter-spacing:1.8px;text-transform:uppercase;color:var(--amber);font-weight:500}
+.apc-form input[type=text],.apc-form input[type=email],.apc-form input[type=tel]{display:block;width:100%;margin-top:8px;background:rgba(6,10,16,.6);border:1px solid var(--line2);border-radius:2px;color:var(--text);font-family:var(--f-body);font-size:16px;line-height:1.4;padding:12px 14px;transition:border-color .2s}
+.apc-form input[type=text]:hover,.apc-form input[type=email]:hover,.apc-form input[type=tel]:hover{border-color:rgba(140,190,235,.4)}
+.apc-form input[type=text]:focus-visible,.apc-form input[type=email]:focus-visible,.apc-form input[type=tel]:focus-visible{outline:none;border-color:var(--amber);box-shadow:0 0 0 1px var(--amber)}
+/* o campo inválido mostra a borda de alerta também com o foco: depois de "Enviar pedido", o navegador põe o foco no
+   primeiro campo inválido, e a borda do foco escondia o alerta (visto na prévia de 10/11) */
+.apc-form :is(input[type=text],input[type=email],input[type=tel]):user-invalid{border-color:var(--ember)}
+.apc-form :is(input[type=text],input[type=email],input[type=tel]):user-invalid:focus-visible{box-shadow:0 0 0 1px var(--ember)}
+/* quando o navegador rola até o campo inválido, ele fica abaixo do cabeçalho fixo do site (64 px), e não atrás dele */
+.apc-form input{scroll-margin-top:96px}
+.apc-dica{font-size:13.5px;color:var(--dim);margin-top:8px;max-width:62ch}
+.apc-form > .apc-dica{margin-top:0}
+.apc-aceite{display:flex;gap:12px;align-items:flex-start;padding-top:18px;border-top:1px solid var(--line2)}
+.apc-aceite input{width:20px;height:20px;margin-top:3px;flex:none;accent-color:var(--amber);cursor:pointer}
+.apc-aceite input:user-invalid{outline:1px solid var(--ember);outline-offset:2px}
+.apc-form .apc-aceite label{font-family:var(--f-body);font-size:16px;letter-spacing:0;text-transform:none;font-weight:400;color:#c3d0de;cursor:pointer}
+.apc-aceite a{color:var(--amber);text-decoration:underline;text-underline-offset:3px}
+.apc-aceite a:hover{color:#ffa53d}
+/* o .btn do site foi feito para link: no <button>, zera a borda e põe a mãozinha (como o .ck .btn do site.css e o
+   .fm-env .btn do rh.css) */
+.apc-form .btn{border:0;cursor:pointer;justify-self:start}
+/* campo-isca contra robô: fora da tela e fora da tabulação; robô preenche e a Netlify descarta o envio */
+.apc-isca{position:absolute;left:-10000px;top:auto;width:1px;height:1px;overflow:hidden}
+body.apc #pedido .c > p:last-child a{color:var(--amber);text-decoration:underline;text-underline-offset:3px}
+body.apc #pedido .c > p:last-child a:hover{color:#ffa53d}
+body.apc #pedido .c > p:last-child{margin-top:18px;font-size:15px}
+body.apc #pedido .demo-note{margin-top:28px}
+body.apc #recebido{min-height:62vh}
+body.apc #recebido .c > p:last-child{margin-top:30px}
+@media(prefers-reduced-motion:reduce){.apc-form input{transition:none}}
+
+/* 11/11/2026 (pedido do Vendedor de 11/11, C1, aprovado pelo Roberto nas três peças): o botão "Fale conosco" do cabeçalho
+   numa linha só, de 320 a 1440 px, nas três páginas, como no RH do site. As duas regras são necessárias: só a primeira
+   faz o botão cobrir o "Engenharia" do logo em 320 px; por isso, abaixo de 480 px, o "Engenharia" sai (o logo fica). O
+   HTML e o molde não mudam. */
+body.apc .hd .btn{white-space:nowrap}
+@media(max-width:480px){body.apc .hd .logo small{display:none}}
+
+/* 11/11/2026 (pedido do Vendedor de 11/11, C2): no celular e no tablet, as linhas dos títulos das seções com mais ar. Com
+   o 1,02 do site.css, a cedilha de uma linha encostava no acento da linha de baixo; com 1,15, ficava a 0,7 px. Com 1,2,
+   em 390 px, são 33,6 px entre linhas. Acima de 900 px, nada muda (46,92 px em 1440). O site.css não muda. */
+@media(max-width:900px){body.apc .h2{line-height:1.2}}
+
+/* 11/11/2026 (pedido do Vendedor de 11/11, C9: retoques de aparência, sem texto novo; conferidos de 320 a 1440 px).
+   - A caixa "A demonstração": o "Roteiro guiado de 10 minutos" e o parágrafo dele passaram da coluna da direita para a
+     da esquerda, antes da linha do pedido; a da direita começa na lista "O que a demonstração simula".
+   - O quadro do topo: o quadradinho e o rótulo de cada leitura num <span>, e o número embaixo, alinhado nas três
+     leituras mesmo quando um rótulo quebra em duas linhas ("Em mobilização ou saldo", no celular).
+   - As quebras de linha: a frase do produto equilibrada nas linhas e o texto de abertura das seções sem palavra sozinha
+     na última linha; "on-line" não se parte no hífen (.apc-nb). */
+body.apc .apc-demo-l h3:not(:first-child){margin-top:28px}
+body.apc .apc-demo-r > h4:first-child{margin-top:0}
+body.apc .apc-leit > div{display:flex;flex-direction:column;justify-content:space-between}
+body.apc .hero .sub{text-wrap:balance}
+body.apc .lead{text-wrap:pretty}
+.apc-nb{white-space:nowrap}
