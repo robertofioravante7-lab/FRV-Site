@@ -287,3 +287,9 @@ figure.shot img,.figs.one figure.shot img{height:auto;object-fit:contain;filter:
 .setores.n5 .c{grid-template-columns:auto repeat(5,1fr)}
 .setor small{display:block;font-family:var(--f-mono);font-size:10.5px;letter-spacing:.3px;white-space:nowrap;font-weight:500;color:var(--dim);margin-top:2px}
 @media(max-width:900px){.setores.n5 .c{grid-template-columns:1fr 1fr}.setores.n5 .setor:nth-child(3),.setores.n5 .setor:nth-child(5){border-right:none}.setores.n5 .setor:nth-child(4),.setores.n5 .setor:nth-child(5){border-bottom:1px solid var(--line)}.setores.n5 .setor:nth-child(6){grid-column:1/-1;border-right:none}}
+
+/* "Fale conosco" numa linha so no celular (11/11/2026, pedido do Vendedor, passo 4 do Apice). Medido de 320 a 1440 px:
+   quebrava em duas linhas de 320 a 390 px no /atalaia/, no /xcoinit/ e na /privacidade/. As mesmas regras ja estavam
+   no rh.css e no apice.css. Com o "Engenharia" do logo escondido ate 480 px, o botao cabe sem cobrir o logo. */
+.hd .btn{white-space:nowrap}
+@media(max-width:480px){.hd .logo small{display:none}}

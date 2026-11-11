@@ -8,9 +8,15 @@
 <!-- Politica de privacidade do site inteiro (07/11/2026). Texto do pedido de privacidade de 03/11/2026
      (Softwares/Apice/site/PEDIDO_PRIVACIDADE_SITE_2026-11-03.md, secao 3), aprovado pelo Roberto.
      Versao 2 (10/11/2026): secao 2.4, candidaturas pela pagina /rh/ (plano docs/rh/PLANO-PAGINA-RH-2026-11-10.md),
-     e os ajustes que ela puxa nas secoes 4, 5, 6 e 9. -->
+     e os ajustes que ela puxa nas secoes 4, 5, 6 e 9.
+     Versao 3 (11/11/2026): pedido de demonstracao do Apice pelo formulario da Netlify (secao 2.1), filtro de spam
+     Akismet em todo formulario (secoes 2.1, 2.4, 4 e 10), dados tecnicos de cada envio (2.1, 2.3 e 2.4), prazo de
+     30 dias na Netlify (secao 6) e a pagina do Apice na abertura. Texto aprovado pelo Roberto com "s" em 11/11/2026
+     (Vendedor/produtos/apice/PRIVACIDADE_V3_PARA_APROVAR_2026-11-11.md), com os dois acertos da Cloudflare (secao 4)
+     e da ressalva da 2.3. -->
+<link rel="icon" href="data:,">
 <link rel="stylesheet" href="/assets/css/fontes.css">
-<link rel="stylesheet" href="/assets/css/site.css">
+<link rel="stylesheet" href="/assets/css/site.css?v=2026-11-11">
 <script src="/assets/js/site.js" defer></script>
 </head>
 <body>
@@ -34,15 +40,15 @@
   <div class="c">
     <div class="eyebrow">LGPD · Lei n.º 13.709/2018</div>
     <h1 class="h2">Política de <span>privacidade</span></h1>
-    <p class="pv-ver">FRV Engenharia · frv.eng.br · Versão 2, de 10/11/2026</p>
+    <p class="pv-ver">FRV Engenharia · frv.eng.br · Versão 3, de 11/11/2026</p>
 
     <div class="pv">
       <p class="pv-intro">
         Esta página diz, em linguagem simples, quais dados pessoais o site frv.eng.br trata, para quê, com que base
         legal, com quem são compartilhados, por quanto tempo ficam guardados e quais são os seus direitos, como manda a
         Lei Geral de Proteção de Dados Pessoais (Lei n.º 13.709/2018, a LGPD). Ela vale para todas as páginas deste
-        site: a página inicial, as páginas dos produtos (como o FRV Atalaia e o FRV XcoInit), as demonstrações abertas e
-        a página de vagas (Trabalhe conosco).
+        site: a página inicial, as páginas dos produtos (como o FRV Atalaia, o FRV XcoInit e o FRV Ápice), as
+        demonstrações abertas, o pedido de demonstração do Ápice e a página de vagas (Trabalhe conosco).
       </p>
 
       <h2 id="controladora"><b>01</b>Quem controla os seus dados</h2>
@@ -55,15 +61,22 @@
       <h2 id="dados"><b>02</b>Quais dados tratamos, para quê e com que base legal</h2>
 
       <h3>2.1 Quando você entra em contato ou pede uma demonstração</h3>
+      <p>Há dois caminhos.</p>
       <p>
-        Os botões de contato e de pedido de demonstração (como "Enviar e-mail" e "Chamar no WhatsApp") abrem o seu
-        programa de e-mail ou o seu WhatsApp com uma mensagem pronta. O site não guarda nada disso: a mensagem sai do
-        seu aparelho e chega à FRV.
+        <strong>Pelo formulário de pedido de demonstração</strong> (frv.eng.br/apice/demonstracao): o formulário é
+        recebido pela Netlify, a hospedagem do site, e a FRV é avisada por e-mail. Junto com o que você preenche, a
+        Netlify grava o endereço de internet (IP), o navegador, a página de origem, a data e a hora do envio, e passa o
+        envio por um filtro de spam (seção 4). A FRV copia o pedido para a caixa de e-mail da empresa, no Microsoft 365,
+        e o apaga da Netlify.
+      </p>
+      <p>
+        <strong>Pelos botões "Enviar e-mail" e "Chamar no WhatsApp":</strong> eles abrem o seu programa de e-mail ou o
+        seu WhatsApp com uma mensagem pronta. O site não guarda nada disso: a mensagem sai do seu aparelho e chega à FRV.
       </p>
       <ul>
-        <li><strong>Dados:</strong> nome, cargo, empresa, e-mail e telefone; se você quiser, o número do edital; e o que mais você escrever na mensagem.</li>
-        <li><strong>Para quê:</strong> responder ao seu pedido, marcar e fazer a demonstração e dar seguimento ao contato sobre ela.</li>
-        <li><strong>Base legal:</strong> procedimentos preliminares a um contrato, feitos a seu pedido (art. 7.º, V). Quando o contato não leva a contrato, o legítimo interesse da FRV em responder a quem a procura (art. 7.º, IX), respeitado o seu direito de se opor.</li>
+        <li><strong>Dados:</strong> nome, cargo, empresa, e-mail e telefone; se você quiser, o número do edital; o que mais você escrever na mensagem; e, no formulário, os dados técnicos do envio citados acima.</li>
+        <li><strong>Para quê:</strong> responder ao seu pedido, marcar e fazer a demonstração e dar seguimento ao contato sobre ela; no formulário, também separar os pedidos verdadeiros dos envios automáticos (spam).</li>
+        <li><strong>Base legal:</strong> procedimentos preliminares a um contrato, feitos a seu pedido (art. 7.º, V). Quando o contato não leva a contrato, o legítimo interesse da FRV em responder a quem a procura (art. 7.º, IX), respeitado o seu direito de se opor. Para os dados técnicos do envio e o filtro de spam, o legítimo interesse da FRV na segurança do site (art. 7.º, IX).</li>
         <li>Esses dados não são usados para propaganda nem entram em lista de e-mails sem um consentimento à parte.</li>
       </ul>
 
@@ -84,11 +97,13 @@
       <p>
         Como todo site, este é entregue por servidores de terceiros. Ao abrir qualquer página, o seu navegador envia a
         eles o endereço de internet (IP), a data e a hora, a página pedida, o tipo de navegador e de sistema e a página
-        de origem. Esses registros servem para manter o site no ar e protegê-lo contra ataques.
+        de origem. Esses registros servem para manter o site no ar e protegê-lo contra ataques. Quando você envia um
+        formulário deste site (seções 2.1 e 2.4), esses dados ficam gravados junto com o envio, pelo mesmo prazo dele
+        (seção 6).
       </p>
       <ul>
         <li><strong>Base legal:</strong> o legítimo interesse da FRV na segurança e no funcionamento do site (art. 7.º, IX).</li>
-        <li>A FRV não consulta esses registros no dia a dia nem os cruza com o seu nome.</li>
+        <li>A FRV não consulta esses registros no dia a dia nem os cruza com o seu nome, fora os gravados junto com um formulário que você mesmo enviou (seções 2.1 e 2.4).</li>
       </ul>
 
       <h3 id="candidaturas">2.4 Quando você se candidata a uma vaga</h3>
@@ -96,6 +111,8 @@
         Na página Trabalhe conosco (<a href="/rh/">frv.eng.br/rh</a>), você pode se candidatar a uma vaga aberta ou deixar
         o seu currículo no banco de talentos. O formulário é recebido pela Netlify, a hospedagem do site, e a FRV é
         avisada por e-mail. A FRV baixa os currículos para os arquivos da empresa, no Microsoft 365, e os apaga da Netlify.
+        Como no pedido de demonstração (seção 2.1), a Netlify grava também o endereço de internet, o navegador, a página
+        de origem, a data e a hora do envio, e passa o envio por um filtro de spam (seção 4).
       </p>
       <ul>
         <li><strong>Dados:</strong> nome, e-mail, telefone, cidade, a vaga escolhida, o currículo que você anexar (com o que estiver escrito nele) e, se você quiser, o endereço do LinkedIn e uma mensagem.</li>
@@ -142,14 +159,15 @@
       <p>Os seus dados não são vendidos. Eles passam pelos serviços abaixo, que a FRV usa para manter o site e o e-mail:</p>
       <ul>
         <li><strong>Google LLC</strong> (Estados Unidos): o Google Analytics 4, só depois do seu aceite (seção 2.2). Política do Google: <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">policies.google.com/privacy</a>.</li>
-        <li><strong>Netlify, Inc.</strong> (Estados Unidos): a hospedagem do site; recebe os registros técnicos da seção 2.3 e os formulários de candidatura da seção 2.4, que guarda até a FRV baixá-los. Política: <a href="https://www.netlify.com/privacy/" target="_blank" rel="noopener">netlify.com/privacy</a>.</li>
-        <li><strong>Cloudflare, Inc.</strong> (Estados Unidos): a rede de entrega e proteção do domínio frv.eng.br; recebe os registros técnicos da seção 2.3. Política: <a href="https://www.cloudflare.com/privacypolicy/" target="_blank" rel="noopener">cloudflare.com/privacypolicy</a>.</li>
-        <li><strong>Microsoft Corporation</strong> (Estados Unidos): o Microsoft 365, a caixa de e-mail onde chegam os pedidos, os contatos (seção 2.1) e os avisos de candidatura, e os arquivos da empresa onde ficam os currículos (seção 2.4). Política: <a href="https://privacy.microsoft.com/pt-br/privacystatement" target="_blank" rel="noopener">privacy.microsoft.com</a>.</li>
+        <li><strong>Netlify, Inc.</strong> (Estados Unidos): a hospedagem do site; recebe os registros técnicos da seção 2.3, os pedidos de demonstração da seção 2.1 e as candidaturas da seção 2.4, que guarda até a FRV copiá-los. Política: <a href="https://www.netlify.com/privacy/" target="_blank" rel="noopener">netlify.com/privacy</a>.</li>
+        <li><strong>Automattic Inc.</strong> (Estados Unidos), pelo serviço Akismet: o filtro de spam que a Netlify aplica a todo formulário enviado pelo site; recebe o conteúdo do envio e os dados técnicos dele, só para separar os envios automáticos. Política: <a href="https://automattic.com/privacy/" target="_blank" rel="noopener">automattic.com/privacy</a>.</li>
+        <li><strong>Cloudflare, Inc.</strong> (Estados Unidos): a rede de entrega e proteção do domínio frv.eng.br; recebe os registros técnicos da seção 2.3; os formulários das seções 2.1 e 2.4 passam por ela a caminho da Netlify. Política: <a href="https://www.cloudflare.com/privacypolicy/" target="_blank" rel="noopener">cloudflare.com/privacypolicy</a>.</li>
+        <li><strong>Microsoft Corporation</strong> (Estados Unidos): o Microsoft 365, a caixa de e-mail onde chegam e ficam os pedidos de demonstração, os contatos (seção 2.1) e os avisos de candidatura, e os arquivos da empresa onde ficam os currículos (seção 2.4). Política: <a href="https://privacy.microsoft.com/pt-br/privacystatement" target="_blank" rel="noopener">privacy.microsoft.com</a>.</li>
         <li><strong>Meta Platforms (WhatsApp):</strong> só se você clicar em "Chamar no WhatsApp"; a partir daí vale a política do WhatsApp. O site não envia nada ao WhatsApp antes do clique.</li>
         <li><strong>Vercel Inc.</strong> (Estados Unidos): alguns endereços deste domínio são painéis de uso interno da FRV, protegidos por senha e servidos pela Vercel. Não se destinam ao visitante; quem os abre por engano vê só a tela de entrada.</li>
       </ul>
       <p>
-        A FRV é a controladora e responde pelo tratamento. Os provedores de estatísticas, hospedagem, entrega e e-mail
+        A FRV é a controladora e responde pelo tratamento. Os provedores de estatísticas, hospedagem, filtro de spam, entrega e e-mail
         atuam como operadores, segundo os termos de tratamento de dados de cada um, e não podem usar os dados para fins
         próprios.
         Dados só são entregues a autoridades públicas por obrigação legal ou ordem judicial.
@@ -157,9 +175,9 @@
 
       <h2 id="transferencia"><b>05</b>Transferência para fora do Brasil</h2>
       <p>
-        Os provedores acima ficam nos Estados Unidos ou usam servidores fora do Brasil; por isso os dados das seções 2.2,
-        2.3 e 2.4 e os e-mails da seção 2.1 saem do país, para os Estados Unidos e para os demais países onde esses
-        provedores mantêm servidores. Nos contatos, nos pedidos de demonstração e nas candidaturas a uma vaga, a
+        Os provedores acima ficam nos Estados Unidos ou usam servidores fora do Brasil; por isso os dados das seções 2.1,
+        2.2, 2.3 e 2.4 saem do país, para os Estados Unidos e para os demais países onde esses provedores mantêm
+        servidores. Nos contatos, nos pedidos de demonstração e nas candidaturas a uma vaga, a
         transferência é necessária para atender ao seu pedido (art. 33, IX, da LGPD, com o art. 7.º, V). Nos demais casos, ela segue os termos de tratamento de
         dados de cada provedor, que adotam cláusulas-padrão contratuais e certificações internacionais de proteção de
         dados; a FRV acompanha a adoção, por esses provedores, das cláusulas-padrão aprovadas pela ANPD (Resolução
@@ -168,8 +186,9 @@
 
       <h2 id="prazos"><b>06</b>Por quanto tempo guardamos</h2>
       <ul>
-        <li><strong>Pedidos de demonstração e contatos:</strong> pedido sem seguimento, apagado em 30 dias; com seguimento, mas sem contrato, até 12 meses depois do último contato; com contrato, pelo prazo dele e pelos prazos legais de guarda de documentos.</li>
+        <li><strong>Pedidos de demonstração e contatos:</strong> na Netlify, o pedido feito pelo formulário fica só até a FRV copiá-lo para a caixa de e-mail da empresa, e no máximo 30 dias. Na FRV: pedido sem seguimento, apagado em 30 dias; com seguimento, mas sem contrato, até 12 meses depois do último contato; com contrato, pelo prazo dele e pelos prazos legais de guarda de documentos.</li>
         <li><strong>Candidaturas (seção 2.4):</strong> até o fim da seleção da vaga escolhida; com a autorização do banco de talentos, até 12 meses depois do envio. Depois disso, o currículo e os dados são apagados. Na Netlify, ficam só até a FRV baixá-los. Se você for contratado, os dados passam para os registros do contrato, pelos prazos legais.</li>
+        <li><strong>Envios que o filtro marca como spam:</strong> a FRV confere a lista, para não perder um pedido verdadeiro, e os apaga da Netlify em até 30 dias.</li>
         <li><strong>Estatísticas (Google Analytics):</strong> os dados de evento, por 2 meses; os relatórios agregados, sem identificação de ninguém, ficam com a FRV.</li>
         <li><strong>Registros técnicos da hospedagem:</strong> pelos prazos que a Netlify e a Cloudflare definem nos termos delas; a FRV não guarda cópia própria desses registros.</li>
         <li><strong>A sua escolha no aviso de cookies:</strong> até você mudá-la.</li>
@@ -206,14 +225,15 @@
       <p>
         O site é servido só por conexão segura (HTTPS); tem uma política de segurança de conteúdo que impede a execução de
         código de terceiros; não carrega nada do Google antes do seu aceite; e as fontes de letra vêm do próprio site. O
-        acesso à caixa assistente@frv.eng.br, ao painel da hospedagem e aos currículos guardados é restrito à equipe da FRV. Se houver um incidente de segurança com risco a
+        acesso à caixa assistente@frv.eng.br, ao painel da hospedagem, aos pedidos de demonstração e aos currículos guardados é restrito à equipe da FRV. Se houver um incidente de segurança com risco a
         você, a FRV comunica a ANPD e as pessoas afetadas, como manda o art. 48 da LGPD.
       </p>
 
       <h2 id="menores"><b>10</b>Menores de idade e decisões automatizadas</h2>
       <p>
         O site é dirigido a empresas e profissionais. A FRV não coleta conscientemente dados de menores de 18 anos. O site
-        não monta perfil de visitantes nem toma decisões automatizadas sobre ninguém.
+        não monta perfil de visitantes nem toma decisões automatizadas sobre ninguém. O filtro de spam só separa os
+        envios que parecem automáticos; a FRV confere essa lista antes de apagá-la.
       </p>
 
       <h2 id="mudancas"><b>11</b>Mudanças nesta política</h2>
@@ -224,7 +244,7 @@
         FRV Engenharia Ltda. · CNPJ 65.745.441/0001-68 ·
         <a href="mailto:assistente@frv.eng.br">assistente@frv.eng.br</a> · <a href="tel:+5581993657878">(81) 99365-7878</a>
       </p>
-      <p class="pv-ver">Versão 2, de 10/11/2026. A versão 1, de 07/11/2026, não tinha a seção 2.4 (candidaturas).</p>
+      <p class="pv-ver">Versão 3, de 11/11/2026. A versão 2, de 10/11/2026, não tinha o pedido de demonstração pelo formulário nem o filtro de spam; a versão 1, de 07/11/2026, não tinha a seção 2.4 (candidaturas).</p>
     </div>
   </div>
 </section>
